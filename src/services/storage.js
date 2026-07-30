@@ -40,6 +40,7 @@ const mapWorker = (row) => ({
   color: row.color || '#c9a227',
   notes: row.notes || '',
   schedule: row.schedule || {},
+  googleCalendarSync: row.google_calendar_sync || false,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 });
@@ -229,6 +230,7 @@ export const saveWorker = async (worker) => {
         color: worker.color || '#c9a227',
         notes: worker.notes || null,
         schedule: worker.schedule || {},
+        google_calendar_sync: worker.googleCalendarSync || false,
         updated_at: new Date().toISOString(),
       })
       .eq('id', worker.id)
@@ -246,6 +248,7 @@ export const saveWorker = async (worker) => {
         color: worker.color || '#c9a227',
         notes: worker.notes || null,
         schedule: worker.schedule || {},
+        google_calendar_sync: worker.googleCalendarSync || false,
       });
     if (error) throw error;
   }

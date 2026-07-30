@@ -11,6 +11,7 @@ import {
   Clock,
   CheckSquare,
   Square,
+  Calendar,
 } from 'lucide-react';
 import { getWorkers, saveWorker, deleteWorker } from '../services/storage';
 
@@ -37,6 +38,7 @@ const EMPTY_FORM = {
   color: '#c9a227',
   schedule: EMPTY_SCHEDULE,
   notes: '',
+  googleCalendarSync: false,
 };
 
 const COLORS = [
@@ -162,6 +164,11 @@ export default function WorkersPage() {
                           <Mail size={11} /> {w.email}
                         </p>
                       )}
+                      {w.googleCalendarSync && (
+                        <span className="inline-flex items-center gap-1 mt-1 text-xs font-medium text-[#c9a227] bg-[#c9a227]/10 px-2 py-0.5 rounded-full">
+                          <Calendar size={10} /> Google Calendar
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -260,6 +267,33 @@ export default function WorkersPage() {
                 placeholder="profesional@clinica.com"
                 type="email"
               />
+            </div>
+
+            {/* Google Calendar sync */}
+            <div
+              className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${
+                form.googleCalendarSync
+                  ? 'border-[#c9a227]/40 bg-[#c9a227]/5'
+                  : 'border-gray-200 bg-gray-50 hover:bg-gray-100'
+              }`}
+              onClick={() => setForm((f) => ({ ...f, googleCalendarSync: !f.googleCalendarSync }))}
+            >
+              <div className={`mt-0.5 flex-shrink-0 w-9 h-5 rounded-full transition-colors flex items-center px-0.5 ${
+                form.googleCalendarSync ? 'bg-[#c9a227]' : 'bg-gray-300'
+              }`}>
+                <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                  form.googleCalendarSync ? 'translate-x-4' : 'translate-x-0'
+                }`} />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <Calendar size={14} className={form.googleCalendarSync ? 'text-[#c9a227]' : 'text-gray-400'} />
+                  <span className="text-sm font-medium text-[#111827]">Sincronizar Google Calendar</span>
+                </div>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Recibirá una invitación por email en cada cita que se le asigne
+                </p>
+              </div>
             </div>
 
             {/* Color identificativo */}

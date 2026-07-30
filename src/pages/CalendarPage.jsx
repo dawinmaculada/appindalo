@@ -188,8 +188,9 @@ export default function CalendarPage() {
       try {
         const patient   = patients.find((p) => p.id === form.patientId);
         const treatment = treatments.find((t) => t.id === form.treatmentId);
+        const calWorker = workers.find((w) => w.id === form.workerId);
         if (form.googleEventId) await deleteCalendarEvent(form.googleEventId).catch(() => {});
-        const gcEvent = await createCalendarEvent(form, patient, treatment);
+        const gcEvent = await createCalendarEvent(form, patient, treatment, calWorker);
         savedForm.googleEventId = gcEvent.id;
       } catch { /* sin Google no bloqueamos el guardado */ }
     }

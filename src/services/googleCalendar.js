@@ -95,7 +95,7 @@ export const getCalendarEvents = async (timeMin, timeMax) => {
 };
 
 // Crear evento en Google Calendar
-export const createCalendarEvent = async (appointment, patient, treatment) => {
+export const createCalendarEvent = async (appointment, patient, treatment, worker = null) => {
   const startDateTime = new Date(
     `${appointment.date}T${appointment.time}:00`
   ).toISOString();
@@ -108,12 +108,18 @@ export const createCalendarEvent = async (appointment, patient, treatment) => {
     description: `Tratamiento: ${treatment?.name}\nPaciente: ${patient?.name}\nTeléfono: ${patient?.phone || '-'}\nNotas: ${appointment.notes || ''}`,
     start: { dateTime: startDateTime, timeZone: 'Europe/Madrid' },
     end: { dateTime: endDateTime, timeZone: 'Europe/Madrid' },
-    colorId: '2', // Verde
+    colorId: '2',
   };
+
+  if (worker?.googleCalendarSync && worker?.email) {
+    event.attendees = [{ email: worker.email }];
+    event.sendUpdates = 'all';
+  }
 
   const response = await window.gapi.client.calendar.events.insert({
     calendarId: 'primary',
     resource: event,
+    sendUpdates: worker?.googleCalendarSync && worker?.email ? 'all' : 'none',
   });
   return response.result;
 };
