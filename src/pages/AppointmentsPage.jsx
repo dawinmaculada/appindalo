@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+﻿import { useState, useMemo, useEffect } from 'react';
 import {
   CalendarPlus,
   Search,
@@ -52,7 +52,7 @@ const EMPTY_FORM = {
 
 const STATUS_CONFIG = {
   scheduled: { label: 'Programada', color: '#0088cc', bg: '#e6f3ff' },
-  completed: { label: 'Completada', color: '#00af38', bg: '#e6f9ed' },
+  completed: { label: 'Completada', color: '#c9a227', bg: '#e6f9ed' },
   cancelled: { label: 'Cancelada', color: '#e74c3c', bg: '#fdeaea' },
 };
 
@@ -224,13 +224,13 @@ export default function AppointmentsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar cita..."
-              className="pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] w-48"
+              className="pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] w-48"
             />
           </div>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] text-gray-600"
+            className="px-3 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] text-gray-600"
           >
             <option value="all">Todos los estados</option>
             <option value="scheduled">Programadas</option>
@@ -240,7 +240,7 @@ export default function AppointmentsPage() {
         </div>
         <button
           onClick={openNew}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors shadow-lg shadow-[#00af38]/20"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20"
         >
           <CalendarPlus size={16} />
           Nueva Cita
@@ -252,7 +252,7 @@ export default function AppointmentsPage() {
         <div
           className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
             emailNotif.ok
-              ? 'bg-[#e6f9ed] text-[#00af38]'
+              ? 'bg-[#e6f9ed] text-[#c9a227]'
               : 'bg-red-50 text-red-600'
           }`}
         >
@@ -285,13 +285,13 @@ export default function AppointmentsPage() {
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                  style={{ backgroundColor: (treatment?.color || '#00af38') + '15' }}
+                  style={{ backgroundColor: (treatment?.color || '#c9a227') + '15' }}
                 >
                   {treatment?.icon || '📅'}
                 </div>
                 <div className="flex-1 min-w-0 grid grid-cols-1 sm:grid-cols-3 gap-1">
                   <div className="min-w-0">
-                    <p className="font-semibold text-[#1a2332] truncate">
+                    <p className="font-semibold text-[#111827] truncate">
                       {patient?.name || 'Paciente eliminado'}
                     </p>
                     <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5 truncate">
@@ -302,7 +302,7 @@ export default function AppointmentsPage() {
                       const w = workers.find((x) => x.id === apt.workerId);
                       return w ? (
                         <p className="text-xs flex items-center gap-1 mt-0.5 truncate font-medium"
-                           style={{ color: w.color || '#00af38' }}>
+                           style={{ color: w.color || '#c9a227' }}>
                           <UserCog size={11} />
                           {w.name}
                         </p>
@@ -329,12 +329,12 @@ export default function AppointmentsPage() {
                       {sc.label}
                     </span>
                     {apt.googleEventId && (
-                      <span className="text-xs px-2 py-1 rounded-lg bg-[#e6f9ed] text-[#00af38] font-medium">
+                      <span className="text-xs px-2 py-1 rounded-lg bg-[#e6f9ed] text-[#c9a227] font-medium">
                         📅 GCal
                       </span>
                     )}
                     {apt.billing && (
-                      <span className="text-xs px-2.5 py-1 rounded-lg bg-[#e6f9ed] text-[#00af38] font-semibold flex items-center gap-1">
+                      <span className="text-xs px-2.5 py-1 rounded-lg bg-[#e6f9ed] text-[#c9a227] font-semibold flex items-center gap-1">
                         {apt.billing.paymentMethod === 'tarjeta'
                           ? <CreditCard size={11} />
                           : <Banknote size={11} />}
@@ -350,7 +350,7 @@ export default function AppointmentsPage() {
                     <button
                       onClick={() => setPaymentTarget(apt)}
                       title="Completar y cobrar"
-                      className="w-8 h-8 flex items-center justify-center rounded-lg text-[#00af38] bg-[#e6f9ed] hover:bg-[#00af38] hover:text-white transition-colors"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg text-[#c9a227] bg-[#e6f9ed] hover:bg-[#c9a227] hover:text-white transition-colors"
                     >
                       <CircleCheck size={14} />
                     </button>
@@ -397,7 +397,7 @@ export default function AppointmentsPage() {
                     setForm((f) => ({ ...f, patientId: e.target.value }))
                   }
                   required
-                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
+                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
                 >
                   <option value="">Seleccionar paciente...</option>
                   {patients.map((p) => (
@@ -427,7 +427,7 @@ export default function AppointmentsPage() {
                 <select
                   value={form.workerId}
                   onChange={(e) => setForm((f) => ({ ...f, workerId: e.target.value }))}
-                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
+                  className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
                 >
                   <option value="">Sin asignar</option>
                   {workers.map((w) => (
@@ -455,7 +455,7 @@ export default function AppointmentsPage() {
                     key={t.id}
                     className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
                       form.treatmentId === t.id
-                        ? 'border-[#00af38] bg-[#e6f9ed]'
+                        ? 'border-[#c9a227] bg-[#e6f9ed]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -472,13 +472,13 @@ export default function AppointmentsPage() {
                     />
                     <span className="text-xl">{t.icon}</span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[#1a2332]">
+                      <p className="text-sm font-medium text-[#111827]">
                         {t.name}
                       </p>
                       <p className="text-xs text-gray-400">{t.duration} min</p>
                     </div>
                     {form.treatmentId === t.id && (
-                      <CheckCircle2 size={16} className="text-[#00af38] flex-shrink-0" />
+                      <CheckCircle2 size={16} className="text-[#c9a227] flex-shrink-0" />
                     )}
                   </label>
                 ))}
@@ -499,7 +499,7 @@ export default function AppointmentsPage() {
                     setCalendarStatus('idle');
                   }}
                   required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                 />
               </div>
               <div>
@@ -514,7 +514,7 @@ export default function AppointmentsPage() {
                     setCalendarStatus('idle');
                   }}
                   required
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                 />
               </div>
             </div>
@@ -536,7 +536,7 @@ export default function AppointmentsPage() {
                   Comprobar disponibilidad
                 </button>
                 {calendarStatus === 'available' && (
-                  <span className="flex items-center gap-1 text-xs text-[#00af38] font-medium">
+                  <span className="flex items-center gap-1 text-xs text-[#c9a227] font-medium">
                     <CheckCircle2 size={14} /> Disponible
                   </span>
                 )}
@@ -604,7 +604,7 @@ export default function AppointmentsPage() {
                 }
                 rows={2}
                 placeholder="Observaciones para esta cita..."
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none"
               />
             </div>
 
@@ -615,7 +615,7 @@ export default function AppointmentsPage() {
               </p>
             )}
             {calendarStatus === 'synced' && (
-              <p className="text-xs text-[#00af38] flex items-center gap-1.5">
+              <p className="text-xs text-[#c9a227] flex items-center gap-1.5">
                 <CheckCircle2 size={13} />
                 Sincronizado con Google Calendar
               </p>
@@ -631,7 +631,7 @@ export default function AppointmentsPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors"
               >
                 <Save size={15} />
                 Guardar Cita
@@ -689,7 +689,7 @@ function Modal({ title, onClose, children }) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="font-bold text-[#1a2332] text-lg">{title}</h2>
+          <h2 className="font-bold text-[#111827] text-lg">{title}</h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, Mail } from 'lucide-react';
 import { changePassword } from '../services/auth';
 import { supabase } from '../services/supabase';
@@ -39,11 +39,11 @@ export default function SettingsPage() {
       {/* Info sesión */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#00af38] flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-12 h-12 rounded-xl bg-[#c9a227] flex items-center justify-center text-white font-bold text-lg">
             {userEmail[0]?.toUpperCase() || 'A'}
           </div>
           <div>
-            <p className="font-bold text-[#1a2332]">{userEmail || '—'}</p>
+            <p className="font-bold text-[#111827]">{userEmail || '—'}</p>
             <p className="text-xs text-gray-400">Administrador · {clinicName}</p>
           </div>
         </div>
@@ -52,8 +52,8 @@ export default function SettingsPage() {
       {/* Cambiar contraseña */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-5">
-          <Lock size={18} className="text-[#00af38]" />
-          <h3 className="font-bold text-[#1a2332]">Cambiar contraseña</h3>
+          <Lock size={18} className="text-[#c9a227]" />
+          <h3 className="font-bold text-[#111827]">Cambiar contraseña</h3>
         </div>
         <form onSubmit={handleChangePass} className="space-y-4">
           <PassField
@@ -80,13 +80,13 @@ export default function SettingsPage() {
               value={passForm.confirm}
               onChange={(e) => setPassForm((f) => ({ ...f, confirm: e.target.value }))}
               placeholder="••••••••"
-              className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+              className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
             />
           </div>
           {passMsg && <Msg data={passMsg} />}
           <button
             type="submit"
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors"
           >
             <Save size={15} /> Guardar contraseña
           </button>
@@ -96,11 +96,11 @@ export default function SettingsPage() {
       {/* Info cuenta */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
-          <Mail size={18} className="text-[#00af38]" />
-          <h3 className="font-bold text-[#1a2332]">Cuenta</h3>
+          <Mail size={18} className="text-[#c9a227]" />
+          <h3 className="font-bold text-[#111827]">Cuenta</h3>
         </div>
         <p className="text-sm text-gray-500 mb-1">Email de acceso</p>
-        <p className="text-sm font-medium text-[#1a2332]">{userEmail || '—'}</p>
+        <p className="text-sm font-medium text-[#111827]">{userEmail || '—'}</p>
         <p className="text-xs text-gray-400 mt-3">
           Para cambiar el email contacta con el administrador del sistema.
         </p>
@@ -120,7 +120,7 @@ function PassField({ label, value, onChange, show = false, onToggle }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="••••••••"
-          className="w-full px-3 py-2.5 pr-10 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+          className="w-full px-3 py-2.5 pr-10 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
         />
         {onToggle && (
           <button
@@ -140,7 +140,7 @@ function Msg({ data }) {
   return (
     <div className={`flex items-center gap-2 text-sm rounded-xl px-4 py-2.5 ${
       data.ok
-        ? 'bg-[#e6f9ed] text-[#00af38]'
+        ? 'bg-[#e6f9ed] text-[#c9a227]'
         : 'bg-red-50 text-red-600'
     }`}>
       {data.ok ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}

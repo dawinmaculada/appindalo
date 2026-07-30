@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+﻿import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Users,
@@ -28,7 +28,7 @@ function StatCard({ label, value, icon: Icon, color, bg, trend, to }) {
           </p>
           {trend && (
             <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
-              <TrendingUp size={12} className="text-[#00af38]" />
+              <TrendingUp size={12} className="text-[#c9a227]" />
               {trend}
             </p>
           )}
@@ -41,7 +41,7 @@ function StatCard({ label, value, icon: Icon, color, bg, trend, to }) {
         </div>
       </div>
       {to && (
-        <div className="mt-4 flex items-center text-xs font-medium text-gray-400 group-hover:text-[#00af38] transition-colors">
+        <div className="mt-4 flex items-center text-xs font-medium text-gray-400 group-hover:text-[#c9a227] transition-colors">
           Ver todo <ArrowRight size={12} className="ml-1" />
         </div>
       )}
@@ -99,7 +99,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Bienvenida */}
-      <div className="bg-gradient-to-r from-[#00af38] to-[#00c944] rounded-2xl p-6 text-white shadow-lg shadow-[#00af38]/20">
+      <div className="bg-gradient-to-r from-[#c9a227] to-[#b8841a] rounded-2xl p-6 text-white shadow-lg shadow-[#c9a227]/20">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold">
@@ -133,7 +133,7 @@ export default function DashboardPage() {
           label="Total Pacientes"
           value={patients.length}
           icon={Users}
-          color="#00af38"
+          color="#c9a227"
           bg="#e6f9ed"
           to="/pacientes"
         />
@@ -168,10 +168,10 @@ export default function DashboardPage() {
         {/* Próximas citas */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-[#1a2332]">Próximas Citas</h3>
+            <h3 className="font-bold text-[#111827]">Próximas Citas</h3>
             <Link
               to="/citas"
-              className="text-xs text-[#00af38] font-medium flex items-center gap-1 hover:underline"
+              className="text-xs text-[#c9a227] font-medium flex items-center gap-1 hover:underline"
             >
               Ver todas <ArrowRight size={12} />
             </Link>
@@ -182,7 +182,7 @@ export default function DashboardPage() {
               <p className="text-sm">No hay citas programadas</p>
               <Link
                 to="/citas"
-                className="mt-2 text-xs text-[#00af38] hover:underline inline-block"
+                className="mt-2 text-xs text-[#c9a227] hover:underline inline-block"
               >
                 Crear primera cita
               </Link>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                       {treatment?.icon || '📅'}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#1a2332] truncate">
+                      <p className="text-sm font-semibold text-[#111827] truncate">
                         {patient?.name || 'Paciente eliminado'}
                       </p>
                       <p className="text-xs text-gray-400 truncate">
@@ -218,8 +218,8 @@ export default function DashboardPage() {
                     <span
                       className="text-xs px-2 py-1 rounded-lg font-medium"
                       style={{
-                        color: treatment?.color || '#00af38',
-                        backgroundColor: (treatment?.color || '#00af38') + '15',
+                        color: treatment?.color || '#c9a227',
+                        backgroundColor: (treatment?.color || '#c9a227') + '15',
                       }}
                     >
                       {apt.time}
@@ -234,10 +234,10 @@ export default function DashboardPage() {
         {/* Tratamientos populares */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-[#1a2332]">Tratamientos</h3>
+            <h3 className="font-bold text-[#111827]">Tratamientos</h3>
             <Link
               to="/tratamientos"
-              className="text-xs text-[#00af38] font-medium flex items-center gap-1 hover:underline"
+              className="text-xs text-[#c9a227] font-medium flex items-center gap-1 hover:underline"
             >
               Ver catálogo <ArrowRight size={12} />
             </Link>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
               return (
                 <li key={t.id} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-2 font-medium text-[#1a2332]">
+                    <span className="flex items-center gap-2 font-medium text-[#111827]">
                       <span>{t.icon}</span> {t.name}
                     </span>
                     <span className="text-gray-400 text-xs">{count} citas</span>

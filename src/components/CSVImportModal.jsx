@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import {
   Upload,
   X,
@@ -94,10 +94,10 @@ export default function CSVImportModal({ onClose, onImported }) {
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-[#e6f9ed] rounded-xl flex items-center justify-center">
-              <Upload size={18} className="text-[#00af38]" />
+              <Upload size={18} className="text-[#c9a227]" />
             </div>
             <div>
-              <h2 className="font-bold text-[#1a2332]">Importar Pacientes</h2>
+              <h2 className="font-bold text-[#111827]">Importar Pacientes</h2>
               <p className="text-xs text-gray-400">Fichero CSV con separador punto y coma</p>
             </div>
           </div>
@@ -118,10 +118,10 @@ export default function CSVImportModal({ onClose, onImported }) {
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => inputRef.current?.click()}
-                className="border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center cursor-pointer hover:border-[#00af38] hover:bg-[#f8fef9] transition-all group"
+                className="border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center cursor-pointer hover:border-[#c9a227] hover:bg-[#f8fef9] transition-all group"
               >
                 <div className="w-14 h-14 bg-gray-50 group-hover:bg-[#e6f9ed] rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors">
-                  <FileText size={28} className="text-gray-300 group-hover:text-[#00af38] transition-colors" />
+                  <FileText size={28} className="text-gray-300 group-hover:text-[#c9a227] transition-colors" />
                 </div>
                 <p className="font-semibold text-gray-700">
                   Arrastra tu fichero CSV aquí
@@ -170,14 +170,14 @@ export default function CSVImportModal({ onClose, onImported }) {
                   icon={Users}
                   label="Total detectados"
                   value={parsed.length}
-                  color="text-[#1a2332]"
+                  color="text-[#111827]"
                   bg="bg-gray-50"
                 />
                 <SummaryCard
                   icon={CheckCircle2}
                   label="A importar"
                   value={toImport.length}
-                  color="text-[#00af38]"
+                  color="text-[#c9a227]"
                   bg="bg-[#e6f9ed]"
                 />
                 <SummaryCard
@@ -197,7 +197,7 @@ export default function CSVImportModal({ onClose, onImported }) {
 
               {/* Vista previa */}
               <div>
-                <p className="text-sm font-semibold text-[#1a2332] mb-2">
+                <p className="text-sm font-semibold text-[#111827] mb-2">
                   Vista previa (primeros 10)
                 </p>
                 <div className="border border-gray-100 rounded-xl overflow-hidden">
@@ -213,7 +213,7 @@ export default function CSVImportModal({ onClose, onImported }) {
                     <tbody className="divide-y divide-gray-50">
                       {toImport.slice(0, 10).map((p, i) => (
                         <tr key={i} className="hover:bg-gray-50">
-                          <td className="px-3 py-2 font-medium text-[#1a2332] truncate max-w-[150px]">
+                          <td className="px-3 py-2 font-medium text-[#111827] truncate max-w-[150px]">
                             {p.name}
                           </td>
                           <td className="px-3 py-2 text-gray-500">{p.phone || '—'}</td>
@@ -221,7 +221,7 @@ export default function CSVImportModal({ onClose, onImported }) {
                             {p.email || '—'}
                           </td>
                           <td className="px-3 py-2">
-                            <span className="text-[#00af38] bg-[#e6f9ed] px-2 py-0.5 rounded-full font-medium">
+                            <span className="text-[#c9a227] bg-[#e6f9ed] px-2 py-0.5 rounded-full font-medium">
                               Nuevo
                             </span>
                           </td>
@@ -229,7 +229,7 @@ export default function CSVImportModal({ onClose, onImported }) {
                       ))}
                       {duplicates.slice(0, 3).map((p, i) => (
                         <tr key={'dup' + i} className="opacity-50">
-                          <td className="px-3 py-2 font-medium text-[#1a2332] truncate max-w-[150px]">
+                          <td className="px-3 py-2 font-medium text-[#111827] truncate max-w-[150px]">
                             {p.name}
                           </td>
                           <td className="px-3 py-2 text-gray-500">{p.phone || '—'}</td>
@@ -273,15 +273,15 @@ export default function CSVImportModal({ onClose, onImported }) {
           {step === STEPS.DONE && (
             <div className="text-center py-8 space-y-4">
               <div className="w-16 h-16 bg-[#e6f9ed] rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 size={32} className="text-[#00af38]" />
+                <CheckCircle2 size={32} className="text-[#c9a227]" />
               </div>
               <div>
-                <p className="text-xl font-bold text-[#1a2332]">
+                <p className="text-xl font-bold text-[#111827]">
                   ¡Importación completada!
                 </p>
                 <p className="text-gray-500 mt-1 text-sm">
                   Se han añadido{' '}
-                  <span className="font-bold text-[#00af38]">{importedCount} pacientes</span>{' '}
+                  <span className="font-bold text-[#c9a227]">{importedCount} pacientes</span>{' '}
                   al sistema.
                 </p>
                 {duplicates.length > 0 && (
@@ -316,7 +316,7 @@ export default function CSVImportModal({ onClose, onImported }) {
               <button
                 onClick={handleImport}
                 disabled={importing || toImport.length === 0}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors disabled:opacity-50"
               >
                 {importing ? (
                   <>
@@ -336,7 +336,7 @@ export default function CSVImportModal({ onClose, onImported }) {
           {step === STEPS.DONE && (
             <button
               onClick={onClose}
-              className="flex-1 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors"
+              className="flex-1 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors"
             >
               Cerrar
             </button>

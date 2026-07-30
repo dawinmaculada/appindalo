@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { CalendarCheck, CalendarX, Loader } from 'lucide-react';
 import {
   GOOGLE_CONFIG,
@@ -84,7 +84,7 @@ export default function GoogleCalendarButton() {
     return (
       <button
         onClick={handleClick}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#e6f9ed] text-[#00af38] text-sm font-medium border border-[#00af38]/30 hover:bg-[#d0f0db] transition-colors"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#e6f9ed] text-[#c9a227] text-sm font-medium border border-[#c9a227]/30 hover:bg-[#d0f0db] transition-colors"
       >
         <CalendarCheck size={16} />
         <span className="hidden sm:inline">Calendar Conectado</span>
@@ -96,7 +96,7 @@ export default function GoogleCalendarButton() {
     <button
       onClick={handleClick}
       disabled={!gapiReady}
-      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 text-gray-600 text-sm font-medium border border-gray-200 hover:bg-gray-100 hover:text-[#00af38] transition-colors disabled:opacity-50"
+      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 text-gray-600 text-sm font-medium border border-gray-200 hover:bg-gray-100 hover:text-[#c9a227] transition-colors disabled:opacity-50"
     >
       <CalendarX size={16} />
       <span className="hidden sm:inline">Conectar Calendar</span>

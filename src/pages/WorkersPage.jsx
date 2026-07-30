@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   UserCog,
   Plus,
@@ -34,13 +34,13 @@ const EMPTY_FORM = {
   role: '',
   phone: '',
   email: '',
-  color: '#00af38',
+  color: '#c9a227',
   schedule: EMPTY_SCHEDULE,
   notes: '',
 };
 
 const COLORS = [
-  '#00af38', '#0088cc', '#e67e22', '#9b59b6',
+  '#c9a227', '#0088cc', '#e67e22', '#9b59b6',
   '#e74c3c', '#1abc9c', '#f39c12', '#2c3e50',
 ];
 
@@ -110,7 +110,7 @@ export default function WorkersPage() {
         </p>
         <button
           onClick={openNew}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors shadow-lg shadow-[#00af38]/20"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20"
         >
           <Plus size={16} />
           Nuevo Profesional
@@ -136,19 +136,19 @@ export default function WorkersPage() {
                 className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-200 group"
               >
                 {/* Franja de color */}
-                <div className="h-1.5 w-full" style={{ backgroundColor: w.color || '#00af38' }} />
+                <div className="h-1.5 w-full" style={{ backgroundColor: w.color || '#c9a227' }} />
 
                 <div className="p-5">
                   <div className="flex items-start gap-4">
                     {/* Avatar */}
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                      style={{ backgroundColor: w.color || '#00af38' }}
+                      style={{ backgroundColor: w.color || '#c9a227' }}
                     >
                       {initials(w.name)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-[#1a2332] truncate">{w.name}</h3>
+                      <h3 className="font-bold text-[#111827] truncate">{w.name}</h3>
                       {w.role && (
                         <p className="text-xs text-gray-400 mt-0.5">{w.role}</p>
                       )}
@@ -180,8 +180,8 @@ export default function WorkersPage() {
                               <span
                                 className="px-2 py-0.5 rounded-lg font-medium"
                                 style={{
-                                  color: w.color || '#00af38',
-                                  backgroundColor: (w.color || '#00af38') + '15',
+                                  color: w.color || '#c9a227',
+                                  backgroundColor: (w.color || '#c9a227') + '15',
                                 }}
                               >
                                 {slot.start} – {slot.end}
@@ -201,7 +201,7 @@ export default function WorkersPage() {
                   <div className="mt-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openEdit(w)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-[#00af38] bg-[#e6f9ed] rounded-lg hover:bg-[#00af38] hover:text-white transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-[#c9a227] bg-[#e6f9ed] rounded-lg hover:bg-[#c9a227] hover:text-white transition-colors"
                     >
                       <Edit2 size={13} /> Editar
                     </button>
@@ -276,7 +276,7 @@ export default function WorkersPage() {
                     className="w-8 h-8 rounded-lg border-2 transition-transform hover:scale-110"
                     style={{
                       backgroundColor: c,
-                      borderColor: form.color === c ? '#1a2332' : 'transparent',
+                      borderColor: form.color === c ? '#111827' : 'transparent',
                     }}
                   />
                 ))}
@@ -300,13 +300,13 @@ export default function WorkersPage() {
                         className="flex items-center gap-2 w-28 flex-shrink-0"
                       >
                         {slot.active ? (
-                          <CheckSquare size={16} className="text-[#00af38] flex-shrink-0" />
+                          <CheckSquare size={16} className="text-[#c9a227] flex-shrink-0" />
                         ) : (
                           <Square size={16} className="text-gray-300 flex-shrink-0" />
                         )}
                         <span
                           className={`text-sm font-medium ${
-                            slot.active ? 'text-[#1a2332]' : 'text-gray-400'
+                            slot.active ? 'text-[#111827]' : 'text-gray-400'
                           }`}
                         >
                           {d.label}
@@ -320,14 +320,14 @@ export default function WorkersPage() {
                             type="time"
                             value={slot.start}
                             onChange={(e) => setDayTime(d.key, 'start', e.target.value)}
-                            className="flex-1 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                            className="flex-1 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                           />
                           <span className="text-gray-400 text-xs">–</span>
                           <input
                             type="time"
                             value={slot.end}
                             onChange={(e) => setDayTime(d.key, 'end', e.target.value)}
-                            className="flex-1 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                            className="flex-1 px-2 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                           />
                         </div>
                       ) : (
@@ -347,7 +347,7 @@ export default function WorkersPage() {
                 onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                 rows={2}
                 placeholder="Especialidades, observaciones..."
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none"
               />
             </div>
 
@@ -361,7 +361,7 @@ export default function WorkersPage() {
               </button>
               <button
                 type="submit"
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors"
               >
                 <Save size={15} /> Guardar
               </button>
@@ -406,7 +406,7 @@ function Field({ label, value, onChange, required, placeholder, type = 'text', c
         onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
-        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
       />
     </div>
   );
@@ -418,7 +418,7 @@ function Modal({ title, onClose, children }) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="font-bold text-[#1a2332] text-lg">{title}</h2>
+          <h2 className="font-bold text-[#111827] text-lg">{title}</h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400"

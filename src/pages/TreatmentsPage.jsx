@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Clock, Tag, Euro, Plus, Edit2, Trash2, Save, X, AlertCircle } from 'lucide-react';
 import { getAppointments, saveTreatment, deleteTreatment } from '../services/storage';
 import { useTreatments } from '../contexts/TreatmentsContext';
@@ -18,7 +18,7 @@ const EMPTY_FORM = {
   category: 'osteopatia',
   duration: 60,
   price: 48,
-  color: '#00af38',
+  color: '#c9a227',
   icon: '💊',
   description: '',
 };
@@ -105,7 +105,7 @@ export default function TreatmentsPage() {
             onClick={() => setTab(key)}
             className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all ${
               tab === key
-                ? 'bg-white text-[#1a2332] shadow-sm'
+                ? 'bg-white text-[#111827] shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -118,7 +118,7 @@ export default function TreatmentsPage() {
       {tab === 'catalogo' && (
         <div className="space-y-8">
           {/* Hero */}
-          <div className="bg-gradient-to-br from-[#1a2332] to-[#2d3d52] rounded-2xl p-6 text-white">
+          <div className="bg-gradient-to-br from-[#111827] to-[#1c2432] rounded-2xl p-6 text-white">
             <h2 className="text-xl font-bold">Catálogo de Tratamientos</h2>
             <p className="text-white/60 text-sm mt-1">Servicios especializados de {clinicName}</p>
             <div className="mt-4 flex flex-wrap gap-3">
@@ -144,8 +144,8 @@ export default function TreatmentsPage() {
             grouped.map(({ key, label, items }) => (
               <section key={key}>
                 <div className="flex items-center gap-2 mb-4">
-                  <Tag size={15} className="text-[#00af38]" />
-                  <h3 className="font-bold text-[#1a2332] text-lg">{label}</h3>
+                  <Tag size={15} className="text-[#c9a227]" />
+                  <h3 className="font-bold text-[#111827] text-lg">{label}</h3>
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{items.length}</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -166,7 +166,7 @@ export default function TreatmentsPage() {
           {!showForm && (
             <button
               onClick={openNew}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors shadow-sm"
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow-sm"
             >
               <Plus size={16} /> Añadir tratamiento
             </button>
@@ -176,7 +176,7 @@ export default function TreatmentsPage() {
           {showForm && (
             <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
               <div className="flex items-center justify-between mb-5">
-                <h3 className="font-bold text-[#1a2332]">
+                <h3 className="font-bold text-[#111827]">
                   {form.id ? 'Editar tratamiento' : 'Nuevo tratamiento'}
                 </h3>
                 <button onClick={closeForm} className="text-gray-400 hover:text-gray-600">
@@ -195,7 +195,7 @@ export default function TreatmentsPage() {
                       value={form.name}
                       onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                       placeholder="Ej: Osteopatía Estructural"
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                     />
                   </div>
 
@@ -205,7 +205,7 @@ export default function TreatmentsPage() {
                     <select
                       value={form.category}
                       onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c.value} value={c.value}>{c.label}</option>
@@ -222,7 +222,7 @@ export default function TreatmentsPage() {
                       max="480"
                       value={form.duration}
                       onChange={(e) => setForm((f) => ({ ...f, duration: Number(e.target.value) }))}
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                     />
                   </div>
 
@@ -235,7 +235,7 @@ export default function TreatmentsPage() {
                       step="0.01"
                       value={form.price}
                       onChange={(e) => setForm((f) => ({ ...f, price: Number(e.target.value) }))}
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                     />
                   </div>
 
@@ -260,7 +260,7 @@ export default function TreatmentsPage() {
                         value={form.icon}
                         onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))}
                         placeholder="💊"
-                        className="w-20 px-3 py-2.5 text-xl text-center border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                        className="w-20 px-3 py-2.5 text-xl text-center border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                       />
                     </div>
                   </div>
@@ -273,7 +273,7 @@ export default function TreatmentsPage() {
                       value={form.description}
                       onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                       placeholder="Describe brevemente el tratamiento..."
-                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none"
+                      className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none"
                     />
                   </div>
                 </div>
@@ -288,7 +288,7 @@ export default function TreatmentsPage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors disabled:opacity-60"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors disabled:opacity-60"
                   >
                     <Save size={15} /> {saving ? 'Guardando...' : 'Guardar'}
                   </button>
@@ -327,7 +327,7 @@ export default function TreatmentsPage() {
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-[#1a2332] truncate">{t.name}</p>
+                    <p className="font-semibold text-[#111827] truncate">{t.name}</p>
                     <div className="flex items-center gap-3 mt-0.5">
                       <span className="text-xs text-gray-400">
                         {CATEGORIES.find((c) => c.value === t.category)?.label || t.category}
@@ -362,7 +362,7 @@ export default function TreatmentsPage() {
                     <div className="flex gap-1 flex-shrink-0">
                       <button
                         onClick={() => openEdit(t)}
-                        className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#00af38] hover:bg-[#e6f9ed] flex items-center justify-center transition-colors"
+                        className="w-8 h-8 rounded-lg text-gray-400 hover:text-[#c9a227] hover:bg-[#e6f9ed] flex items-center justify-center transition-colors"
                       >
                         <Edit2 size={15} />
                       </button>
@@ -397,7 +397,7 @@ function TreatmentCard({ treatment, count }) {
             {treatment.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="font-bold text-[#1a2332] text-base">{treatment.name}</h4>
+            <h4 className="font-bold text-[#111827] text-base">{treatment.name}</h4>
             <div className="flex items-center gap-3 mt-1 flex-wrap">
               <span className="flex items-center gap-1 text-xs text-gray-400">
                 <Clock size={11} /> {treatment.duration} min

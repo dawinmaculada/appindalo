@@ -1,4 +1,4 @@
-import { supabase, getClinicId } from './supabase';
+﻿import { supabase, getClinicId } from './supabase';
 
 // ── Helpers de mapeo ─────────────────────────────────────────────────────
 
@@ -37,7 +37,7 @@ const mapWorker = (row) => ({
   role: row.role || '',
   phone: row.phone || '',
   email: row.email || '',
-  color: row.color || '#00af38',
+  color: row.color || '#c9a227',
   notes: row.notes || '',
   schedule: row.schedule || {},
   createdAt: row.created_at,
@@ -226,7 +226,7 @@ export const saveWorker = async (worker) => {
         role: worker.role || null,
         phone: worker.phone || null,
         email: worker.email || null,
-        color: worker.color || '#00af38',
+        color: worker.color || '#c9a227',
         notes: worker.notes || null,
         schedule: worker.schedule || {},
         updated_at: new Date().toISOString(),
@@ -243,7 +243,7 @@ export const saveWorker = async (worker) => {
         role: worker.role || null,
         phone: worker.phone || null,
         email: worker.email || null,
-        color: worker.color || '#00af38',
+        color: worker.color || '#c9a227',
         notes: worker.notes || null,
         schedule: worker.schedule || {},
       });
@@ -355,7 +355,7 @@ const mapTreatment = (row) => ({
   description: row.description || '',
   duration: row.duration || 60,
   price: Number(row.price) || 0,
-  color: row.color || '#00af38',
+  color: row.color || '#c9a227',
   icon: row.icon || '💊',
   category: row.category || 'general',
   createdAt: row.created_at,
@@ -383,7 +383,7 @@ export const saveTreatment = async (treatment) => {
         description: treatment.description || null,
         duration: treatment.duration || 60,
         price: treatment.price || 0,
-        color: treatment.color || '#00af38',
+        color: treatment.color || '#c9a227',
         icon: treatment.icon || '💊',
         category: treatment.category || 'general',
         updated_at: new Date().toISOString(),
@@ -400,7 +400,7 @@ export const saveTreatment = async (treatment) => {
         description: treatment.description || null,
         duration: treatment.duration || 60,
         price: treatment.price || 0,
-        color: treatment.color || '#00af38',
+        color: treatment.color || '#c9a227',
         icon: treatment.icon || '💊',
         category: treatment.category || 'general',
       });

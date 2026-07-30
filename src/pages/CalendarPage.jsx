@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
@@ -62,7 +62,7 @@ function aptColor(apt, workers, treatments) {
     if (w?.color) return w.color;
   }
   const t = treatments.find((x) => x.id === apt.treatmentId);
-  return t?.color || '#00af38';
+  return t?.color || '#c9a227';
 }
 
 // ── Detectar solapamientos en un día ────────────────────────────────────
@@ -352,8 +352,8 @@ export default function CalendarPage() {
                   <span
                     className={`text-sm font-semibold w-7 h-7 flex items-center justify-center rounded-full ${
                       today
-                        ? 'bg-[#00af38] text-white'
-                        : 'text-[#1a2332]'
+                        ? 'bg-[#c9a227] text-white'
+                        : 'text-[#111827]'
                     }`}
                   >
                     {format(day, 'd')}
@@ -361,7 +361,7 @@ export default function CalendarPage() {
                   {inMonth && (
                     <button
                       onClick={(e) => { e.stopPropagation(); openNewForm(format(day, 'yyyy-MM-dd'), '09:00'); }}
-                      className="w-5 h-5 rounded-full bg-gray-100 hover:bg-[#00af38] hover:text-white text-gray-400 flex items-center justify-center transition-colors"
+                      className="w-5 h-5 rounded-full bg-gray-100 hover:bg-[#c9a227] hover:text-white text-gray-400 flex items-center justify-center transition-colors"
                     >
                       <Plus size={11} />
                     </button>
@@ -409,7 +409,7 @@ export default function CalendarPage() {
               onClick={() => setView(v)}
               className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
                 view === v
-                  ? 'bg-white text-[#1a2332] shadow-sm'
+                  ? 'bg-white text-[#111827] shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -432,7 +432,7 @@ export default function CalendarPage() {
           >
             <ChevronLeft size={16} />
           </button>
-          <h2 className="font-semibold text-[#1a2332] capitalize text-sm min-w-[200px] text-center">
+          <h2 className="font-semibold text-[#111827] capitalize text-sm min-w-[200px] text-center">
             {headerTitle}
           </h2>
           <button
@@ -446,7 +446,7 @@ export default function CalendarPage() {
         {/* Botón nueva cita */}
         <button
           onClick={() => openNewForm(format(current, 'yyyy-MM-dd'), '09:00')}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors shadow"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow"
         >
           <Plus size={15} />
           Nueva cita
@@ -473,8 +473,8 @@ export default function CalendarPage() {
                     onClick={() => { setCurrent(day); setView('day'); }}
                     className={`text-sm font-bold w-8 h-8 rounded-full mx-auto flex items-center justify-center transition-colors ${
                       today
-                        ? 'bg-[#00af38] text-white'
-                        : 'text-[#1a2332] hover:bg-gray-100'
+                        ? 'bg-[#c9a227] text-white'
+                        : 'text-[#111827] hover:bg-gray-100'
                     }`}
                   >
                     {format(day, 'd')}
@@ -535,7 +535,7 @@ export default function CalendarPage() {
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setForm(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <h2 className="font-bold text-[#1a2332]">Nueva Cita</h2>
+              <h2 className="font-bold text-[#111827]">Nueva Cita</h2>
               <button
                 onClick={() => setForm(null)}
                 className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400"
@@ -553,7 +553,7 @@ export default function CalendarPage() {
                     required
                     value={form.patientId}
                     onChange={(e) => setForm((f) => ({ ...f, patientId: e.target.value }))}
-                    className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
+                    className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
                   >
                     <option value="">Seleccionar...</option>
                     {patients.map((p) => (
@@ -572,7 +572,7 @@ export default function CalendarPage() {
                     required
                     value={form.treatmentId}
                     onChange={(e) => setForm((f) => ({ ...f, treatmentId: e.target.value }))}
-                    className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
+                    className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
                   >
                     <option value="">Seleccionar...</option>
                     {treatments.map((t) => (
@@ -591,7 +591,7 @@ export default function CalendarPage() {
                     <select
                       value={form.workerId}
                       onChange={(e) => setForm((f) => ({ ...f, workerId: e.target.value }))}
-                      className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
+                      className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
                     >
                       <option value="">Sin asignar</option>
                       {workers.map((w) => (
@@ -611,7 +611,7 @@ export default function CalendarPage() {
                     required
                     value={form.date}
                     onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                   />
                 </div>
                 <div>
@@ -621,7 +621,7 @@ export default function CalendarPage() {
                     required
                     value={form.time}
                     onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
-                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                   />
                 </div>
               </div>
@@ -634,7 +634,7 @@ export default function CalendarPage() {
                   value={form.notes}
                   onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   placeholder="Observaciones..."
-                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none"
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none"
                 />
               </div>
 
@@ -648,7 +648,7 @@ export default function CalendarPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors"
                 >
                   <CheckCircle2 size={15} /> Guardar cita
                 </button>

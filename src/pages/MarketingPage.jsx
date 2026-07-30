@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+﻿import { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Mail, Users, CheckCircle2, AlertTriangle, Send, Eye,
   Edit3, X, Loader, AlertCircle, ChevronDown, ChevronUp,
@@ -199,8 +199,8 @@ export default function MarketingPage() {
 
           {/* Plantillas */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <h3 className="font-bold text-[#1a2332] mb-3 flex items-center gap-2">
-              <Edit3 size={15} className="text-[#00af38]" /> Plantilla
+            <h3 className="font-bold text-[#111827] mb-3 flex items-center gap-2">
+              <Edit3 size={15} className="text-[#c9a227]" /> Plantilla
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
               {TEMPLATES.map((t) => (
@@ -209,12 +209,12 @@ export default function MarketingPage() {
                   onClick={() => handleTemplateChange(t.id)}
                   className={`flex flex-col items-start p-3 rounded-xl border-2 text-left transition-all ${
                     templateId === t.id
-                      ? 'border-[#00af38] bg-[#e6f9ed]'
+                      ? 'border-[#c9a227] bg-[#e6f9ed]'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   <span className="text-xl mb-1">{t.icon}</span>
-                  <span className={`text-xs font-bold ${templateId === t.id ? 'text-[#00af38]' : 'text-[#1a2332]'}`}>
+                  <span className={`text-xs font-bold ${templateId === t.id ? 'text-[#c9a227]' : 'text-[#111827]'}`}>
                     {t.label}
                   </span>
                   <span className="text-[10px] text-gray-400 mt-0.5 leading-tight">{t.description}</span>
@@ -230,7 +230,7 @@ export default function MarketingPage() {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="Asunto del email..."
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
               />
             </div>
 
@@ -247,17 +247,17 @@ export default function MarketingPage() {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 rows={10}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-y font-mono"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-y font-mono"
               />
             </div>
           </div>
 
           {/* Resultado envío */}
           {result && (
-            <div className={`rounded-2xl border p-4 ${result.failed.length === 0 ? 'bg-[#e6f9ed] border-[#00af38]/30' : 'bg-amber-50 border-amber-200'}`}>
+            <div className={`rounded-2xl border p-4 ${result.failed.length === 0 ? 'bg-[#e6f9ed] border-[#c9a227]/30' : 'bg-amber-50 border-amber-200'}`}>
               <div className="flex items-center gap-2 mb-2">
-                <CheckCircle2 size={16} className="text-[#00af38]" />
-                <p className="font-bold text-[#1a2332] text-sm">Envío completado</p>
+                <CheckCircle2 size={16} className="text-[#c9a227]" />
+                <p className="font-bold text-[#111827] text-sm">Envío completado</p>
               </div>
               <p className="text-sm text-gray-600">
                 ✅ {result.sent.length} enviado{result.sent.length !== 1 ? 's' : ''} correctamente.
@@ -283,8 +283,8 @@ export default function MarketingPage() {
 
           {/* Destinatarios */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-            <h3 className="font-bold text-[#1a2332] mb-3 flex items-center gap-2">
-              <Users size={15} className="text-[#00af38]" /> Destinatarios
+            <h3 className="font-bold text-[#111827] mb-3 flex items-center gap-2">
+              <Users size={15} className="text-[#c9a227]" /> Destinatarios
             </h3>
 
             <div className="space-y-2 mb-4">
@@ -298,13 +298,13 @@ export default function MarketingPage() {
                   onClick={() => setRecipientMode(value)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border-2 text-left transition-all ${
                     recipientMode === value
-                      ? 'border-[#00af38] bg-[#e6f9ed]'
+                      ? 'border-[#c9a227] bg-[#e6f9ed]'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
                   {icon}
                   <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-bold ${recipientMode === value ? 'text-[#00af38]' : 'text-[#1a2332]'}`}>{label}</p>
+                    <p className={`text-xs font-bold ${recipientMode === value ? 'text-[#c9a227]' : 'text-[#111827]'}`}>{label}</p>
                     <p className="text-[10px] text-gray-400">{sublabel}</p>
                   </div>
                 </button>
@@ -326,10 +326,10 @@ export default function MarketingPage() {
                         type="checkbox"
                         checked={!!selected[p.id]}
                         onChange={() => toggleSelect(p.id)}
-                        className="accent-[#00af38]"
+                        className="accent-[#c9a227]"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-[#1a2332] truncate">{p.name}</p>
+                        <p className="text-xs font-medium text-[#111827] truncate">{p.name}</p>
                         <p className="text-[10px] text-gray-400 truncate">{p.email}</p>
                       </div>
                     </label>
@@ -341,7 +341,7 @@ export default function MarketingPage() {
             {/* Resumen destinatarios */}
             <button
               onClick={() => setShowRecipients((v) => !v)}
-              className="mt-3 w-full flex items-center justify-between text-xs text-gray-500 hover:text-[#00af38] transition-colors"
+              className="mt-3 w-full flex items-center justify-between text-xs text-gray-500 hover:text-[#c9a227] transition-colors"
             >
               <span>{recipients.length} destinatario{recipients.length !== 1 ? 's' : ''} activo{recipients.length !== 1 ? 's' : ''}</span>
               {showRecipients ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
@@ -350,11 +350,11 @@ export default function MarketingPage() {
               <div className="mt-2 max-h-36 overflow-y-auto space-y-1">
                 {recipients.map((p) => (
                   <div key={p.id} className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded-lg">
-                    <div className="w-5 h-5 rounded-full bg-[#00af38]/20 flex items-center justify-center text-[10px] font-bold text-[#00af38] flex-shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-[#c9a227]/20 flex items-center justify-center text-[10px] font-bold text-[#c9a227] flex-shrink-0">
                       {p.name?.[0]?.toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[11px] font-medium text-[#1a2332] truncate">{p.name}</p>
+                      <p className="text-[11px] font-medium text-[#111827] truncate">{p.name}</p>
                       <p className="text-[10px] text-gray-400 truncate">{p.email}</p>
                     </div>
                   </div>
@@ -367,7 +367,7 @@ export default function MarketingPage() {
           <button
             onClick={() => setShowPreview(true)}
             disabled={!subject || !body}
-            className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#00af38] bg-[#e6f9ed] rounded-xl hover:bg-[#00af38] hover:text-white transition-colors border-2 border-[#00af38]/30 disabled:opacity-40"
+            className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#c9a227] bg-[#e6f9ed] rounded-xl hover:bg-[#c9a227] hover:text-white transition-colors border-2 border-[#c9a227]/30 disabled:opacity-40"
           >
             <Eye size={15} /> Vista previa
           </button>
@@ -376,7 +376,7 @@ export default function MarketingPage() {
           <button
             onClick={handleSend}
             disabled={!signed || sending || recipients.length === 0 || !subject || !body}
-            className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors shadow-lg shadow-[#00af38]/20 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {sending ? (
               <>
@@ -410,7 +410,7 @@ export default function MarketingPage() {
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
               <div>
-                <h2 className="font-bold text-[#1a2332]">Vista previa del email</h2>
+                <h2 className="font-bold text-[#111827]">Vista previa del email</h2>
                 <p className="text-xs text-gray-400 mt-0.5">Como lo verá el destinatario</p>
               </div>
               <button onClick={() => setShowPreview(false)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400">
@@ -425,7 +425,7 @@ export default function MarketingPage() {
                 <select
                   value={previewPat?.id || recipients[0]?.id}
                   onChange={(e) => setPreviewPat(recipients.find((p) => p.id === e.target.value))}
-                  className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#00af38]/30"
+                  className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30"
                 >
                   {recipients.map((p) => (
                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -441,15 +441,15 @@ export default function MarketingPage() {
                 <div className="bg-gray-50 px-5 py-4 border-b border-gray-200 space-y-1">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">De:</span>
-                    <span className="font-medium text-[#1a2332]">Osteopatía Indalo</span>
+                    <span className="font-medium text-[#111827]">Osteopatía Indalo</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">Para:</span>
-                    <span className="font-medium text-[#1a2332]">{previewPatient?.email}</span>
+                    <span className="font-medium text-[#111827]">{previewPatient?.email}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">Asunto:</span>
-                    <span className="font-medium text-[#1a2332]">
+                    <span className="font-medium text-[#111827]">
                       {applyVars(subject, previewPatient, allAppointments)}
                     </span>
                   </div>
@@ -472,7 +472,7 @@ export default function MarketingPage() {
               <button
                 onClick={() => { setShowPreview(false); handleSend(); }}
                 disabled={!signed || sending || recipients.length === 0}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors disabled:opacity-40"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors disabled:opacity-40"
               >
                 <Send size={14} /> Enviar ahora
               </button>

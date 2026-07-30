@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+﻿import { useState, useMemo, useEffect } from 'react';
 import {
   UserPlus, Search, Edit2, Trash2, Phone, Mail, User, X, Save,
   CalendarDays, Upload, Clock, Euro, AlertTriangle, ChevronDown,
@@ -112,7 +112,7 @@ export default function PatientsPage() {
     name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
 
   const avatarColor = (name = '') => {
-    const colors = ['#00af38','#0088cc','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
+    const colors = ['#c9a227','#0088cc','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
     let hash = 0;
     for (const c of name) hash += c.charCodeAt(0);
     return colors[hash % colors.length];
@@ -132,7 +132,7 @@ export default function PatientsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar paciente..."
-              className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+              className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
             />
           </div>
 
@@ -160,13 +160,13 @@ export default function PatientsPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setShowImport(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-white text-[#00af38] text-sm font-semibold rounded-xl hover:bg-[#e6f9ed] transition-colors border border-[#00af38]/30"
+            className="flex items-center gap-2 px-4 py-2.5 bg-white text-[#c9a227] text-sm font-semibold rounded-xl hover:bg-[#e6f9ed] transition-colors border border-[#c9a227]/30"
           >
             <Upload size={16} /> Importar CSV
           </button>
           <button
             onClick={openNew}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors shadow-lg shadow-[#00af38]/20"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20"
           >
             <UserPlus size={16} /> Nuevo Paciente
           </button>
@@ -227,7 +227,7 @@ export default function PatientsPage() {
                   {/* Info básica */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-bold text-[#1a2332] truncate">{p.name}</h3>
+                      <h3 className="font-bold text-[#111827] truncate">{p.name}</h3>
                     </div>
                     <div className="flex items-center gap-3 mt-0.5 flex-wrap">
                       {p.phone && (
@@ -249,7 +249,7 @@ export default function PatientsPage() {
                     <div className="text-center">
                       <p className="text-[10px] text-gray-400 font-medium">Próxima</p>
                       {nextApt ? (
-                        <p className="text-xs font-bold text-[#00af38]">
+                        <p className="text-xs font-bold text-[#c9a227]">
                           {format(parseISO(nextApt.date), 'd MMM', { locale: es })}
                         </p>
                       ) : (
@@ -259,7 +259,7 @@ export default function PatientsPage() {
                     {/* Total citas */}
                     <div className="text-center">
                       <p className="text-[10px] text-gray-400 font-medium">Citas</p>
-                      <p className="text-xs font-bold text-[#1a2332]">{apts.length}</p>
+                      <p className="text-xs font-bold text-[#111827]">{apts.length}</p>
                     </div>
                     {/* Gasto total */}
                     <div className="text-center">
@@ -288,7 +288,7 @@ export default function PatientsPage() {
                     </button>
                     <button
                       onClick={() => openEdit(p)}
-                      className="w-8 h-8 flex items-center justify-center rounded-lg text-[#00af38] bg-[#e6f9ed] hover:bg-[#00af38] hover:text-white transition-colors"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg text-[#c9a227] bg-[#e6f9ed] hover:bg-[#c9a227] hover:text-white transition-colors"
                     >
                       <Edit2 size={14} />
                     </button>
@@ -310,14 +310,14 @@ export default function PatientsPage() {
                       <div className="text-center">
                         <p className="text-[10px] text-gray-400 font-medium">Próxima</p>
                         {nextApt ? (
-                          <p className="text-xs font-bold text-[#00af38]">
+                          <p className="text-xs font-bold text-[#c9a227]">
                             {format(parseISO(nextApt.date), 'd MMM', { locale: es })}
                           </p>
                         ) : <p className="text-xs text-gray-300">—</p>}
                       </div>
                       <div className="text-center">
                         <p className="text-[10px] text-gray-400 font-medium">Citas</p>
-                        <p className="text-xs font-bold text-[#1a2332]">{apts.length}</p>
+                        <p className="text-xs font-bold text-[#111827]">{apts.length}</p>
                       </div>
                       <div className="text-center">
                         <p className="text-[10px] text-gray-400 font-medium">Gastado</p>
@@ -347,7 +347,7 @@ export default function PatientsPage() {
 
                               {/* Fecha + tratamiento */}
                               <div className="flex-1 min-w-0">
-                                <p className="font-medium text-[#1a2332] text-xs truncate">
+                                <p className="font-medium text-[#111827] text-xs truncate">
                                   {treatment?.name || 'Tratamiento'}
                                 </p>
                                 <p className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
@@ -368,11 +368,11 @@ export default function PatientsPage() {
 
                               {/* Estado */}
                               {upcoming ? (
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#00af38] text-white font-semibold flex-shrink-0">
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#c9a227] text-white font-semibold flex-shrink-0">
                                   Próxima
                                 </span>
                               ) : a.status === 'completed' ? (
-                                <CheckCircle2 size={14} className="text-[#00af38] flex-shrink-0" />
+                                <CheckCircle2 size={14} className="text-[#c9a227] flex-shrink-0" />
                               ) : a.status === 'cancelled' ? (
                                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-50 text-red-500 font-medium flex-shrink-0">
                                   Cancelada
@@ -390,7 +390,7 @@ export default function PatientsPage() {
                         {totalSpent > 0 && (
                           <div className="mt-3 flex items-center justify-between px-3 py-2 bg-[#e6f9ed] rounded-xl">
                             <span className="text-xs font-semibold text-gray-600">Total facturado al paciente</span>
-                            <span className="text-sm font-extrabold text-[#00af38]">{fmt(totalSpent)}</span>
+                            <span className="text-sm font-extrabold text-[#c9a227]">{fmt(totalSpent)}</span>
                           </div>
                         )}
                       </div>
@@ -423,12 +423,12 @@ export default function PatientsPage() {
                 onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                 rows={3}
                 placeholder="Historial, alergias, observaciones..."
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none"
               />
             </div>
             <div className="flex gap-3 pt-2">
               <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
-              <button type="submit" className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors">
+              <button type="submit" className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors">
                 <Save size={15} /> Guardar
               </button>
             </div>
@@ -476,7 +476,7 @@ function Field({ label, value, onChange, required, placeholder, type = 'text' })
         onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
-        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
       />
     </div>
   );
@@ -488,7 +488,7 @@ function Modal({ title, onClose, children }) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="font-bold text-[#1a2332] text-lg">{title}</h2>
+          <h2 className="font-bold text-[#111827] text-lg">{title}</h2>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400">
             <X size={18} />
           </button>

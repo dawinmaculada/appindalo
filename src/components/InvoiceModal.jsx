@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+﻿import { useState, useMemo, useEffect } from 'react';
 import {
   X, Plus, Trash2, Printer, FileText, CreditCard, Banknote, Clock,
   ChevronDown, ChevronUp, Building2, User,
@@ -33,7 +33,7 @@ function buildPrintHtml(invoice, patient, clientData, issuer) {
   const rows = invoice.lineItems.map((item) => {
     const sub = item.qty * item.price;
     const sublabelNote = item.sublabel
-      ? `<br><span style="color:#00af38;font-size:11px;font-weight:600;">${item.sublabel}</span>`
+      ? `<br><span style="color:#c9a227;font-size:11px;font-weight:600;">${item.sublabel}</span>`
       : '';
     const dateNote = item.date
       ? `<br><span style="color:#9ca3af;font-size:11px;">${format(parseISO(item.date), 'd MMM yyyy', { locale: es })}${item.time ? ' · ' + item.time : ''}</span>`
@@ -49,7 +49,7 @@ function buildPrintHtml(invoice, patient, clientData, issuer) {
   const pmLabel = { efectivo: 'Efectivo', tarjeta: 'Tarjeta', pendiente: 'Pendiente de pago' };
 
   const issuerBlock = `
-    <div><strong style="font-size:16px;color:#00af38;">${issuer.name}</strong></div>
+    <div><strong style="font-size:16px;color:#c9a227;">${issuer.name}</strong></div>
     ${issuer.nif     ? `<div>NIF: ${issuer.nif}</div>` : ''}
     ${issuer.address ? `<div>${issuer.address}</div>` : ''}
     ${issuer.phone   ? `<div>${issuer.phone}</div>` : ''}
@@ -69,24 +69,24 @@ function buildPrintHtml(invoice, patient, clientData, issuer) {
   <title>${invoice.number}</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:Arial,Helvetica,sans-serif;color:#1a2332;font-size:13px;padding:48px;}
+    body{font-family:Arial,Helvetica,sans-serif;color:#111827;font-size:13px;padding:48px;}
     @media print{body{padding:24px;}.no-print{display:none!important;}}
-    .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;padding-bottom:24px;border-bottom:2px solid #00af38;}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;padding-bottom:24px;border-bottom:2px solid #c9a227;}
     .invoice-ref{text-align:right;}
-    .invoice-ref .num{font-size:20px;font-weight:800;color:#1a2332;}
+    .invoice-ref .num{font-size:20px;font-weight:800;color:#111827;}
     .invoice-ref .date{color:#9ca3af;font-size:12px;margin-top:4px;}
     .parties{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;}
-    .party-box{background:#f8fafb;border-radius:8px;padding:16px;font-size:12px;line-height:1.7;color:#374151;}
+    .party-box{background:#fafaf9;border-radius:8px;padding:16px;font-size:12px;line-height:1.7;color:#374151;}
     .party-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9ca3af;font-weight:700;margin-bottom:8px;}
     table{width:100%;border-collapse:collapse;margin-bottom:0;}
     th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:700;padding-bottom:10px;border-bottom:2px solid #e5e7eb;}
     th.r{text-align:right;}th.c{text-align:center;}
     .tax-block{margin-top:0;border-top:1px solid #e5e7eb;padding-top:16px;}
     .tax-row{display:flex;justify-content:space-between;font-size:13px;color:#6b7280;padding:4px 0;}
-    .tax-row.total{font-size:16px;font-weight:800;color:#00af38;border-top:2px solid #e5e7eb;margin-top:8px;padding-top:12px;}
+    .tax-row.total{font-size:16px;font-weight:800;color:#c9a227;border-top:2px solid #e5e7eb;margin-top:8px;padding-top:12px;}
     .footer{margin-top:32px;border-top:1px solid #f3f4f6;padding-top:16px;display:flex;justify-content:space-between;align-items:center;}
-    .badge{background:#e6f9ed;color:#00af38;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;}
-    .print-btn{position:fixed;bottom:24px;right:24px;background:#00af38;color:#fff;border:none;padding:12px 28px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,175,56,.35);}
+    .badge{background:#e6f9ed;color:#c9a227;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+    .print-btn{position:fixed;bottom:24px;right:24px;background:#c9a227;color:#fff;border:none;padding:12px 28px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,175,56,.35);}
   </style>
 </head>
 <body>
@@ -147,11 +147,11 @@ function Section({ icon: Icon, title, badge, children }) {
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
       >
-        <span className="flex items-center gap-2 text-sm font-semibold text-[#1a2332]">
+        <span className="flex items-center gap-2 text-sm font-semibold text-[#111827]">
           <Icon size={15} className="text-gray-400" />
           {title}
           {badge && (
-            <span className="text-xs text-[#00af38] font-medium">{badge}</span>
+            <span className="text-xs text-[#c9a227] font-medium">{badge}</span>
           )}
         </span>
         {open ? <ChevronUp size={15} className="text-gray-400" /> : <ChevronDown size={15} className="text-gray-400" />}
@@ -170,7 +170,7 @@ function Field({ label, value, onChange, placeholder, type = 'text' }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
       />
     </div>
   );
@@ -329,10 +329,10 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
         <div className="flex items-center justify-between p-6 border-b border-gray-100 sticky top-0 bg-white z-10">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-[#e6f9ed] flex items-center justify-center flex-shrink-0">
-              <FileText size={17} className="text-[#00af38]" />
+              <FileText size={17} className="text-[#c9a227]" />
             </div>
             <div>
-              <h2 className="font-bold text-[#1a2332] text-lg leading-tight">
+              <h2 className="font-bold text-[#111827] text-lg leading-tight">
                 {step === 'select' ? 'Nueva Factura' : createdInvoice?.number}
               </h2>
               <p className="text-sm text-gray-400">{patient.name}</p>
@@ -353,9 +353,9 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
             {/* Sesiones */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-[#1a2332]">Sesiones del paciente</h3>
+                <h3 className="text-sm font-semibold text-[#111827]">Sesiones del paciente</h3>
                 {selected.size > 0 && (
-                  <span className="text-xs text-[#00af38] font-medium">
+                  <span className="text-xs text-[#c9a227] font-medium">
                     {selected.size} seleccionada{selected.size !== 1 ? 's' : ''}
                   </span>
                 )}
@@ -379,22 +379,22 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                         key={a.id}
                         className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
                           isSelected
-                            ? 'border-[#00af38] bg-[#e6f9ed]'
+                            ? 'border-[#c9a227] bg-[#e6f9ed]'
                             : 'border-gray-100 bg-gray-50 hover:border-gray-200'
                         }`}
                       >
                         <input type="checkbox" checked={isSelected} onChange={() => toggle(a.id)} className="sr-only" />
                         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${
-                          isSelected ? 'border-[#00af38] bg-[#00af38]' : 'border-gray-300 bg-white'
+                          isSelected ? 'border-[#c9a227] bg-[#c9a227]' : 'border-gray-300 bg-white'
                         }`}>
                           {isSelected && <span className="text-white text-[10px] font-bold">✓</span>}
                         </div>
                         <span className="text-base flex-shrink-0">{treatment?.icon || '📅'}</span>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <p className="text-sm font-medium text-[#1a2332] truncate">{treatment?.name || 'Sesión'}</p>
+                            <p className="text-sm font-medium text-[#111827] truncate">{treatment?.name || 'Sesión'}</p>
                             {typeLabel && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-[#00af38] text-white font-bold flex-shrink-0">
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-[#c9a227] text-white font-bold flex-shrink-0">
                                 {typeLabel}
                               </span>
                             )}
@@ -405,7 +405,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                             {opt && <span className="ml-1 text-gray-500">· {opt.sublabel}</span>}
                           </p>
                         </div>
-                        <span className="text-sm font-bold text-[#1a2332] flex-shrink-0">
+                        <span className="text-sm font-bold text-[#111827] flex-shrink-0">
                           {fmt(displayPrice)}
                         </span>
                       </label>
@@ -418,9 +418,9 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
             {/* Líneas manuales */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-[#1a2332]">Líneas adicionales</h3>
+                <h3 className="text-sm font-semibold text-[#111827]">Líneas adicionales</h3>
                 <button type="button" onClick={addManual}
-                  className="flex items-center gap-1.5 text-xs text-[#00af38] font-semibold hover:bg-[#e6f9ed] px-2.5 py-1.5 rounded-lg transition-colors">
+                  className="flex items-center gap-1.5 text-xs text-[#c9a227] font-semibold hover:bg-[#e6f9ed] px-2.5 py-1.5 rounded-lg transition-colors">
                   <Plus size={12} /> Añadir línea
                 </button>
               </div>
@@ -433,16 +433,16 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                       <input type="text" value={item.description}
                         onChange={(e) => updateManual(item.id, 'description', e.target.value)}
                         placeholder="Descripción..."
-                        className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]" />
+                        className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]" />
                       <input type="number" value={item.qty}
                         onChange={(e) => updateManual(item.id, 'qty', e.target.value)}
                         min="1" placeholder="Ud"
-                        className="w-14 px-2 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] text-center" />
+                        className="w-14 px-2 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] text-center" />
                       <div className="relative w-24">
                         <input type="number" value={item.price}
                           onChange={(e) => updateManual(item.id, 'price', e.target.value)}
                           min="0" step="0.01" placeholder="0"
-                          className="w-full pl-3 pr-6 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]" />
+                          className="w-full pl-3 pr-6 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]" />
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">€</span>
                       </div>
                       <button type="button" onClick={() => removeManual(item.id)}
@@ -487,7 +487,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Fecha de factura</label>
                 <input type="date" value={invoiceDate} onChange={(e) => setInvoiceDate(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]" />
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">Método de pago</label>
@@ -500,7 +500,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                     <button key={value} type="button" onClick={() => setPaymentMethod(value)}
                       className={`flex-1 flex flex-col items-center gap-1 py-2 text-[11px] font-semibold rounded-xl border-2 transition-all ${
                         paymentMethod === value
-                          ? 'border-[#00af38] bg-[#e6f9ed] text-[#00af38]'
+                          ? 'border-[#c9a227] bg-[#e6f9ed] text-[#c9a227]'
                           : 'border-gray-200 text-gray-500 hover:border-gray-300'
                       }`}>
                       <Icon size={14} />{label}
@@ -514,7 +514,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Notas (opcional)</label>
               <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
                 placeholder="Observaciones que aparecerán en la factura..."
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] resize-none" />
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] resize-none" />
             </div>
 
             {/* Resumen IVA + acción */}
@@ -529,7 +529,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                     <span>IVA (21%)</span>
                     <span>{fmt2(iva)}</span>
                   </div>
-                  <div className="flex justify-between font-extrabold text-[#00af38] text-lg border-t border-gray-200 pt-2 mt-1">
+                  <div className="flex justify-between font-extrabold text-[#c9a227] text-lg border-t border-gray-200 pt-2 mt-1">
                     <span>Total</span>
                     <span>{fmt2(total)}</span>
                   </div>
@@ -541,7 +541,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                   Cancelar
                 </button>
                 <button type="button" onClick={handleCreate} disabled={!canCreate}
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                  className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
                   <FileText size={15} /> Crear factura
                 </button>
               </div>
@@ -553,8 +553,8 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
         {step === 'preview' && createdInvoice && (
           <div className="p-6 space-y-5">
             <div className="bg-[#e6f9ed] rounded-xl px-4 py-3 flex items-center gap-2">
-              <span className="text-[#00af38] text-lg">✓</span>
-              <p className="text-sm font-semibold text-[#00af38]">
+              <span className="text-[#c9a227] text-lg">✓</span>
+              <p className="text-sm font-semibold text-[#c9a227]">
                 Factura {createdInvoice.number} creada correctamente
               </p>
             </div>
@@ -562,7 +562,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
             {/* Preview */}
             <div className="border border-gray-200 rounded-xl overflow-hidden text-sm">
               {/* Cabecera verde */}
-              <div className="bg-[#00af38] px-5 py-4 flex items-start justify-between">
+              <div className="bg-[#c9a227] px-5 py-4 flex items-start justify-between">
                 <div>
                   <p className="text-white font-bold text-base">{issuer.name}</p>
                   {issuer.nif && <p className="text-white/70 text-xs mt-0.5">NIF: {issuer.nif}</p>}
@@ -581,13 +581,13 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 rounded-lg px-3 py-2.5">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-1">Emisor</p>
-                    <p className="font-bold text-[#1a2332] text-xs">{issuer.name}</p>
+                    <p className="font-bold text-[#111827] text-xs">{issuer.name}</p>
                     {issuer.nif && <p className="text-[11px] text-gray-400">NIF: {issuer.nif}</p>}
                     {issuer.address && <p className="text-[11px] text-gray-400">{issuer.address}</p>}
                   </div>
                   <div className="bg-gray-50 rounded-lg px-3 py-2.5">
                     <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-1">Cliente</p>
-                    <p className="font-bold text-[#1a2332] text-xs">{clientData.name}</p>
+                    <p className="font-bold text-[#111827] text-xs">{clientData.name}</p>
                     {clientData.nif && <p className="text-[11px] text-gray-400">NIF/DNI: {clientData.nif}</p>}
                     {clientData.address && <p className="text-[11px] text-gray-400">{clientData.address}</p>}
                     {clientData.email && <p className="text-[11px] text-gray-400">{clientData.email}</p>}
@@ -608,9 +608,9 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                     {createdInvoice.lineItems.map((item, i) => (
                       <tr key={i}>
                         <td className="py-2.5">
-                          <p className="font-medium text-[#1a2332]">{item.description}</p>
+                          <p className="font-medium text-[#111827]">{item.description}</p>
                           {item.sublabel && (
-                            <p className="text-[10px] text-[#00af38] font-semibold mt-0.5">{item.sublabel}</p>
+                            <p className="text-[10px] text-[#c9a227] font-semibold mt-0.5">{item.sublabel}</p>
                           )}
                           {item.date && (
                             <p className="text-gray-400 text-[10px] mt-0.5">
@@ -621,7 +621,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                         </td>
                         <td className="py-2.5 text-center text-gray-600">{item.qty}</td>
                         <td className="py-2.5 text-right text-gray-600">{fmt2(item.price)}</td>
-                        <td className="py-2.5 text-right font-semibold text-[#1a2332]">
+                        <td className="py-2.5 text-right font-semibold text-[#111827]">
                           {fmt2(item.qty * item.price)}
                         </td>
                       </tr>
@@ -639,7 +639,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                     <span>IVA (21%)</span>
                     <span>{fmt2(createdInvoice.iva)}</span>
                   </div>
-                  <div className="flex justify-between font-extrabold text-[#00af38] border-t border-gray-200 pt-2 mt-1">
+                  <div className="flex justify-between font-extrabold text-[#c9a227] border-t border-gray-200 pt-2 mt-1">
                     <span className="text-sm">TOTAL</span>
                     <span className="text-xl">{fmt2(createdInvoice.total)}</span>
                   </div>
@@ -647,7 +647,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
 
                 {/* Método + notas */}
                 <div className="flex items-center gap-3 pt-1">
-                  <span className="text-xs px-3 py-1.5 rounded-full bg-[#e6f9ed] text-[#00af38] font-semibold">
+                  <span className="text-xs px-3 py-1.5 rounded-full bg-[#e6f9ed] text-[#c9a227] font-semibold">
                     {createdInvoice.paymentMethod === 'efectivo' ? '💵 Efectivo'
                       : createdInvoice.paymentMethod === 'tarjeta' ? '💳 Tarjeta'
                       : '⏳ Pendiente de pago'}
@@ -665,7 +665,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
                 Cerrar
               </button>
               <button type="button" onClick={handlePrint}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors">
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors">
                 <Printer size={15} /> Imprimir / Guardar PDF
               </button>
             </div>

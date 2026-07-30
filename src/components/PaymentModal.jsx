@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { X, CreditCard, Banknote, CheckCircle2 } from 'lucide-react';
 
 const PAYMENT_OPTIONS = [
@@ -35,7 +35,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
         {/* Cabecera */}
         <div className="flex items-center justify-between p-6 border-b border-gray-100">
           <div>
-            <h2 className="font-bold text-[#1a2332] text-lg">Cobrar cita</h2>
+            <h2 className="font-bold text-[#111827] text-lg">Cobrar cita</h2>
             <p className="text-sm text-gray-400 mt-0.5">
               {patient?.name || '—'} · {treatment?.name || '—'}
             </p>
@@ -61,17 +61,17 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
                   onClick={() => setPaymentType(opt.key)}
                   className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all ${
                     paymentType === opt.key
-                      ? 'border-[#00af38] bg-[#e6f9ed]'
+                      ? 'border-[#c9a227] bg-[#e6f9ed]'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <span className={`text-xs font-bold ${paymentType === opt.key ? 'text-[#00af38]' : 'text-gray-700'}`}>
+                  <span className={`text-xs font-bold ${paymentType === opt.key ? 'text-[#c9a227]' : 'text-gray-700'}`}>
                     {opt.label}
                   </span>
-                  <span className={`text-[10px] mt-0.5 ${paymentType === opt.key ? 'text-[#00af38]/70' : 'text-gray-400'}`}>
+                  <span className={`text-[10px] mt-0.5 ${paymentType === opt.key ? 'text-[#c9a227]/70' : 'text-gray-400'}`}>
                     {opt.sublabel}
                   </span>
-                  <span className={`text-lg font-extrabold mt-1 ${paymentType === opt.key ? 'text-[#00af38]' : 'text-[#1a2332]'}`}>
+                  <span className={`text-lg font-extrabold mt-1 ${paymentType === opt.key ? 'text-[#c9a227]' : 'text-[#111827]'}`}>
                     {opt.amount}€
                   </span>
                 </button>
@@ -90,7 +90,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
                 value={adjustment}
                 onChange={(e) => setAdjustment(e.target.value)}
                 placeholder="0.00"
-                className="w-full pl-8 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                className="w-full pl-8 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
               />
             </div>
             <p className="text-xs text-gray-400 mt-1">
@@ -110,7 +110,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
                 </p>
               )}
             </div>
-            <span className={`text-3xl font-extrabold ${total >= 0 ? 'text-[#00af38]' : 'text-red-500'}`}>
+            <span className={`text-3xl font-extrabold ${total >= 0 ? 'text-[#c9a227]' : 'text-red-500'}`}>
               {total % 1 === 0 ? total : total.toFixed(2)}€
             </span>
           </div>
@@ -124,7 +124,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
                 onClick={() => setPaymentMethod('efectivo')}
                 className={`flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition-all ${
                   paymentMethod === 'efectivo'
-                    ? 'border-[#00af38] bg-[#e6f9ed] text-[#00af38]'
+                    ? 'border-[#c9a227] bg-[#e6f9ed] text-[#c9a227]'
                     : 'border-gray-200 text-gray-500 hover:border-gray-300'
                 }`}
               >
@@ -135,7 +135,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
                 onClick={() => setPaymentMethod('tarjeta')}
                 className={`flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition-all ${
                   paymentMethod === 'tarjeta'
-                    ? 'border-[#00af38] bg-[#e6f9ed] text-[#00af38]'
+                    ? 'border-[#c9a227] bg-[#e6f9ed] text-[#c9a227]'
                     : 'border-gray-200 text-gray-500 hover:border-gray-300'
                 }`}
               >
@@ -156,7 +156,7 @@ export default function PaymentModal({ appointment, patient, treatment, onConfir
             <button
               type="button"
               onClick={handleConfirm}
-              className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#00af38] rounded-xl hover:bg-[#008a2c] transition-colors shadow-lg shadow-[#00af38]/20"
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20"
             >
               <CheckCircle2 size={15} />
               Confirmar pago

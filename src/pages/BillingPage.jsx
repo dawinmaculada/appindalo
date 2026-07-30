@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+﻿import { useMemo, useState, useEffect } from 'react';
 import {
   Euro,
   Banknote,
@@ -19,7 +19,7 @@ import {
 import { es } from 'date-fns/locale';
 
 const PAYMENT_LABELS = { session: 'Sesión', bono5: 'Bono 5', bono10: 'Bono 10' };
-const TYPE_COLORS    = ['#00af38', '#0088cc', '#e67e22'];
+const TYPE_COLORS    = ['#c9a227', '#0088cc', '#e67e22'];
 
 const fmt = (n) => (n % 1 === 0 ? `${n}€` : `${n.toFixed(2)}€`);
 
@@ -161,7 +161,7 @@ export default function BillingPage() {
             <select
               value={periodKey}
               onChange={(e) => setPeriodKey(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] capitalize"
+              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] capitalize"
             >
               <option value="custom">📅 Personalizado</option>
               {groups.map((g) => (
@@ -186,7 +186,7 @@ export default function BillingPage() {
                   value={customFrom}
                   max={customTo || undefined}
                   onChange={(e) => setCustomFrom(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                  className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                 />
               </div>
               <div className="min-w-[140px]">
@@ -196,7 +196,7 @@ export default function BillingPage() {
                   value={customTo}
                   min={customFrom || undefined}
                   onChange={(e) => setCustomTo(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+                  className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
                 />
               </div>
             </>
@@ -210,7 +210,7 @@ export default function BillingPage() {
             <select
               value={filterWorker}
               onChange={(e) => setFilterWorker(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
+              className="w-full px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227]"
             >
               <option value="all">Todos</option>
               {workers.map((w) => (
@@ -233,7 +233,7 @@ export default function BillingPage() {
                   onClick={() => setFilterMethod(value)}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-semibold rounded-xl border-2 transition-all ${
                     filterMethod === value
-                      ? 'border-[#00af38] bg-[#e6f9ed] text-[#00af38]'
+                      ? 'border-[#c9a227] bg-[#e6f9ed] text-[#c9a227]'
                       : 'border-gray-200 text-gray-500 hover:border-gray-300'
                   }`}
                 >
@@ -261,7 +261,7 @@ export default function BillingPage() {
             <>
               {format(start, "d 'de' MMMM", { locale: es })} — {format(end, "d 'de' MMMM yyyy", { locale: es })}
               {billed.length > 0 && (
-                <span className="ml-2 text-[#00af38] font-medium">
+                <span className="ml-2 text-[#c9a227] font-medium">
                   · {billed.length} cobro{billed.length !== 1 ? 's' : ''}
                 </span>
               )}
@@ -274,7 +274,7 @@ export default function BillingPage() {
 
       {/* ── KPI cards ────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard label="Total facturado"    value={fmt(totalRevenue)} icon={Euro}      color="#00af38" bg="#e6f9ed" />
+        <KpiCard label="Total facturado"    value={fmt(totalRevenue)} icon={Euro}      color="#c9a227" bg="#e6f9ed" />
         <KpiCard label="Sesiones cobradas"  value={billed.length}     icon={TrendingUp} color="#0088cc" bg="#e6f3ff" />
         <KpiCard label="Efectivo"           value={fmt(cashRevenue)}  icon={Banknote}  color="#e67e22" bg="#fef3e6" />
         <KpiCard label="Tarjeta"            value={fmt(cardRevenue)}  icon={CreditCard} color="#9b59b6" bg="#f5eeff" />
@@ -285,7 +285,7 @@ export default function BillingPage() {
 
         {/* Desglose por tipo */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <h3 className="font-bold text-[#1a2332] mb-4 text-sm">Por tipo de cobro</h3>
+          <h3 className="font-bold text-[#111827] mb-4 text-sm">Por tipo de cobro</h3>
           {Object.keys(byType).length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-8">Sin datos</p>
           ) : (
@@ -299,7 +299,7 @@ export default function BillingPage() {
                               style={{ backgroundColor: TYPE_COLORS[i % TYPE_COLORS.length] }} />
                         {PAYMENT_LABELS[k] || k}
                       </span>
-                      <span className="font-bold text-[#1a2332]">{fmt(v)}</span>
+                      <span className="font-bold text-[#111827]">{fmt(v)}</span>
                     </div>
                     <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                       <div
@@ -352,8 +352,8 @@ export default function BillingPage() {
 
         {/* Tabla de movimientos */}
         <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <h3 className="font-bold text-[#1a2332] mb-4 text-sm flex items-center gap-2">
-            <Receipt size={15} className="text-[#00af38]" />
+          <h3 className="font-bold text-[#111827] mb-4 text-sm flex items-center gap-2">
+            <Receipt size={15} className="text-[#c9a227]" />
             Movimientos
           </h3>
 
@@ -384,15 +384,15 @@ export default function BillingPage() {
                         <td className="py-2.5 text-gray-500 whitespace-nowrap text-xs">
                           {format(parseISO(a.billing.paidAt), "d MMM · HH:mm", { locale: es })}
                         </td>
-                        <td className="py-2.5 font-medium text-[#1a2332] max-w-[110px] truncate">
+                        <td className="py-2.5 font-medium text-[#111827] max-w-[110px] truncate">
                           {patient?.name || '—'}
                         </td>
                         <td className="py-2.5 hidden md:table-cell">
                           {worker ? (
                             <span className="flex items-center gap-1.5 text-xs font-medium"
-                                  style={{ color: worker.color || '#00af38' }}>
+                                  style={{ color: worker.color || '#c9a227' }}>
                               <span className="w-2 h-2 rounded-full flex-shrink-0"
-                                    style={{ backgroundColor: worker.color || '#00af38' }} />
+                                    style={{ backgroundColor: worker.color || '#c9a227' }} />
                               {worker.name}
                             </span>
                           ) : (
@@ -400,7 +400,7 @@ export default function BillingPage() {
                           )}
                         </td>
                         <td className="py-2.5">
-                          <span className="text-xs px-2 py-0.5 rounded-lg bg-[#e6f9ed] text-[#00af38] font-medium whitespace-nowrap">
+                          <span className="text-xs px-2 py-0.5 rounded-lg bg-[#e6f9ed] text-[#c9a227] font-medium whitespace-nowrap">
                             {PAYMENT_LABELS[a.billing.paymentType] || a.billing.paymentType}
                           </span>
                         </td>
@@ -411,7 +411,7 @@ export default function BillingPage() {
                               : <><Banknote size={11} /> Efectivo</>}
                           </span>
                         </td>
-                        <td className="py-2.5 text-right font-bold text-[#1a2332] whitespace-nowrap">
+                        <td className="py-2.5 text-right font-bold text-[#111827] whitespace-nowrap">
                           {fmt(a.billing.total)}
                         </td>
                       </tr>
@@ -423,7 +423,7 @@ export default function BillingPage() {
                     <td colSpan={4} className="pt-3 text-xs text-gray-400 font-medium">
                       {billed.length} cobro{billed.length !== 1 ? 's' : ''}
                     </td>
-                    <td colSpan={2} className="pt-3 text-right text-lg font-extrabold text-[#00af38]">
+                    <td colSpan={2} className="pt-3 text-right text-lg font-extrabold text-[#c9a227]">
                       {fmt(totalRevenue)}
                     </td>
                   </tr>

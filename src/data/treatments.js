@@ -1,4 +1,4 @@
-export const TREATMENTS = [
+﻿export const TREATMENTS = [
   {
     id: 'osteopatia-estructural',
     name: 'Osteopatía Estructural',
@@ -6,7 +6,7 @@ export const TREATMENTS = [
       'Conjunto de técnicas manuales empleadas para aliviar numerosas dolencias del sistema músculo-esquelético. Trata problemas de columna, articulaciones y tejidos blandos.',
     duration: 60,
     price: 48,
-    color: '#00af38',
+    color: '#c9a227',
     icon: '🦴',
     category: 'osteopatia',
   },

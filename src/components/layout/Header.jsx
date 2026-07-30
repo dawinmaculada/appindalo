@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+﻿import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, LogOut, Menu } from 'lucide-react';
 import { logout } from '../../services/auth';
 import GoogleCalendarButton from '../GoogleCalendarButton';
@@ -55,7 +55,7 @@ export default function Header({ session, onMobileMenuToggle }) {
         </button>
 
         <div className="min-w-0">
-          <h1 className="text-lg md:text-xl font-bold text-[#1a2332] truncate">{title}</h1>
+          <h1 className="text-lg md:text-xl font-bold text-[#111827] truncate">{title}</h1>
           <p className="text-xs md:text-sm text-gray-500 hidden sm:block">{subtitle}</p>
         </div>
       </div>
@@ -68,16 +68,16 @@ export default function Header({ session, onMobileMenuToggle }) {
 
         <button className="relative w-9 h-9 rounded-xl bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-colors text-gray-500">
           <Bell size={18} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#00af38] rounded-full"></span>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#c9a227] rounded-full"></span>
         </button>
 
         {/* Avatar - oculto en móvil muy pequeño */}
         <div className="hidden sm:flex items-center gap-2 pl-2 md:pl-3 border-l border-gray-100">
-          <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-[#00af38] flex items-center justify-center shadow font-bold text-white text-sm">
+          <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-[#c9a227] flex items-center justify-center shadow font-bold text-white text-sm">
             {initial}
           </div>
           <div className="hidden md:block">
-            <p className="text-sm font-semibold text-[#1a2332] leading-tight">{displayName}</p>
+            <p className="text-sm font-semibold text-[#111827] leading-tight">{displayName}</p>
             <p className="text-xs text-gray-400">Administrador</p>
           </div>
         </div>

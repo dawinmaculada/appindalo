@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+﻿import { NavLink } from 'react-router-dom';
 import { useClinic } from '../../contexts/ClinicContext';
 import {
   LayoutDashboard,
@@ -51,19 +51,19 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
         style={{ width: collapsed ? 72 : 240, minWidth: collapsed ? 72 : 240 }}
         className={`
           fixed md:relative inset-y-0 left-0 z-40
-          flex flex-col h-screen bg-[#1a2332] text-white shadow-2xl
+          flex flex-col h-screen bg-[#111827] text-white shadow-2xl
           transition-transform duration-300 ease-in-out
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-          <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#00af38] flex items-center justify-center shadow-lg">
+          <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#c9a227] flex items-center justify-center shadow-lg">
             <Leaf size={20} className="text-white" />
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <p className="text-[#00af38] font-extrabold text-base leading-tight">NUVIA</p>
+              <p className="text-[#c9a227] font-extrabold text-base leading-tight">NUVIA</p>
               {clinicName && (
                 <p className="text-white/50 text-xs leading-tight truncate">{clinicName}</p>
               )}
@@ -83,7 +83,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                       isActive
-                        ? 'bg-[#00af38] text-white shadow-lg shadow-[#00af38]/30'
+                        ? 'bg-[#c9a227] text-white shadow-lg shadow-[#c9a227]/30'
                         : 'text-white/60 hover:bg-white/10 hover:text-white'
                     }`
                   }
@@ -108,7 +108,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                       isActive
-                        ? 'bg-[#00af38] text-white shadow-lg shadow-[#00af38]/30'
+                        ? 'bg-[#c9a227] text-white shadow-lg shadow-[#c9a227]/30'
                         : 'text-white/60 hover:bg-white/10 hover:text-white'
                     }`
                   }
@@ -132,7 +132,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
         {/* Toggle button (solo desktop) */}
         <button
           onClick={onToggle}
-          className="hidden md:flex absolute -right-3 top-7 w-6 h-6 bg-[#00af38] rounded-full items-center justify-center shadow-lg hover:bg-[#008a2c] transition-colors z-10"
+          className="hidden md:flex absolute -right-3 top-7 w-6 h-6 bg-[#c9a227] rounded-full items-center justify-center shadow-lg hover:bg-[#a8851e] transition-colors z-10"
           aria-label={collapsed ? 'Expandir menú' : 'Colapsar menú'}
         >
           {collapsed ? (
