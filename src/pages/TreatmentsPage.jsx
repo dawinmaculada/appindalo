@@ -1,9 +1,12 @@
+import { useState, useEffect } from 'react';
 import { Clock, Tag, Euro } from 'lucide-react';
 import { TREATMENTS, TREATMENT_CATEGORIES } from '../data/treatments';
 import { getAppointments } from '../services/storage';
 
 export default function TreatmentsPage() {
-  const appointments = getAppointments();
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => { getAppointments().then(setAppointments); }, []);
 
   const countByTreatment = TREATMENTS.reduce((acc, t) => {
     acc[t.id] = appointments.filter((a) => a.treatmentId === t.id).length;
