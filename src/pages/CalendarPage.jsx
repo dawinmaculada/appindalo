@@ -56,7 +56,7 @@ function heightPx(duration = 60) {
 }
 
 // ── Colores fallback por tratamiento ─────────────────────────────────────
-function aptColor(apt, workers) {
+function aptColor(apt, workers, treatments) {
   if (apt.workerId) {
     const w = workers.find((x) => x.id === apt.workerId);
     if (w?.color) return w.color;
@@ -66,8 +66,7 @@ function aptColor(apt, workers) {
 }
 
 // ── Detectar solapamientos en un día ────────────────────────────────────
-function layoutDay(apts) {
-  // Ordenar por hora de inicio
+function layoutDay(apts, treatments) {
   const sorted = [...apts].sort((a, b) =>
     timeToMinutes(a.time) - timeToMinutes(b.time)
   );
@@ -81,7 +80,6 @@ function layoutDay(apts) {
     columns[col] = end;
     return { apt, col, totalCols: 1 };
   });
-  // Calcular totalCols por grupo de solapamiento
   result.forEach((item) => {
     const overlap = result.filter((other) => {
       const s1 = timeToMinutes(item.apt.time);
@@ -191,7 +189,7 @@ export default function CalendarPage() {
     const treatment = treatments.find((t) => t.id === apt.treatmentId);
     const patient   = patients.find((p) => p.id === apt.patientId);
     const worker    = workers.find((w) => w.id === apt.workerId);
-    const color     = aptColor(apt, workers);
+    const color     = aptColor(apt, workers, treatments);
     const top       = topPx(apt.time);
     const height    = Math.max(heightPx(treatment?.duration || 60), 24);
     const width     = `calc(${100 / totalCols}% - 4px)`;
@@ -260,7 +258,7 @@ export default function CalendarPage() {
       <div className="flex flex-1 overflow-x-auto">
         {days.map((day) => {
           const dayApts = aptsForDay(day);
-          const laid    = layoutDay(dayApts);
+          const laid    = layoutDay(dayApts, treatments);
           const isNow   = isToday(day);
 
           return (
@@ -371,7 +369,7 @@ export default function CalendarPage() {
                 </div>
                 <div className="space-y-0.5">
                   {dayApts.slice(0, 3).map((apt) => {
-                    const color = aptColor(apt, workers);
+                    const color = aptColor(apt, workers, treatments);
                     const patient = patients.find((p) => p.id === apt.patientId);
                     return (
                       <div
@@ -488,7 +486,7 @@ export default function CalendarPage() {
                         <span
                           key={apt.id}
                           className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: aptColor(apt, workers) }}
+                          style={{ backgroundColor: aptColor(apt, workers, treatments) }}
                         />
                       ))}
                     </div>
