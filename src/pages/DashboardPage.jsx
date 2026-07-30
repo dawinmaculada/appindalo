@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getPatients, getAppointments } from '../services/storage';
 import { useTreatments } from '../contexts/TreatmentsContext';
+import { useClinic } from '../contexts/ClinicContext';
 import { format, isToday, isFuture, parseISO, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -51,6 +52,7 @@ function StatCard({ label, value, icon: Icon, color, bg, trend, to }) {
 
 export default function DashboardPage() {
   const { treatments } = useTreatments();
+  const { clinicName } = useClinic();
   const [patients, setPatients]         = useState([]);
   const [appointments, setAppointments] = useState([]);
 
@@ -101,7 +103,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold">
-              Bienvenido a Osteopatía Indalo
+              Bienvenido a {clinicName}
             </h2>
             <p className="text-white/80 mt-1 text-sm">
               {format(new Date(), "EEEE, d 'de' MMMM 'de' yyyy", { locale: es })}

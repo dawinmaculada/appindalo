@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Clock, Tag, Euro, Plus, Edit2, Trash2, Save, X, AlertCircle } from 'lucide-react';
 import { getAppointments, saveTreatment, deleteTreatment } from '../services/storage';
 import { useTreatments } from '../contexts/TreatmentsContext';
+import { useClinic } from '../contexts/ClinicContext';
 
 const CATEGORIES = [
   { value: 'osteopatia',   label: 'Osteopatía' },
@@ -24,6 +25,7 @@ const EMPTY_FORM = {
 
 export default function TreatmentsPage() {
   const { treatments, setTreatments } = useTreatments();
+  const { clinicName } = useClinic();
   const [appointments, setAppointments] = useState([]);
   const [tab, setTab] = useState('catalogo');
   const [form, setForm] = useState(EMPTY_FORM);
@@ -118,7 +120,7 @@ export default function TreatmentsPage() {
           {/* Hero */}
           <div className="bg-gradient-to-br from-[#1a2332] to-[#2d3d52] rounded-2xl p-6 text-white">
             <h2 className="text-xl font-bold">Catálogo de Tratamientos</h2>
-            <p className="text-white/60 text-sm mt-1">Servicios especializados de Osteopatía Indalo</p>
+            <p className="text-white/60 text-sm mt-1">Servicios especializados de {clinicName}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <div className="bg-white/10 rounded-xl px-4 py-2">
                 <p className="text-xs text-white/60">Tratamientos</p>

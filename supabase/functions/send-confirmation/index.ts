@@ -9,11 +9,13 @@ function confirmationHtml(p: {
   time: string
   notes?: string
   isEdit: boolean
+  clinicName?: string
 }) {
   const dateStr = new Date(p.date + 'T12:00:00').toLocaleDateString('es-ES', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   })
   const timeStr = p.time.slice(0, 5)
+  const clinic = p.clinicName || 'Tu clínica'
   const title = p.isEdit ? 'Tu cita ha sido modificada' : 'Cita confirmada'
   const intro = p.isEdit
     ? 'Los datos de tu cita han sido actualizados:'
@@ -22,6 +24,7 @@ function confirmationHtml(p: {
   return `
     <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#fff">
       <div style="background:#1a2332;border-radius:10px 10px 0 0;padding:20px 24px">
+        <p style="color:#00af38;font-size:12px;margin:0 0 4px;font-weight:600;letter-spacing:1px">${clinic}</p>
         <h1 style="color:#fff;margin:0;font-size:20px">${title}</h1>
       </div>
       <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;padding:24px">
@@ -43,7 +46,7 @@ function confirmationHtml(p: {
 }
 
 Deno.serve(async (req) => {
-  const { to, patientName, treatmentName, workerName, date, time, notes, isEdit } = await req.json()
+  const { to, patientName, treatmentName, workerName, date, time, notes, isEdit, clinicName } = await req.json()
 
   if (!to || !patientName || !date || !time) {
     return new Response(JSON.stringify({ error: 'Faltan campos requeridos' }), { status: 400 })

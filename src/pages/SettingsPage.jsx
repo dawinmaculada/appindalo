@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, Mail } from 'lucide-react';
 import { changePassword } from '../services/auth';
 import { supabase } from '../services/supabase';
+import { useClinic } from '../contexts/ClinicContext';
 
 export default function SettingsPage() {
+  const { clinicName } = useClinic();
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <p className="font-bold text-[#1a2332]">{userEmail || '—'}</p>
-            <p className="text-xs text-gray-400">Administrador · Clínica Indalo</p>
+            <p className="text-xs text-gray-400">Administrador · {clinicName}</p>
           </div>
         </div>
       </div>

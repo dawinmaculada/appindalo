@@ -27,6 +27,7 @@ import {
   getWorkers,
 } from '../services/storage';
 import { useTreatments } from '../contexts/TreatmentsContext';
+import { useClinic } from '../contexts/ClinicContext';
 import {
   createCalendarEvent,
   deleteCalendarEvent,
@@ -57,6 +58,7 @@ const STATUS_CONFIG = {
 
 export default function AppointmentsPage() {
   const { treatments } = useTreatments();
+  const { clinicName } = useClinic();
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [workers, setWorkers] = useState([]);
@@ -174,6 +176,7 @@ export default function AppointmentsPage() {
             time: savedForm.time,
             notes: savedForm.notes,
             isEdit: !isNew,
+            clinicName,
           },
         });
         setEmailNotif({ ok: true, msg: `Email enviado a ${patient.email}` });

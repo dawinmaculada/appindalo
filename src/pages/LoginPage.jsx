@@ -32,8 +32,7 @@ export default function LoginPage() {
             <Leaf size={48} className="text-white" />
           </div>
           <h1 className="text-4xl font-extrabold text-white mb-3">
-            Osteopatía
-            <span className="text-[#00af38]"> Indalo</span>
+            <span className="text-[#00af38]">NUVIA</span>
           </h1>
           <p className="text-white/50 text-lg">
             Sistema de gestión de clínica
@@ -65,8 +64,7 @@ export default function LoginPage() {
               <Leaf size={20} className="text-white" />
             </div>
             <div>
-              <p className="font-bold text-[#1a2332] leading-tight">Osteopatía</p>
-              <p className="text-[#00af38] font-extrabold leading-tight">Indalo</p>
+              <p className="text-[#00af38] font-extrabold leading-tight">NUVIA</p>
             </div>
           </div>
 
@@ -142,7 +140,7 @@ export default function LoginPage() {
           </form>
 
           <p className="text-center text-xs text-gray-300 mt-8">
-            Osteopatía Indalo · CRM v2.0
+            NUVIA · Gestión de clínica v2.0
           </p>
         </div>
       </div>

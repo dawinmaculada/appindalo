@@ -6,6 +6,7 @@ export const supabase = createClient(
 );
 
 let _clinicId = null;
+let _clinicName = null;
 
 export async function getClinicId() {
   if (_clinicId) return _clinicId;
@@ -18,6 +19,15 @@ export async function getClinicId() {
   return _clinicId;
 }
 
+export async function getClinicName() {
+  if (_clinicName) return _clinicName;
+  const cid = await getClinicId();
+  const { data } = await supabase.from('clinics').select('name').eq('id', cid).single();
+  _clinicName = data?.name || 'Mi Clínica';
+  return _clinicName;
+}
+
 export function clearClinicIdCache() {
   _clinicId = null;
+  _clinicName = null;
 }

@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useClinic } from '../../contexts/ClinicContext';
 import {
   LayoutDashboard,
   Users,
@@ -30,6 +31,7 @@ const BOTTOM_ITEMS = [
 ];
 
 export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }) {
+  const { clinicName } = useClinic();
   const handleNavClick = () => {
     onMobileClose?.();
   };
@@ -61,8 +63,10 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <p className="font-bold text-sm leading-tight text-white">Osteopatía</p>
-              <p className="text-[#00af38] font-extrabold text-base leading-tight">Indalo</p>
+              <p className="text-[#00af38] font-extrabold text-base leading-tight">NUVIA</p>
+              {clinicName && (
+                <p className="text-white/50 text-xs leading-tight truncate">{clinicName}</p>
+              )}
             </div>
           )}
         </div>
@@ -121,7 +125,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
         {/* Footer */}
         {!collapsed && (
           <div className="px-4 py-3 border-t border-white/10">
-            <p className="text-xs text-white/30 text-center">v2.0.0 · Indalo</p>
+            <p className="text-xs text-white/30 text-center">v2.0.0 · NUVIA</p>
           </div>
         )}
 
