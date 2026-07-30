@@ -1,4 +1,4 @@
-import { supabase, CLINIC_ID } from './supabase';
+import { supabase, getClinicId } from './supabase';
 
 // ── Helpers de mapeo ─────────────────────────────────────────────────────
 
@@ -66,16 +66,18 @@ const mapInvoice = (row) => ({
 // ── Pacientes ─────────────────────────────────────────────────────────────
 
 export const getPatients = async () => {
+  const cid = await getClinicId();
   const { data, error } = await supabase
     .from('patients')
     .select('*')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data || []).map(mapPatient);
 };
 
 export const savePatient = async (patient) => {
+  const cid = await getClinicId();
   if (patient.id) {
     const { error } = await supabase
       .from('patients')
@@ -89,13 +91,13 @@ export const savePatient = async (patient) => {
         updated_at: new Date().toISOString(),
       })
       .eq('id', patient.id)
-      .eq('clinic_id', CLINIC_ID);
+      .eq('clinic_id', cid);
     if (error) throw error;
   } else {
     const { error } = await supabase
       .from('patients')
       .insert({
-        clinic_id: CLINIC_ID,
+        clinic_id: cid,
         name: patient.name,
         email: patient.email || null,
         phone: patient.phone || null,
@@ -109,18 +111,20 @@ export const savePatient = async (patient) => {
 };
 
 export const deletePatient = async (id) => {
+  const cid = await getClinicId();
   const { error } = await supabase
     .from('patients')
     .delete()
     .eq('id', id)
-    .eq('clinic_id', CLINIC_ID);
+    .eq('clinic_id', cid);
   if (error) throw error;
   return getPatients();
 };
 
 export const insertPatients = async (patients) => {
+  const cid = await getClinicId();
   const rows = patients.map((p) => ({
-    clinic_id: CLINIC_ID,
+    clinic_id: cid,
     name: p.name,
     email: p.email || null,
     phone: p.phone || null,
@@ -135,16 +139,18 @@ export const insertPatients = async (patients) => {
 // ── Citas ─────────────────────────────────────────────────────────────────
 
 export const getAppointments = async () => {
+  const cid = await getClinicId();
   const { data, error } = await supabase
     .from('appointments')
     .select('*')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .order('date', { ascending: false });
   if (error) throw error;
   return (data || []).map(mapAppointment);
 };
 
 export const saveAppointment = async (appointment) => {
+  const cid = await getClinicId();
   if (appointment.id) {
     const { error } = await supabase
       .from('appointments')
@@ -163,13 +169,13 @@ export const saveAppointment = async (appointment) => {
         updated_at: new Date().toISOString(),
       })
       .eq('id', appointment.id)
-      .eq('clinic_id', CLINIC_ID);
+      .eq('clinic_id', cid);
     if (error) throw error;
   } else {
     const { error } = await supabase
       .from('appointments')
       .insert({
-        clinic_id: CLINIC_ID,
+        clinic_id: cid,
         patient_id: appointment.patientId,
         treatment_id: appointment.treatmentId,
         worker_id: appointment.workerId || null,
@@ -187,11 +193,12 @@ export const saveAppointment = async (appointment) => {
 };
 
 export const deleteAppointment = async (id) => {
+  const cid = await getClinicId();
   const { error } = await supabase
     .from('appointments')
     .delete()
     .eq('id', id)
-    .eq('clinic_id', CLINIC_ID);
+    .eq('clinic_id', cid);
   if (error) throw error;
   return getAppointments();
 };
@@ -199,16 +206,18 @@ export const deleteAppointment = async (id) => {
 // ── Trabajadores ──────────────────────────────────────────────────────────
 
 export const getWorkers = async () => {
+  const cid = await getClinicId();
   const { data, error } = await supabase
     .from('workers')
     .select('*')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .order('created_at', { ascending: true });
   if (error) throw error;
   return (data || []).map(mapWorker);
 };
 
 export const saveWorker = async (worker) => {
+  const cid = await getClinicId();
   if (worker.id) {
     const { error } = await supabase
       .from('workers')
@@ -223,13 +232,13 @@ export const saveWorker = async (worker) => {
         updated_at: new Date().toISOString(),
       })
       .eq('id', worker.id)
-      .eq('clinic_id', CLINIC_ID);
+      .eq('clinic_id', cid);
     if (error) throw error;
   } else {
     const { error } = await supabase
       .from('workers')
       .insert({
-        clinic_id: CLINIC_ID,
+        clinic_id: cid,
         name: worker.name,
         role: worker.role || null,
         phone: worker.phone || null,
@@ -244,11 +253,12 @@ export const saveWorker = async (worker) => {
 };
 
 export const deleteWorker = async (id) => {
+  const cid = await getClinicId();
   const { error } = await supabase
     .from('workers')
     .delete()
     .eq('id', id)
-    .eq('clinic_id', CLINIC_ID);
+    .eq('clinic_id', cid);
   if (error) throw error;
   return getWorkers();
 };
@@ -256,26 +266,28 @@ export const deleteWorker = async (id) => {
 // ── Facturas ──────────────────────────────────────────────────────────────
 
 export const getInvoices = async () => {
+  const cid = await getClinicId();
   const { data, error } = await supabase
     .from('invoices')
     .select('*')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data || []).map(mapInvoice);
 };
 
-async function nextInvoiceNumber() {
+async function nextInvoiceNumber(cid) {
   const year = new Date().getFullYear();
   const { count } = await supabase
     .from('invoices')
     .select('*', { count: 'exact', head: true })
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .like('number', `FAC-${year}-%`);
   return `FAC-${year}-${String((count || 0) + 1).padStart(3, '0')}`;
 }
 
 export const saveInvoice = async (invoice) => {
+  const cid = await getClinicId();
   if (invoice.id) {
     const { data, error } = await supabase
       .from('invoices')
@@ -293,17 +305,17 @@ export const saveInvoice = async (invoice) => {
         updated_at: new Date().toISOString(),
       })
       .eq('id', invoice.id)
-      .eq('clinic_id', CLINIC_ID)
+      .eq('clinic_id', cid)
       .select()
       .single();
     if (error) throw error;
     return mapInvoice(data);
   } else {
-    const number = await nextInvoiceNumber();
+    const number = await nextInvoiceNumber(cid);
     const { data, error } = await supabase
       .from('invoices')
       .insert({
-        clinic_id: CLINIC_ID,
+        clinic_id: cid,
         number,
         patient_id: invoice.patientId || null,
         date: invoice.date,
@@ -325,11 +337,12 @@ export const saveInvoice = async (invoice) => {
 };
 
 export const deleteInvoice = async (id) => {
+  const cid = await getClinicId();
   const { error } = await supabase
     .from('invoices')
     .delete()
     .eq('id', id)
-    .eq('clinic_id', CLINIC_ID);
+    .eq('clinic_id', cid);
   if (error) throw error;
   return getInvoices();
 };
@@ -339,24 +352,26 @@ export const deleteInvoice = async (id) => {
 const ISSUER_DEFAULT = { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };
 
 export const getIssuerData = async () => {
+  const cid = await getClinicId();
   const { data } = await supabase
     .from('issuer_data')
     .select('*')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .maybeSingle();
   if (!data) return ISSUER_DEFAULT;
   return { name: data.name || '', nif: data.nif || '', address: data.address || '', phone: data.phone || '', email: data.email || '' };
 };
 
 export const saveIssuerData = async (issuerData) => {
+  const cid = await getClinicId();
   const { data: existing } = await supabase
     .from('issuer_data')
     .select('id')
-    .eq('clinic_id', CLINIC_ID)
+    .eq('clinic_id', cid)
     .maybeSingle();
   if (existing) {
-    await supabase.from('issuer_data').update({ ...issuerData }).eq('clinic_id', CLINIC_ID);
+    await supabase.from('issuer_data').update({ ...issuerData }).eq('clinic_id', cid);
   } else {
-    await supabase.from('issuer_data').insert({ clinic_id: CLINIC_ID, ...issuerData });
+    await supabase.from('issuer_data').insert({ clinic_id: cid, ...issuerData });
   }
 };

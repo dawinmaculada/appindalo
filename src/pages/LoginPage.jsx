@@ -2,37 +2,32 @@ import { useState } from 'react';
 import { Leaf, Eye, EyeOff, Loader, AlertCircle } from 'lucide-react';
 import { login } from '../services/auth';
 
-export default function LoginPage({ onLogin }) {
-  const [username, setUsername] = useState('');
+export default function LoginPage() {
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [showPass, setShowPass]  = useState(false);
-  const [loading, setLoading]    = useState(false);
-  const [error, setError]        = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    const result = await login(username, password);
+    const result = await login(email, password);
     setLoading(false);
-    if (result.ok) {
-      onLogin(result.session);
-    } else {
-      setError(result.error);
-    }
+    if (!result.ok) setError(result.error);
+    // Si ok, supabase.auth.onAuthStateChange en App.jsx redirige automáticamente
   };
 
   return (
     <div className="min-h-screen flex">
       {/* ── Panel izquierdo (decorativo) ─────────────────────────── */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#1a2332] to-[#243347] flex-col items-center justify-center p-12 relative overflow-hidden">
-        {/* Círculos decorativos */}
         <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-[#00af38]/10" />
         <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-[#00af38]/5" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#00af38]/5" />
 
         <div className="relative z-10 text-center">
-          {/* Logo grande */}
           <div className="w-24 h-24 rounded-3xl bg-[#00af38] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-[#00af38]/30">
             <Leaf size={48} className="text-white" />
           </div>
@@ -44,7 +39,6 @@ export default function LoginPage({ onLogin }) {
             Sistema de gestión de clínica
           </p>
 
-          {/* Features */}
           <div className="mt-12 space-y-4 text-left max-w-xs mx-auto">
             {[
               'Gestión de pacientes y citas',
@@ -66,7 +60,6 @@ export default function LoginPage({ onLogin }) {
       {/* ── Panel derecho (formulario) ────────────────────────────── */}
       <div className="flex-1 flex items-center justify-center p-8 bg-[#f8fafb]">
         <div className="w-full max-w-sm">
-          {/* Logo móvil */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
             <div className="w-10 h-10 rounded-xl bg-[#00af38] flex items-center justify-center">
               <Leaf size={20} className="text-white" />
@@ -85,24 +78,22 @@ export default function LoginPage({ onLogin }) {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Usuario */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Usuario
+                Email
               </label>
               <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 autoFocus
-                autoComplete="username"
-                placeholder="admin"
+                autoComplete="email"
+                placeholder="clinica@ejemplo.com"
                 className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] transition-colors"
               />
             </div>
 
-            {/* Contraseña */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Contraseña
@@ -127,7 +118,6 @@ export default function LoginPage({ onLogin }) {
               </div>
             </div>
 
-            {/* Error */}
             {error && (
               <div className="flex items-center gap-2.5 bg-red-50 border border-red-100 text-red-600 rounded-xl px-4 py-3 text-sm">
                 <AlertCircle size={16} className="flex-shrink-0" />
@@ -135,7 +125,6 @@ export default function LoginPage({ onLogin }) {
               </div>
             )}
 
-            {/* Botón */}
             <button
               type="submit"
               disabled={loading}
@@ -152,18 +141,8 @@ export default function LoginPage({ onLogin }) {
             </button>
           </form>
 
-          {/* Credenciales por defecto */}
-          <div className="mt-8 p-4 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-700 space-y-1">
-            <p className="font-semibold">Credenciales por defecto:</p>
-            <p>Usuario: <span className="font-mono font-bold">admin</span></p>
-            <p>Contraseña: <span className="font-mono font-bold">indalo2024</span></p>
-            <p className="text-amber-500 mt-2">
-              Cambia la contraseña desde Ajustes tras el primer acceso.
-            </p>
-          </div>
-
-          <p className="text-center text-xs text-gray-300 mt-6">
-            Osteopatía Indalo · CRM v1.0
+          <p className="text-center text-xs text-gray-300 mt-8">
+            Osteopatía Indalo · CRM v2.0
           </p>
         </div>
       </div>

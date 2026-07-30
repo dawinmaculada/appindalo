@@ -27,15 +27,18 @@ const PAGE_SUBTITLES = {
   '/ajustes': 'Configuración de cuenta',
 };
 
-export default function Header({ session, onLogout }) {
+export default function Header({ session }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const title = PAGE_TITLES[pathname] || 'Indalo';
   const subtitle = PAGE_SUBTITLES[pathname] || '';
 
-  const handleLogout = () => {
-    logout();
-    onLogout?.();
+  const email = session?.user?.email || '';
+  const displayName = email.split('@')[0] || 'admin';
+  const initial = displayName[0]?.toUpperCase() || 'A';
+
+  const handleLogout = async () => {
+    await logout();
     navigate('/login', { replace: true });
   };
 
@@ -56,11 +59,11 @@ export default function Header({ session, onLogout }) {
 
         <div className="flex items-center gap-2 pl-3 border-l border-gray-100">
           <div className="w-9 h-9 rounded-xl bg-[#00af38] flex items-center justify-center shadow font-bold text-white text-sm">
-            {session?.username?.[0]?.toUpperCase() || 'A'}
+            {initial}
           </div>
           <div className="hidden md:block">
             <p className="text-sm font-semibold text-[#1a2332] leading-tight">
-              {session?.username || 'admin'}
+              {displayName}
             </p>
             <p className="text-xs text-gray-400">Administrador</p>
           </div>

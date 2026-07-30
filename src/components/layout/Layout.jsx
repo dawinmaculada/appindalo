@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useEmailReminders } from '../../hooks/useEmailReminders';
 
-export default function Layout({ session, onLogout }) {
+export default function Layout({ session }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   useEmailReminders();
 
@@ -15,7 +15,7 @@ export default function Layout({ session, onLogout }) {
         onToggle={() => setSidebarCollapsed((v) => !v)}
       />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <Header session={session} onLogout={onLogout} />
+        <Header session={session} />
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>

@@ -1,11 +1,17 @@
-import { useState } from 'react';
-import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, User } from 'lucide-react';
-import { changePassword, changeUsername, getSession } from '../services/auth';
+import { useState, useEffect } from 'react';
+import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, Mail } from 'lucide-react';
+import { changePassword } from '../services/auth';
+import { supabase } from '../services/supabase';
 
 export default function SettingsPage() {
-  const session = getSession();
+  const [userEmail, setUserEmail] = useState('');
 
-  // ── Cambiar contraseña ──────────────────────────────────────────────
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user?.email) setUserEmail(user.email);
+    });
+  }, []);
+
   const [passForm, setPassForm] = useState({ current: '', next: '', confirm: '' });
   const [showPass, setShowPass] = useState({ current: false, next: false });
   const [passMsg, setPassMsg]   = useState(null);
@@ -26,32 +32,16 @@ export default function SettingsPage() {
     }
   };
 
-  // ── Cambiar usuario ─────────────────────────────────────────────────
-  const [userForm, setUserForm] = useState({ newUsername: '', password: '' });
-  const [userMsg, setUserMsg]   = useState(null);
-
-  const handleChangeUser = async (e) => {
-    e.preventDefault();
-    setUserMsg(null);
-    const result = await changeUsername(userForm.newUsername, userForm.password);
-    if (result.ok) {
-      setUserForm({ newUsername: '', password: '' });
-      setUserMsg({ ok: true, text: 'Nombre de usuario actualizado' });
-    } else {
-      setUserMsg({ ok: false, text: result.error });
-    }
-  };
-
   return (
     <div className="max-w-lg space-y-6">
       {/* Info sesión */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-[#00af38] flex items-center justify-center text-white font-bold text-lg">
-            {session?.username?.[0]?.toUpperCase() || 'A'}
+            {userEmail[0]?.toUpperCase() || 'A'}
           </div>
           <div>
-            <p className="font-bold text-[#1a2332]">{session?.username || 'admin'}</p>
+            <p className="font-bold text-[#1a2332]">{userEmail || '—'}</p>
             <p className="text-xs text-gray-400">Administrador · Clínica Indalo</p>
           </div>
         </div>
@@ -101,39 +91,17 @@ export default function SettingsPage() {
         </form>
       </div>
 
-      {/* Cambiar usuario */}
+      {/* Info cuenta */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-5">
-          <User size={18} className="text-[#00af38]" />
-          <h3 className="font-bold text-[#1a2332]">Cambiar nombre de usuario</h3>
+        <div className="flex items-center gap-2 mb-4">
+          <Mail size={18} className="text-[#00af38]" />
+          <h3 className="font-bold text-[#1a2332]">Cuenta</h3>
         </div>
-        <form onSubmit={handleChangeUser} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Nuevo usuario
-            </label>
-            <input
-              type="text"
-              required
-              value={userForm.newUsername}
-              onChange={(e) => setUserForm((f) => ({ ...f, newUsername: e.target.value }))}
-              placeholder="nuevo_usuario"
-              className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38]"
-            />
-          </div>
-          <PassField
-            label="Contraseña actual (confirmación)"
-            value={userForm.password}
-            onChange={(v) => setUserForm((f) => ({ ...f, password: v }))}
-          />
-          {userMsg && <Msg data={userMsg} />}
-          <button
-            type="submit"
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#00af38] text-white text-sm font-semibold rounded-xl hover:bg-[#008a2c] transition-colors"
-          >
-            <Save size={15} /> Guardar usuario
-          </button>
-        </form>
+        <p className="text-sm text-gray-500 mb-1">Email de acceso</p>
+        <p className="text-sm font-medium text-[#1a2332]">{userEmail || '—'}</p>
+        <p className="text-xs text-gray-400 mt-3">
+          Para cambiar el email contacta con el administrador del sistema.
+        </p>
       </div>
     </div>
   );
@@ -173,9 +141,7 @@ function Msg({ data }) {
         ? 'bg-[#e6f9ed] text-[#00af38]'
         : 'bg-red-50 text-red-600'
     }`}>
-      {data.ok
-        ? <CheckCircle2 size={15} />
-        : <AlertCircle size={15} />}
+      {data.ok ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
       {data.text}
     </div>
   );

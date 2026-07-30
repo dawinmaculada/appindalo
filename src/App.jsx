@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { initAuth, isAuthenticated } from './services/auth';
+import { supabase } from './services/supabase';
 import Layout from './components/layout/Layout';
-import PrivateRoute from './components/PrivateRoute';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
@@ -15,40 +14,33 @@ import BillingPage from './pages/BillingPage';
 import MarketingPage from './pages/MarketingPage';
 
 function App() {
-  const [authReady, setAuthReady] = useState(false);
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(undefined); // undefined = cargando
 
   useEffect(() => {
-    initAuth().then(() => {
-      setAuthReady(true);
-      if (isAuthenticated()) {
-        const raw = sessionStorage.getItem('indalo_session');
-        setSession(raw ? JSON.parse(raw) : null);
-      }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session ?? null);
     });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session ?? null);
+    });
+    return () => subscription.unsubscribe();
   }, []);
 
-  if (!authReady) return null;
+  if (session === undefined) return null;
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/login"
-          element={
-            session ? (
-              <Navigate to="/" replace />
-            ) : (
-              <LoginPage onLogin={(s) => setSession(s)} />
-            )
-          }
+          element={session ? <Navigate to="/" replace /> : <LoginPage />}
         />
         <Route
           path="/"
           element={
-            <PrivateRoute>
-              <Layout session={session} onLogout={() => setSession(null)} />
-            </PrivateRoute>
+            session
+              ? <Layout session={session} />
+              : <Navigate to="/login" replace />
           }
         >
           <Route index element={<DashboardPage />} />
