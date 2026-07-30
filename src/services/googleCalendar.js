@@ -122,6 +122,30 @@ export const deleteCalendarEvent = async (eventId) => {
   });
 };
 
+// Obtener eventos externos (creados en Google Calendar, no en NUVIA)
+export const getExternalEvents = async (weekStart, weekEnd, nuvisEventIds = []) => {
+  if (!isSignedIn()) return [];
+  const events = await getCalendarEvents(
+    new Date(weekStart).toISOString(),
+    new Date(weekEnd).toISOString()
+  );
+  return events
+    .filter((e) => !nuvisEventIds.includes(e.id))
+    .map((e) => {
+      const allDay = !!e.start?.date;
+      const startDt = e.start?.dateTime ? new Date(e.start.dateTime) : null;
+      const endDt   = e.end?.dateTime   ? new Date(e.end.dateTime)   : null;
+      return {
+        id:        e.id,
+        title:     e.summary || 'Bloqueado',
+        date:      allDay ? e.start.date : startDt?.toISOString().slice(0, 10),
+        startTime: startDt ? `${String(startDt.getHours()).padStart(2,'0')}:${String(startDt.getMinutes()).padStart(2,'0')}` : null,
+        endTime:   endDt   ? `${String(endDt.getHours()).padStart(2,'0')}:${String(endDt.getMinutes()).padStart(2,'0')}` : null,
+        allDay,
+      };
+    });
+};
+
 // Comprobar disponibilidad en un rango horario
 export const checkAvailability = async (date, startTime, duration = 60) => {
   const startDateTime = new Date(`${date}T${startTime}:00`);

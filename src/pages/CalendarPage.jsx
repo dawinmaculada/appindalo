@@ -34,6 +34,7 @@ import {
   getPatients,
   getWorkers,
 } from '../services/storage';
+import { isSignedIn, getExternalEvents, createCalendarEvent, deleteCalendarEvent } from '../services/googleCalendar';
 import { useTreatments } from '../contexts/TreatmentsContext';
 import PaymentModal from '../components/PaymentModal';
 
@@ -98,15 +99,27 @@ export default function CalendarPage() {
   const { treatments } = useTreatments();
   const [view, setView]         = useState('week'); // 'day' | 'week' | 'month'
   const [current, setCurrent]   = useState(new Date());
-  const [appointments, setApts] = useState([]);
-  const [patients, setPatients] = useState([]);
-  const [workers, setWorkers]   = useState([]);
+  const [appointments, setApts]     = useState([]);
+  const [patients, setPatients]     = useState([]);
+  const [workers, setWorkers]       = useState([]);
+  const [blockedSlots, setBlocked]  = useState([]);
 
   useEffect(() => {
     getAppointments().then(setApts);
     getPatients().then(setPatients);
     getWorkers().then(setWorkers);
   }, []);
+
+  // Cargar eventos externos de Google Calendar al cambiar de semana/día
+  useEffect(() => {
+    if (!isSignedIn()) return;
+    const weekStart = startOfWeek(current, { weekStartsOn: 1 });
+    const weekEnd   = endOfWeek(current,   { weekStartsOn: 1 });
+    const nuvisIds  = appointments.map((a) => a.googleEventId).filter(Boolean);
+    getExternalEvents(weekStart, weekEnd, nuvisIds)
+      .then(setBlocked)
+      .catch(() => {});
+  }, [current, appointments]);
 
   // Modal de nueva cita rápida
   const [form, setForm] = useState(null);
@@ -170,7 +183,17 @@ export default function CalendarPage() {
 
   const handleSaveForm = async (e) => {
     e.preventDefault();
-    setApts(await saveAppointment(form));
+    let savedForm = { ...form };
+    if (isSignedIn()) {
+      try {
+        const patient   = patients.find((p) => p.id === form.patientId);
+        const treatment = treatments.find((t) => t.id === form.treatmentId);
+        if (form.googleEventId) await deleteCalendarEvent(form.googleEventId).catch(() => {});
+        const gcEvent = await createCalendarEvent(form, patient, treatment);
+        savedForm.googleEventId = gcEvent.id;
+      } catch { /* sin Google no bloqueamos el guardado */ }
+    }
+    setApts(await saveAppointment(savedForm));
     setForm(null);
   };
 
@@ -235,6 +258,31 @@ export default function CalendarPage() {
       </div>
     );
   };
+
+  // ── Bloque de evento externo (Google Calendar) ─────────────────────
+  const BlockedBlock = ({ slot }) => {
+    if (slot.allDay || !slot.startTime || !slot.endTime) return null;
+    const startMins = timeToMinutes(slot.startTime);
+    const endMins   = timeToMinutes(slot.endTime);
+    const duration  = Math.max(endMins - startMins, 15);
+    const top    = topPx(slot.startTime);
+    const height = Math.max(heightPx(duration), 20);
+    return (
+      <div
+        title={slot.title}
+        style={{ position: 'absolute', top: top + 1, height: height - 2, left: 2, right: 2 }}
+        className="rounded-md px-1.5 py-0.5 overflow-hidden z-10 select-none pointer-events-none
+          bg-gray-300/60 border-l-2 border-gray-400"
+      >
+        <p className="text-gray-600 text-[11px] font-medium leading-tight truncate">
+          🔒 {slot.title}
+        </p>
+      </div>
+    );
+  };
+
+  const blockedForDay = (day) =>
+    blockedSlots.filter((s) => s.date === format(day, 'yyyy-MM-dd'));
 
   // ── Grid de horas (día o semana) ────────────────────────────────────
   const HourGrid = ({ days }) => (
@@ -310,6 +358,10 @@ export default function CalendarPage() {
               {/* Bloques de citas */}
               {laid.map(({ apt, col, totalCols }) => (
                 <AptBlock key={apt.id} apt={apt} col={col} totalCols={totalCols} />
+              ))}
+              {/* Bloques bloqueados (eventos externos de Google Calendar) */}
+              {blockedForDay(day).map((slot) => (
+                <BlockedBlock key={slot.id} slot={slot} />
               ))}
             </div>
           );
