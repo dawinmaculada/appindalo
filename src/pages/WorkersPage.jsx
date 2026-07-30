@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   UserCog,
   Plus,
@@ -45,7 +45,9 @@ const COLORS = [
 ];
 
 export default function WorkersPage() {
-  const [workers, setWorkers] = useState(getWorkers);
+  const [workers, setWorkers] = useState([]);
+
+  useEffect(() => { getWorkers().then(setWorkers); }, []);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -62,15 +64,14 @@ export default function WorkersPage() {
     setShowForm(true);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    const updated = saveWorker(form);
-    setWorkers(updated);
+    setWorkers(await saveWorker(form));
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    setWorkers(deleteWorker(id));
+  const handleDelete = async (id) => {
+    setWorkers(await deleteWorker(id));
     setDeleteConfirm(null);
   };
 

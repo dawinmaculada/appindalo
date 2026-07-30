@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   X, Plus, Trash2, Printer, FileText, CreditCard, Banknote, Clock,
   ChevronDown, ChevronUp, Building2, User,
@@ -186,9 +186,11 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
   const [notes, setNotes] = useState('');
   const [createdInvoice, setCreatedInvoice] = useState(null);
 
-  // Datos del emisor (persistidos en localStorage)
-  const [issuer, setIssuer] = useState(getIssuerData);
+  // Datos del emisor (cargados de Supabase)
+  const [issuer, setIssuer] = useState({ name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' });
   const updateIssuer = (field, val) => setIssuer((p) => ({ ...p, [field]: val }));
+
+  useEffect(() => { getIssuerData().then(setIssuer); }, []);
 
   // Datos del cliente (prefill desde paciente)
   const [clientData, setClientData] = useState({
@@ -285,10 +287,10 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
     lineItems.length > 0 &&
     lineItems.every((i) => i.description.trim() && i.price > 0);
 
-  const handleCreate = () => {
-    saveIssuerData(issuer);
+  const handleCreate = async () => {
+    await saveIssuerData(issuer);
 
-    const invoice = saveInvoice({
+    const invoice = await saveInvoice({
       patientId: patient.id,
       date: invoiceDate,
       lineItems,
@@ -301,8 +303,8 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
       clientData,
     });
 
-    selectedApts.forEach((apt) =>
-      saveAppointment({ ...apt, invoiceId: invoice.id })
+    await Promise.all(
+      selectedApts.map((apt) => saveAppointment({ ...apt, invoiceId: invoice.id }))
     );
 
     setCreatedInvoice(invoice);

@@ -1,173 +1,362 @@
-// Servicio de almacenamiento local (localStorage)
-// Puede ser reemplazado por llamadas a API en el futuro
+import { supabase, CLINIC_ID } from './supabase';
 
-const KEYS = {
-  PATIENTS: 'indalo_patients',
-  APPOINTMENTS: 'indalo_appointments',
-  WORKERS: 'indalo_workers',
-  INVOICES: 'indalo_invoices',
+// ── Helpers de mapeo ─────────────────────────────────────────────────────
+
+const mapPatient = (row) => ({
+  id: row.id,
+  name: row.name,
+  email: row.email || '',
+  phone: row.phone || '',
+  birthDate: row.birth_date || '',
+  address: row.address || '',
+  notes: row.notes || '',
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
+const mapAppointment = (row) => ({
+  id: row.id,
+  patientId: row.patient_id,
+  treatmentId: row.treatment_id,
+  workerId: row.worker_id || '',
+  date: row.date,
+  time: row.time,
+  notes: row.notes || '',
+  status: row.status || 'scheduled',
+  googleEventId: row.google_event_id || null,
+  reminderSent: row.reminder_sent || false,
+  billing: row.billing || null,
+  invoiceId: row.invoice_id || null,
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
+const mapWorker = (row) => ({
+  id: row.id,
+  name: row.name,
+  role: row.role || '',
+  phone: row.phone || '',
+  email: row.email || '',
+  color: row.color || '#00af38',
+  notes: row.notes || '',
+  schedule: row.schedule || {},
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
+const mapInvoice = (row) => ({
+  id: row.id,
+  number: row.number,
+  patientId: row.patient_id,
+  appointmentId: row.appointment_id,
+  date: row.date,
+  lineItems: row.line_items || [],
+  total: row.total || 0,
+  base: row.base || 0,
+  iva: row.iva || 0,
+  paymentMethod: row.payment_method || '',
+  status: row.status || 'pending',
+  issuer: row.issuer || {},
+  clientData: row.client_data || {},
+  notes: row.notes || '',
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
+// ── Pacientes ─────────────────────────────────────────────────────────────
+
+export const getPatients = async () => {
+  const { data, error } = await supabase
+    .from('patients')
+    .select('*')
+    .eq('clinic_id', CLINIC_ID)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(mapPatient);
 };
 
-// ── Pacientes ──────────────────────────────────────────────
-export const getPatients = () => {
-  try {
-    const data = localStorage.getItem(KEYS.PATIENTS);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
-  }
-};
-
-export const savePatient = (patient) => {
-  const patients = getPatients();
-  const existing = patients.findIndex((p) => p.id === patient.id);
-  if (existing >= 0) {
-    patients[existing] = { ...patient, updatedAt: new Date().toISOString() };
+export const savePatient = async (patient) => {
+  if (patient.id) {
+    const { error } = await supabase
+      .from('patients')
+      .update({
+        name: patient.name,
+        email: patient.email || null,
+        phone: patient.phone || null,
+        birth_date: patient.birthDate || null,
+        address: patient.address || null,
+        notes: patient.notes || null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', patient.id)
+      .eq('clinic_id', CLINIC_ID);
+    if (error) throw error;
   } else {
-    patients.push({
-      ...patient,
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    const { error } = await supabase
+      .from('patients')
+      .insert({
+        clinic_id: CLINIC_ID,
+        name: patient.name,
+        email: patient.email || null,
+        phone: patient.phone || null,
+        birth_date: patient.birthDate || null,
+        address: patient.address || null,
+        notes: patient.notes || null,
+      });
+    if (error) throw error;
   }
-  localStorage.setItem(KEYS.PATIENTS, JSON.stringify(patients));
-  return patients;
+  return getPatients();
 };
 
-export const deletePatient = (id) => {
-  const patients = getPatients().filter((p) => p.id !== id);
-  localStorage.setItem(KEYS.PATIENTS, JSON.stringify(patients));
-  return patients;
+export const deletePatient = async (id) => {
+  const { error } = await supabase
+    .from('patients')
+    .delete()
+    .eq('id', id)
+    .eq('clinic_id', CLINIC_ID);
+  if (error) throw error;
+  return getPatients();
 };
 
-// ── Citas ──────────────────────────────────────────────────
-export const getAppointments = () => {
-  try {
-    const data = localStorage.getItem(KEYS.APPOINTMENTS);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
-  }
+export const insertPatients = async (patients) => {
+  const rows = patients.map((p) => ({
+    clinic_id: CLINIC_ID,
+    name: p.name,
+    email: p.email || null,
+    phone: p.phone || null,
+    birth_date: p.birthDate || null,
+    address: p.address || null,
+    notes: p.notes || null,
+  }));
+  const { error } = await supabase.from('patients').insert(rows);
+  if (error) throw error;
 };
 
-export const saveAppointment = (appointment) => {
-  const appointments = getAppointments();
-  const existing = appointments.findIndex((a) => a.id === appointment.id);
-  if (existing >= 0) {
-    appointments[existing] = {
-      ...appointment,
-      updatedAt: new Date().toISOString(),
-    };
+// ── Citas ─────────────────────────────────────────────────────────────────
+
+export const getAppointments = async () => {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('*')
+    .eq('clinic_id', CLINIC_ID)
+    .order('date', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(mapAppointment);
+};
+
+export const saveAppointment = async (appointment) => {
+  if (appointment.id) {
+    const { error } = await supabase
+      .from('appointments')
+      .update({
+        patient_id: appointment.patientId,
+        treatment_id: appointment.treatmentId,
+        worker_id: appointment.workerId || null,
+        date: appointment.date,
+        time: appointment.time,
+        notes: appointment.notes || null,
+        status: appointment.status || 'scheduled',
+        google_event_id: appointment.googleEventId || null,
+        reminder_sent: appointment.reminderSent || false,
+        billing: appointment.billing || null,
+        invoice_id: appointment.invoiceId || null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', appointment.id)
+      .eq('clinic_id', CLINIC_ID);
+    if (error) throw error;
   } else {
-    appointments.push({
-      ...appointment,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    const { error } = await supabase
+      .from('appointments')
+      .insert({
+        clinic_id: CLINIC_ID,
+        patient_id: appointment.patientId,
+        treatment_id: appointment.treatmentId,
+        worker_id: appointment.workerId || null,
+        date: appointment.date,
+        time: appointment.time,
+        notes: appointment.notes || null,
+        status: appointment.status || 'scheduled',
+        google_event_id: appointment.googleEventId || null,
+        reminder_sent: appointment.reminderSent || false,
+        billing: appointment.billing || null,
+      });
+    if (error) throw error;
   }
-  localStorage.setItem(KEYS.APPOINTMENTS, JSON.stringify(appointments));
-  return appointments;
+  return getAppointments();
 };
 
-export const deleteAppointment = (id) => {
-  const appointments = getAppointments().filter((a) => a.id !== id);
-  localStorage.setItem(KEYS.APPOINTMENTS, JSON.stringify(appointments));
-  return appointments;
+export const deleteAppointment = async (id) => {
+  const { error } = await supabase
+    .from('appointments')
+    .delete()
+    .eq('id', id)
+    .eq('clinic_id', CLINIC_ID);
+  if (error) throw error;
+  return getAppointments();
 };
 
-// ── Trabajadores ───────────────────────────────────────────
-export const getWorkers = () => {
-  try {
-    const data = localStorage.getItem(KEYS.WORKERS);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
-  }
+// ── Trabajadores ──────────────────────────────────────────────────────────
+
+export const getWorkers = async () => {
+  const { data, error } = await supabase
+    .from('workers')
+    .select('*')
+    .eq('clinic_id', CLINIC_ID)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return (data || []).map(mapWorker);
 };
 
-export const saveWorker = (worker) => {
-  const workers = getWorkers();
-  const existing = workers.findIndex((w) => w.id === worker.id);
-  if (existing >= 0) {
-    workers[existing] = { ...worker, updatedAt: new Date().toISOString() };
+export const saveWorker = async (worker) => {
+  if (worker.id) {
+    const { error } = await supabase
+      .from('workers')
+      .update({
+        name: worker.name,
+        role: worker.role || null,
+        phone: worker.phone || null,
+        email: worker.email || null,
+        color: worker.color || '#00af38',
+        notes: worker.notes || null,
+        schedule: worker.schedule || {},
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', worker.id)
+      .eq('clinic_id', CLINIC_ID);
+    if (error) throw error;
   } else {
-    workers.push({
-      ...worker,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    const { error } = await supabase
+      .from('workers')
+      .insert({
+        clinic_id: CLINIC_ID,
+        name: worker.name,
+        role: worker.role || null,
+        phone: worker.phone || null,
+        email: worker.email || null,
+        color: worker.color || '#00af38',
+        notes: worker.notes || null,
+        schedule: worker.schedule || {},
+      });
+    if (error) throw error;
   }
-  localStorage.setItem(KEYS.WORKERS, JSON.stringify(workers));
-  return workers;
+  return getWorkers();
 };
 
-export const deleteWorker = (id) => {
-  const workers = getWorkers().filter((w) => w.id !== id);
-  localStorage.setItem(KEYS.WORKERS, JSON.stringify(workers));
-  return workers;
+export const deleteWorker = async (id) => {
+  const { error } = await supabase
+    .from('workers')
+    .delete()
+    .eq('id', id)
+    .eq('clinic_id', CLINIC_ID);
+  if (error) throw error;
+  return getWorkers();
 };
 
-// ── Facturas ───────────────────────────────────────────────
-export const getInvoices = () => {
-  try {
-    const data = localStorage.getItem(KEYS.INVOICES);
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
-  }
+// ── Facturas ──────────────────────────────────────────────────────────────
+
+export const getInvoices = async () => {
+  const { data, error } = await supabase
+    .from('invoices')
+    .select('*')
+    .eq('clinic_id', CLINIC_ID)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(mapInvoice);
 };
 
-function nextInvoiceNumber(invoices) {
+async function nextInvoiceNumber() {
   const year = new Date().getFullYear();
-  const count = invoices.filter((i) => i.number?.startsWith(`FAC-${year}-`)).length;
-  return `FAC-${year}-${String(count + 1).padStart(3, '0')}`;
+  const { count } = await supabase
+    .from('invoices')
+    .select('*', { count: 'exact', head: true })
+    .eq('clinic_id', CLINIC_ID)
+    .like('number', `FAC-${year}-%`);
+  return `FAC-${year}-${String((count || 0) + 1).padStart(3, '0')}`;
 }
 
-// Devuelve la factura guardada (no el array completo)
-export const saveInvoice = (invoice) => {
-  const invoices = getInvoices();
-  let saved;
-  const idx = invoices.findIndex((i) => i.id === invoice.id);
-  if (idx >= 0) {
-    saved = { ...invoice, updatedAt: new Date().toISOString() };
-    invoices[idx] = saved;
+export const saveInvoice = async (invoice) => {
+  if (invoice.id) {
+    const { data, error } = await supabase
+      .from('invoices')
+      .update({
+        date: invoice.date,
+        line_items: invoice.lineItems || [],
+        total: invoice.total || 0,
+        base: invoice.base || 0,
+        iva: invoice.iva || 0,
+        payment_method: invoice.paymentMethod || null,
+        status: invoice.status || 'pending',
+        issuer: invoice.issuer || null,
+        client_data: invoice.clientData || null,
+        notes: invoice.notes || null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', invoice.id)
+      .eq('clinic_id', CLINIC_ID)
+      .select()
+      .single();
+    if (error) throw error;
+    return mapInvoice(data);
   } else {
-    saved = {
-      ...invoice,
-      id: crypto.randomUUID(),
-      number: nextInvoiceNumber(invoices),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    invoices.push(saved);
-  }
-  localStorage.setItem(KEYS.INVOICES, JSON.stringify(invoices));
-  return saved;
-};
-
-export const deleteInvoice = (id) => {
-  const invoices = getInvoices().filter((i) => i.id !== id);
-  localStorage.setItem(KEYS.INVOICES, JSON.stringify(invoices));
-  return invoices;
-};
-
-// ── Datos del emisor ───────────────────────────────────────
-const ISSUER_KEY = 'indalo_issuer';
-
-export const getIssuerData = () => {
-  try {
-    const data = localStorage.getItem(ISSUER_KEY);
-    return data
-      ? JSON.parse(data)
-      : { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };
-  } catch {
-    return { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };
+    const number = await nextInvoiceNumber();
+    const { data, error } = await supabase
+      .from('invoices')
+      .insert({
+        clinic_id: CLINIC_ID,
+        number,
+        patient_id: invoice.patientId || null,
+        date: invoice.date,
+        line_items: invoice.lineItems || [],
+        total: invoice.total || 0,
+        base: invoice.base || 0,
+        iva: invoice.iva || 0,
+        payment_method: invoice.paymentMethod || null,
+        status: invoice.status || 'pending',
+        issuer: invoice.issuer || null,
+        client_data: invoice.clientData || null,
+        notes: invoice.notes || null,
+      })
+      .select()
+      .single();
+    if (error) throw error;
+    return mapInvoice(data);
   }
 };
 
-export const saveIssuerData = (data) => {
-  localStorage.setItem(ISSUER_KEY, JSON.stringify(data));
+export const deleteInvoice = async (id) => {
+  const { error } = await supabase
+    .from('invoices')
+    .delete()
+    .eq('id', id)
+    .eq('clinic_id', CLINIC_ID);
+  if (error) throw error;
+  return getInvoices();
+};
+
+// ── Datos del emisor ──────────────────────────────────────────────────────
+
+const ISSUER_DEFAULT = { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };
+
+export const getIssuerData = async () => {
+  const { data } = await supabase
+    .from('issuer_data')
+    .select('*')
+    .eq('clinic_id', CLINIC_ID)
+    .maybeSingle();
+  if (!data) return ISSUER_DEFAULT;
+  return { name: data.name || '', nif: data.nif || '', address: data.address || '', phone: data.phone || '', email: data.email || '' };
+};
+
+export const saveIssuerData = async (issuerData) => {
+  const { data: existing } = await supabase
+    .from('issuer_data')
+    .select('id')
+    .eq('clinic_id', CLINIC_ID)
+    .maybeSingle();
+  if (existing) {
+    await supabase.from('issuer_data').update({ ...issuerData }).eq('clinic_id', CLINIC_ID);
+  } else {
+    await supabase.from('issuer_data').insert({ clinic_id: CLINIC_ID, ...issuerData });
+  }
 };

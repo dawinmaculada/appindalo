@@ -57,9 +57,15 @@ const STATUS_CONFIG = {
 };
 
 export default function AppointmentsPage() {
-  const [appointments, setAppointments] = useState(getAppointments);
-  const [patients] = useState(getPatients);
-  const [workers] = useState(getWorkers);
+  const [appointments, setAppointments] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [workers, setWorkers] = useState([]);
+
+  useEffect(() => {
+    getAppointments().then(setAppointments);
+    getPatients().then(setPatients);
+    getWorkers().then(setWorkers);
+  }, []);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [showForm, setShowForm] = useState(false);
@@ -148,7 +154,7 @@ export default function AppointmentsPage() {
       }
     }
 
-    const updated = saveAppointment(savedForm);
+    const updated = await saveAppointment(savedForm);
     setAppointments(updated);
     setShowForm(false);
 
@@ -175,13 +181,13 @@ export default function AppointmentsPage() {
     if (apt.googleEventId && isSignedIn()) {
       await deleteCalendarEvent(apt.googleEventId).catch(() => {});
     }
-    const updated = deleteAppointment(apt.id);
+    const updated = await deleteAppointment(apt.id);
     setAppointments(updated);
     setDeleteConfirm(null);
   };
 
-  const handlePaymentConfirm = (billing) => {
-    const updated = saveAppointment({
+  const handlePaymentConfirm = async (billing) => {
+    const updated = await saveAppointment({
       ...paymentTarget,
       status: 'completed',
       billing,

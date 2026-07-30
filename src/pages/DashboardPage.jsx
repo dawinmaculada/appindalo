@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Users,
@@ -50,8 +50,13 @@ function StatCard({ label, value, icon: Icon, color, bg, trend, to }) {
 }
 
 export default function DashboardPage() {
-  const patients = getPatients();
-  const appointments = getAppointments();
+  const [patients, setPatients]         = useState([]);
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    getPatients().then(setPatients);
+    getAppointments().then(setAppointments);
+  }, []);
 
   const today = useMemo(
     () => appointments.filter((a) => a.date && isToday(parseISO(a.date))),
@@ -182,7 +187,7 @@ export default function DashboardPage() {
           ) : (
             <ul className="space-y-3">
               {upcoming.map((apt) => {
-                const patient = getPatients().find((p) => p.id === apt.patientId);
+                const patient = patients.find((p) => p.id === apt.patientId);
                 const treatment = TREATMENTS.find((t) => t.id === apt.treatmentId);
                 return (
                   <li

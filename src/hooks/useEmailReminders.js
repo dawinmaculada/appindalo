@@ -20,9 +20,9 @@ export function useEmailReminders() {
 
       try {
         const now = Date.now();
-        const appointments = getAppointments();
-        const patients = getPatients();
-        const workers = getWorkers();
+        const appointments = await getAppointments();
+        const patients = await getPatients();
+        const workers = await getWorkers();
 
         const pending = appointments.filter((apt) => {
           if (apt.reminderSent || apt.status === 'cancelled') return false;
@@ -41,7 +41,7 @@ export function useEmailReminders() {
           try {
             const { subject, bodyHtml } = buildReminderEmail({ patient, treatment, appointment: apt, worker });
             await sendEmail({ to: patient.email, subject, bodyHtml });
-            saveAppointment({ ...apt, reminderSent: true });
+            await saveAppointment({ ...apt, reminderSent: true });
             console.info(`[Indalo] Recordatorio enviado a ${patient.email} para cita ${apt.date} ${apt.time}`);
           } catch (err) {
             console.error(`[Indalo] Error enviando recordatorio a ${patient.email}:`, err);

@@ -71,7 +71,7 @@ export const signOut = () => {
 
 // Comprobar si hay token activo
 export const isSignedIn = () => {
-  const token = window.gapi.client?.getToken();
+  const token = window.gapi?.client?.getToken();
   return !!(token && token.access_token);
 };
 

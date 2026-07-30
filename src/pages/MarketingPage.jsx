@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Mail, Users, CheckCircle2, AlertTriangle, Send, Eye,
   Edit3, X, Loader, AlertCircle, ChevronDown, ChevronUp,
@@ -102,8 +102,13 @@ function applyVars(text, patient, appointments) {
 
 // ───────────────────────────────────────────────────────────────────────
 export default function MarketingPage() {
-  const allPatients    = useMemo(() => getPatients(), []);
-  const allAppointments = useMemo(() => getAppointments(), []);
+  const [allPatients, setAllPatients]         = useState([]);
+  const [allAppointments, setAllAppointments] = useState([]);
+
+  useEffect(() => {
+    getPatients().then(setAllPatients);
+    getAppointments().then(setAllAppointments);
+  }, []);
 
   // Solo pacientes con email
   const withEmail = useMemo(

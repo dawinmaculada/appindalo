@@ -99,9 +99,15 @@ function layoutDay(apts) {
 export default function CalendarPage() {
   const [view, setView]         = useState('week'); // 'day' | 'week' | 'month'
   const [current, setCurrent]   = useState(new Date());
-  const [appointments, setApts] = useState(getAppointments);
-  const patients  = getPatients();
-  const workers   = getWorkers();
+  const [appointments, setApts] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [workers, setWorkers]   = useState([]);
+
+  useEffect(() => {
+    getAppointments().then(setApts);
+    getPatients().then(setPatients);
+    getWorkers().then(setWorkers);
+  }, []);
 
   // Modal de nueva cita rápida
   const [form, setForm] = useState(null);
@@ -163,20 +169,14 @@ export default function CalendarPage() {
     });
   };
 
-  const handleSaveForm = (e) => {
+  const handleSaveForm = async (e) => {
     e.preventDefault();
-    const updated = saveAppointment(form);
-    setApts(updated);
+    setApts(await saveAppointment(form));
     setForm(null);
   };
 
-  const handlePaymentConfirm = (billing) => {
-    const updated = saveAppointment({
-      ...paymentTarget,
-      status: 'completed',
-      billing,
-    });
-    setApts(updated);
+  const handlePaymentConfirm = async (billing) => {
+    setApts(await saveAppointment({ ...paymentTarget, status: 'completed', billing }));
     setPaymentTarget(null);
   };
 

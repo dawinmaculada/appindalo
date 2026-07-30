@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
   Euro,
   Banknote,
@@ -80,9 +80,15 @@ export default function BillingPage() {
   const [filterWorker,  setFilterWorker]  = useState('all');
   const [filterMethod,  setFilterMethod]  = useState('all');
 
-  const allAppointments = useMemo(() => getAppointments(), []);
-  const patients        = useMemo(() => getPatients(),     []);
-  const workers         = useMemo(() => getWorkers(),      []);
+  const [allAppointments, setAllAppointments] = useState([]);
+  const [patients, setPatients]               = useState([]);
+  const [workers, setWorkers]                 = useState([]);
+
+  useEffect(() => {
+    getAppointments().then(setAllAppointments);
+    getPatients().then(setPatients);
+    getWorkers().then(setWorkers);
+  }, []);
 
   const isCustom = periodKey === 'custom';
 

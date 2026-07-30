@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   Upload,
   X,
@@ -11,7 +11,7 @@ import {
   Download,
 } from 'lucide-react';
 import { parseCSV, deduplicatePatients } from '../services/csvImport';
-import { getPatients, savePatient } from '../services/storage';
+import { getPatients, insertPatients } from '../services/storage';
 
 const STEPS = { UPLOAD: 'upload', PREVIEW: 'preview', DONE: 'done' };
 
@@ -24,7 +24,10 @@ export default function CSVImportModal({ onClose, onImported }) {
   const [importing, setImporting] = useState(false);
   const [importedCount, setImportedCount] = useState(0);
   const [error, setError] = useState('');
+  const [existingPatients, setExistingPatients] = useState([]);
   const inputRef = useRef();
+
+  useEffect(() => { getPatients().then(setExistingPatients); }, []);
 
   const handleFile = (file) => {
     if (!file) return;
@@ -33,8 +36,7 @@ export default function CSVImportModal({ onClose, onImported }) {
 
     const tryParse = (text) => {
       const { patients } = parseCSV(text);
-      const existing = getPatients();
-      const { toImport: ti, duplicates: dups } = deduplicatePatients(patients, existing);
+      const { toImport: ti, duplicates: dups } = deduplicatePatients(patients, existingPatients);
       setParsed(patients);
       setToImport(ti);
       setDuplicates(dups);
@@ -72,17 +74,16 @@ export default function CSVImportModal({ onClose, onImported }) {
 
   const handleImport = async () => {
     setImporting(true);
-    let count = 0;
-    for (const p of toImport) {
-      savePatient(p);
-      count++;
-      // Pequeña pausa para no bloquear UI en listas grandes
-      if (count % 50 === 0) await new Promise((r) => setTimeout(r, 0));
+    try {
+      await insertPatients(toImport);
+      setImportedCount(toImport.length);
+      setStep(STEPS.DONE);
+      onImported?.();
+    } catch {
+      setError('Error al importar. Inténtalo de nuevo.');
+    } finally {
+      setImporting(false);
     }
-    setImportedCount(count);
-    setImporting(false);
-    setStep(STEPS.DONE);
-    onImported?.();
   };
 
   return (

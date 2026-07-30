@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   UserPlus, Search, Edit2, Trash2, Phone, Mail, User, X, Save,
   CalendarDays, Upload, Clock, Euro, AlertTriangle, ChevronDown,
@@ -43,8 +43,13 @@ function buildPatientStats(patient, allAppointments) {
 }
 
 export default function PatientsPage() {
-  const [patients,     setPatients]     = useState(getPatients);
-  const [appointments]                  = useState(getAppointments);
+  const [patients,     setPatients]     = useState([]);
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    getPatients().then(setPatients);
+    getAppointments().then(setAppointments);
+  }, []);
   const [search,       setSearch]       = useState('');
   const [filterMode,   setFilterMode]   = useState('all'); // 'all' | 'followup'
   const [showForm,     setShowForm]     = useState(false);
@@ -88,14 +93,14 @@ export default function PatientsPage() {
   const openNew  = () => { setForm(EMPTY_FORM); setShowForm(true); };
   const openEdit = (p) => { setForm({ ...p }); setShowForm(true); };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    setPatients(savePatient(form));
+    setPatients(await savePatient(form));
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    setPatients(deletePatient(id));
+  const handleDelete = async (id) => {
+    setPatients(await deletePatient(id));
     setDeleteConfirm(null);
   };
 
@@ -432,7 +437,7 @@ export default function PatientsPage() {
 
       {/* Modal Importar CSV */}
       {showImport && (
-        <CSVImportModal onClose={() => setShowImport(false)} onImported={() => setPatients(getPatients())} />
+        <CSVImportModal onClose={() => setShowImport(false)} onImported={async () => setPatients(await getPatients())} />
       )}
 
       {/* Modal Factura */}
