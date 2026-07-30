@@ -2,12 +2,9 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import { useEmailReminders } from '../../hooks/useEmailReminders';
-
 export default function Layout({ session }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  useEmailReminders();
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f8fafb]">

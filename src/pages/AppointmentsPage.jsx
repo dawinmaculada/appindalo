@@ -35,8 +35,7 @@ import {
 } from '../services/googleCalendar';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { sendEmail } from '../services/gmail';
-import { buildConfirmationEmail } from '../services/emailTemplates';
+import { supabase } from '../services/supabase';
 
 const EMPTY_FORM = {
   id: null,
@@ -160,20 +159,26 @@ export default function AppointmentsPage() {
     setShowForm(false);
 
     // Enviar email de confirmación al paciente
-    if (isSignedIn()) {
-      const patient = patients.find((p) => p.id === savedForm.patientId);
-      if (patient?.email) {
-        const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
-        const worker = workers.find((w) => w.id === savedForm.workerId);
-        try {
-          const { subject, bodyHtml } = buildConfirmationEmail({
-            patient, treatment, appointment: savedForm, worker, isEdit: !isNew,
-          });
-          await sendEmail({ to: patient.email, subject, bodyHtml });
-          setEmailNotif({ ok: true, msg: `Email enviado a ${patient.email}` });
-        } catch {
-          setEmailNotif({ ok: false, msg: 'No se pudo enviar el email de confirmación' });
-        }
+    const patient = patients.find((p) => p.id === savedForm.patientId);
+    if (patient?.email) {
+      const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
+      const worker = workers.find((w) => w.id === savedForm.workerId);
+      try {
+        await supabase.functions.invoke('send-confirmation', {
+          body: {
+            to: patient.email,
+            patientName: patient.name,
+            treatmentName: treatment?.name,
+            workerName: worker?.name,
+            date: savedForm.date,
+            time: savedForm.time,
+            notes: savedForm.notes,
+            isEdit: !isNew,
+          },
+        });
+        setEmailNotif({ ok: true, msg: `Email enviado a ${patient.email}` });
+      } catch {
+        setEmailNotif({ ok: false, msg: 'No se pudo enviar el email de confirmación' });
       }
     }
   };
