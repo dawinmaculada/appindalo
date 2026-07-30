@@ -177,8 +177,13 @@ export default function CalendarPage() {
   };
 
   const handlePaymentConfirm = async (billing) => {
-    setApts(await saveAppointment({ ...paymentTarget, status: 'completed', billing }));
-    setPaymentTarget(null);
+    try {
+      setApts(await saveAppointment({ ...paymentTarget, status: 'completed', billing }));
+      setPaymentTarget(null);
+    } catch (err) {
+      console.error('Error al guardar cobro:', err);
+      alert('Error al guardar el cobro. Por favor inténtalo de nuevo.');
+    }
   };
 
   // ── Bloque de cita ──────────────────────────────────────────────────

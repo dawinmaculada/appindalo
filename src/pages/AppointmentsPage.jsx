@@ -188,13 +188,18 @@ export default function AppointmentsPage() {
   };
 
   const handlePaymentConfirm = async (billing) => {
-    const updated = await saveAppointment({
-      ...paymentTarget,
-      status: 'completed',
-      billing,
-    });
-    setAppointments(updated);
-    setPaymentTarget(null);
+    try {
+      const updated = await saveAppointment({
+        ...paymentTarget,
+        status: 'completed',
+        billing,
+      });
+      setAppointments(updated);
+      setPaymentTarget(null);
+    } catch (err) {
+      console.error('Error al guardar cobro:', err);
+      alert('Error al guardar el cobro. Por favor inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -332,7 +337,7 @@ export default function AppointmentsPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                <div className="flex gap-2 flex-shrink-0">
                   {(!apt.status || apt.status === 'scheduled') && (
                     <button
                       onClick={() => setPaymentTarget(apt)}
