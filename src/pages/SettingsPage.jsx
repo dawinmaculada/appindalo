@@ -1,11 +1,12 @@
 ﻿import { useState, useEffect } from 'react';
-import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Save, CheckCircle2, AlertCircle, Lock, Mail, Calendar, ExternalLink, Key, Copy } from 'lucide-react';
 import { changePassword } from '../services/auth';
 import { supabase } from '../services/supabase';
 import { useClinic } from '../contexts/ClinicContext';
+import { saveGoogleConfig } from '../services/storage';
 
 export default function SettingsPage() {
-  const { clinicName } = useClinic();
+  const { clinicName, googleConfig, reloadGoogleConfig } = useClinic();
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
@@ -14,7 +15,35 @@ export default function SettingsPage() {
     });
   }, []);
 
-  const [passForm, setPassForm] = useState({ current: '', next: '', confirm: '' });
+  const [passForm, setPassForm]   = useState({ current: '', next: '', confirm: '' });
+  const [gcForm, setGcForm]       = useState({ clientId: '', apiKey: '' });
+  const [showApiKey, setShowKey]  = useState(false);
+  const [gcMsg, setGcMsg]         = useState(null);
+  const [copied, setCopied]       = useState(false);
+
+  useEffect(() => {
+    if (googleConfig) setGcForm({ clientId: googleConfig.clientId || '', apiKey: googleConfig.apiKey || '' });
+  }, [googleConfig]);
+
+  const redirectUri = window.location.origin;
+
+  const handleCopyUri = () => {
+    navigator.clipboard.writeText(redirectUri);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSaveGc = async (e) => {
+    e.preventDefault();
+    setGcMsg(null);
+    try {
+      await saveGoogleConfig(gcForm);
+      reloadGoogleConfig();
+      setGcMsg({ ok: true, text: 'Configuración guardada. Reconecta Google Calendar para aplicarla.' });
+    } catch {
+      setGcMsg({ ok: false, text: 'Error al guardar la configuración.' });
+    }
+  };
   const [showPass, setShowPass] = useState({ current: false, next: false });
   const [passMsg, setPassMsg]   = useState(null);
 
@@ -104,6 +133,117 @@ export default function SettingsPage() {
         <p className="text-xs text-gray-400 mt-3">
           Para cambiar el email contacta con el administrador del sistema.
         </p>
+      </div>
+
+      {/* Google Calendar */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        {/* Cabecera */}
+        <div className="bg-gradient-to-r from-[#111827] to-[#1c2432] px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+              <Calendar size={20} className="text-[#c9a227]" />
+            </div>
+            <div>
+              <h3 className="font-bold text-white">Google Calendar</h3>
+              <p className="text-white/50 text-xs">Sincronización de citas</p>
+            </div>
+          </div>
+          {gcForm.clientId && gcForm.apiKey ? (
+            <span className="flex items-center gap-1.5 text-xs font-medium bg-green-500/20 text-green-400 px-3 py-1 rounded-full">
+              <CheckCircle2 size={12} /> Configurado
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 text-xs font-medium bg-white/10 text-white/40 px-3 py-1 rounded-full">
+              Sin configurar
+            </span>
+          )}
+        </div>
+
+        <div className="p-6">
+          {/* Instrucciones */}
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-6 text-sm text-amber-800">
+            <p className="font-semibold mb-1">¿Cómo obtener las credenciales?</p>
+            <ol className="list-decimal list-inside space-y-1 text-amber-700 text-xs">
+              <li>Ve a <a href="https://console.cloud.google.com" target="_blank" rel="noreferrer" className="underline font-medium">Google Cloud Console</a></li>
+              <li>Crea un proyecto o selecciona uno existente</li>
+              <li>Activa las APIs: <strong>Google Calendar API</strong> y <strong>Gmail API</strong></li>
+              <li>Crea credenciales → <strong>ID de cliente OAuth 2.0</strong> (tipo: Aplicación web)</li>
+              <li>Añade la URI de redirección que aparece abajo como origen autorizado</li>
+              <li>Crea también una <strong>Clave de API</strong></li>
+            </ol>
+          </div>
+
+          <form onSubmit={handleSaveGc} className="space-y-4">
+            {/* Client ID */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Client ID <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="text"
+                value={gcForm.clientId}
+                onChange={(e) => setGcForm((f) => ({ ...f, clientId: e.target.value }))}
+                placeholder="xxxxxxxxxxxx.apps.googleusercontent.com"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] font-mono"
+              />
+              <p className="text-xs text-gray-400 mt-1">ID de cliente obtenido de Google Cloud Console</p>
+            </div>
+
+            {/* API Key */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                API Key <span className="text-red-400">*</span>
+              </label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <Key size={15} />
+                </div>
+                <input
+                  type={showApiKey ? 'text' : 'password'}
+                  value={gcForm.apiKey}
+                  onChange={(e) => setGcForm((f) => ({ ...f, apiKey: e.target.value }))}
+                  placeholder="AIzaSy..."
+                  className="w-full pl-9 pr-10 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] font-mono"
+                />
+                <button type="button" onClick={() => setShowKey((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  {showApiKey ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Clave de API para acceso al calendario</p>
+            </div>
+
+            {/* Redirect URI */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                URI de redirección <span className="text-gray-400 font-normal">(añádela en Google Cloud)</span>
+              </label>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl text-gray-600 font-mono truncate">
+                  {redirectUri}
+                </div>
+                <button type="button" onClick={handleCopyUri}
+                  className="flex items-center gap-1.5 px-3 py-2.5 text-sm border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-gray-600 flex-shrink-0">
+                  {copied ? <CheckCircle2 size={15} className="text-green-500" /> : <Copy size={15} />}
+                  {copied ? 'Copiado' : 'Copiar'}
+                </button>
+              </div>
+            </div>
+
+            {gcMsg && <Msg data={gcMsg} />}
+
+            <div className="flex items-center gap-3 pt-2">
+              <button type="submit"
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#c9a227] text-white text-sm font-semibold rounded-xl hover:bg-[#a8851e] transition-colors shadow-sm">
+                <Save size={15} /> Guardar configuración
+              </button>
+              <a href="https://console.cloud.google.com" target="_blank" rel="noreferrer"
+                className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors">
+                <ExternalLink size={14} /> Google Cloud Console
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -422,7 +422,7 @@ export const deleteTreatment = async (id) => {
 
 // ── Datos del emisor ──────────────────────────────────────────────────────
 
-const ISSUER_DEFAULT = { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };
+const ISSUER_DEFAULT = { name: '', nif: '', address: '', phone: '', email: '' };
 
 export const getIssuerData = async () => {
   const cid = await getClinicId();
@@ -447,4 +447,27 @@ export const saveIssuerData = async (issuerData) => {
   } else {
     await supabase.from('issuer_data').insert({ clinic_id: cid, ...issuerData });
   }
+};
+
+// ── Configuración Google Calendar ─────────────────────────────────────────
+
+export const getGoogleConfig = async () => {
+  const cid = await getClinicId();
+  const { data } = await supabase
+    .from('clinics')
+    .select('google_client_id, google_api_key')
+    .eq('id', cid)
+    .single();
+  return {
+    clientId: data?.google_client_id || '',
+    apiKey:   data?.google_api_key   || '',
+  };
+};
+
+export const saveGoogleConfig = async ({ clientId, apiKey }) => {
+  const cid = await getClinicId();
+  await supabase
+    .from('clinics')
+    .update({ google_client_id: clientId, google_api_key: apiKey })
+    .eq('id', cid);
 };

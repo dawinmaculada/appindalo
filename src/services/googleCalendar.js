@@ -5,12 +5,16 @@ const SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.
 const DISCOVERY_DOC =
   'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
 
-// ⚠️  Reemplaza estos valores con tus credenciales de Google Cloud Console
-// https://console.cloud.google.com/ → APIs & Services → Credentials
 export const GOOGLE_CONFIG = {
   CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID || '',
   API_KEY: import.meta.env.VITE_GOOGLE_API_KEY || '',
 };
+
+// Permite sobrescribir con credenciales guardadas por la clínica en Supabase
+export function setGoogleConfig({ clientId, apiKey }) {
+  if (clientId) GOOGLE_CONFIG.CLIENT_ID = clientId;
+  if (apiKey)   GOOGLE_CONFIG.API_KEY   = apiKey;
+}
 
 let tokenClient = null;
 
