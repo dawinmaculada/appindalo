@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { getAppointments, saveAppointment, getPatients, getWorkers } from '../services/storage';
+import { getAppointments, saveAppointment, getPatients, getWorkers, getTreatments } from '../services/storage';
 import { sendEmail } from '../services/gmail';
 import { isSignedIn } from '../services/googleCalendar';
-import { TREATMENTS } from '../data/treatments';
 import { buildReminderEmail } from '../services/emailTemplates';
 
 // Ventana de recordatorio: entre 23h y 25h antes de la cita
@@ -23,6 +22,7 @@ export function useEmailReminders() {
         const appointments = await getAppointments();
         const patients = await getPatients();
         const workers = await getWorkers();
+        const treatments = await getTreatments();
 
         const pending = appointments.filter((apt) => {
           if (apt.reminderSent || apt.status === 'cancelled') return false;
@@ -35,7 +35,7 @@ export function useEmailReminders() {
           const patient = patients.find((p) => p.id === apt.patientId);
           if (!patient?.email) continue;
 
-          const treatment = TREATMENTS.find((t) => t.id === apt.treatmentId);
+          const treatment = treatments.find((t) => t.id === apt.treatmentId);
           const worker = workers.find((w) => w.id === apt.workerId);
 
           try {

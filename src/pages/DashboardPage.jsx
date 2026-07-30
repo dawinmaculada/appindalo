@@ -10,7 +10,7 @@ import {
   Euro,
 } from 'lucide-react';
 import { getPatients, getAppointments } from '../services/storage';
-import { TREATMENTS } from '../data/treatments';
+import { useTreatments } from '../contexts/TreatmentsContext';
 import { format, isToday, isFuture, parseISO, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -50,6 +50,7 @@ function StatCard({ label, value, icon: Icon, color, bg, trend, to }) {
 }
 
 export default function DashboardPage() {
+  const { treatments } = useTreatments();
   const [patients, setPatients]         = useState([]);
   const [appointments, setAppointments] = useState([]);
 
@@ -91,7 +92,7 @@ export default function DashboardPage() {
     (a, b) => b[1] - a[1]
   )[0];
   const topTreatmentName =
-    TREATMENTS.find((t) => t.id === topTreatment?.[0])?.name || '-';
+    treatments.find((t) => t.id === topTreatment?.[0])?.name || '-';
 
   return (
     <div className="space-y-6">
@@ -188,7 +189,7 @@ export default function DashboardPage() {
             <ul className="space-y-3">
               {upcoming.map((apt) => {
                 const patient = patients.find((p) => p.id === apt.patientId);
-                const treatment = TREATMENTS.find((t) => t.id === apt.treatmentId);
+                const treatment = treatments.find((t) => t.id === apt.treatmentId);
                 return (
                   <li
                     key={apt.id}
@@ -240,7 +241,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           <ul className="space-y-3">
-            {TREATMENTS.map((t) => {
+            {treatments.map((t) => {
               const count = treatmentCount[t.id] || 0;
               const max = Math.max(...Object.values(treatmentCount), 1);
               const pct = Math.round((count / max) * 100);

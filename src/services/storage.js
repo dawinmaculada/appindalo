@@ -347,6 +347,79 @@ export const deleteInvoice = async (id) => {
   return getInvoices();
 };
 
+// ── Tratamientos ──────────────────────────────────────────────────────────
+
+const mapTreatment = (row) => ({
+  id: row.id,
+  name: row.name,
+  description: row.description || '',
+  duration: row.duration || 60,
+  price: Number(row.price) || 0,
+  color: row.color || '#00af38',
+  icon: row.icon || '💊',
+  category: row.category || 'general',
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+});
+
+export const getTreatments = async () => {
+  const cid = await getClinicId();
+  const { data, error } = await supabase
+    .from('treatments')
+    .select('*')
+    .eq('clinic_id', cid)
+    .order('created_at', { ascending: true });
+  if (error) throw error;
+  return (data || []).map(mapTreatment);
+};
+
+export const saveTreatment = async (treatment) => {
+  const cid = await getClinicId();
+  if (treatment.id) {
+    const { error } = await supabase
+      .from('treatments')
+      .update({
+        name: treatment.name,
+        description: treatment.description || null,
+        duration: treatment.duration || 60,
+        price: treatment.price || 0,
+        color: treatment.color || '#00af38',
+        icon: treatment.icon || '💊',
+        category: treatment.category || 'general',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', treatment.id)
+      .eq('clinic_id', cid);
+    if (error) throw error;
+  } else {
+    const { error } = await supabase
+      .from('treatments')
+      .insert({
+        clinic_id: cid,
+        name: treatment.name,
+        description: treatment.description || null,
+        duration: treatment.duration || 60,
+        price: treatment.price || 0,
+        color: treatment.color || '#00af38',
+        icon: treatment.icon || '💊',
+        category: treatment.category || 'general',
+      });
+    if (error) throw error;
+  }
+  return getTreatments();
+};
+
+export const deleteTreatment = async (id) => {
+  const cid = await getClinicId();
+  const { error } = await supabase
+    .from('treatments')
+    .delete()
+    .eq('id', id)
+    .eq('clinic_id', cid);
+  if (error) throw error;
+  return getTreatments();
+};
+
 // ── Datos del emisor ──────────────────────────────────────────────────────
 
 const ISSUER_DEFAULT = { name: 'Osteopatía Indalo', nif: '', address: '', phone: '', email: '' };

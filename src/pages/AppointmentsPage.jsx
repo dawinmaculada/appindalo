@@ -26,7 +26,7 @@ import {
   getPatients,
   getWorkers,
 } from '../services/storage';
-import { TREATMENTS } from '../data/treatments';
+import { useTreatments } from '../contexts/TreatmentsContext';
 import {
   createCalendarEvent,
   deleteCalendarEvent,
@@ -57,6 +57,7 @@ const STATUS_CONFIG = {
 };
 
 export default function AppointmentsPage() {
+  const { treatments } = useTreatments();
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [workers, setWorkers] = useState([]);
@@ -91,7 +92,7 @@ export default function AppointmentsPage() {
       const q = search.toLowerCase();
       list = list.filter((a) => {
         const p = patients.find((pt) => pt.id === a.patientId);
-        const t = TREATMENTS.find((tr) => tr.id === a.treatmentId);
+        const t = treatments.find((tr) => tr.id === a.treatmentId);
         return (
           p?.name?.toLowerCase().includes(q) ||
           t?.name?.toLowerCase().includes(q) ||
@@ -117,7 +118,7 @@ export default function AppointmentsPage() {
     if (!form.date || !form.time) return;
     setCalendarStatus('checking');
     try {
-      const treatment = TREATMENTS.find((t) => t.id === form.treatmentId);
+      const treatment = treatments.find((t) => t.id === form.treatmentId);
       const available = await checkAvailability(
         form.date,
         form.time,
@@ -139,7 +140,7 @@ export default function AppointmentsPage() {
       setCalendarStatus('syncing');
       try {
         const patient = patients.find((p) => p.id === form.patientId);
-        const treatment = TREATMENTS.find((t) => t.id === form.treatmentId);
+        const treatment = treatments.find((t) => t.id === form.treatmentId);
 
         // Eliminar evento anterior si existe
         if (form.googleEventId) {
@@ -162,7 +163,7 @@ export default function AppointmentsPage() {
     if (isSignedIn()) {
       const patient = patients.find((p) => p.id === savedForm.patientId);
       if (patient?.email) {
-        const treatment = TREATMENTS.find((t) => t.id === savedForm.treatmentId);
+        const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
         const worker = workers.find((w) => w.id === savedForm.workerId);
         try {
           const { subject, bodyHtml } = buildConfirmationEmail({
@@ -262,7 +263,7 @@ export default function AppointmentsPage() {
         <div className="space-y-3">
           {filtered.map((apt) => {
             const patient = patients.find((p) => p.id === apt.patientId);
-            const treatment = TREATMENTS.find((t) => t.id === apt.treatmentId);
+            const treatment = treatments.find((t) => t.id === apt.treatmentId);
             const sc = STATUS_CONFIG[apt.status] || STATUS_CONFIG.scheduled;
             return (
               <div
@@ -436,7 +437,7 @@ export default function AppointmentsPage() {
                 Tratamiento *
               </label>
               <div className="grid grid-cols-1 gap-2">
-                {TREATMENTS.map((t) => (
+                {treatments.map((t) => (
                   <label
                     key={t.id}
                     className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
@@ -632,7 +633,7 @@ export default function AppointmentsPage() {
         <PaymentModal
           appointment={paymentTarget}
           patient={patients.find((p) => p.id === paymentTarget.patientId)}
-          treatment={TREATMENTS.find((t) => t.id === paymentTarget.treatmentId)}
+          treatment={treatments.find((t) => t.id === paymentTarget.treatmentId)}
           onConfirm={handlePaymentConfirm}
           onClose={() => setPaymentTarget(null)}
         />

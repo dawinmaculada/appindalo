@@ -5,7 +5,7 @@ import {
   ChevronUp, CheckCircle2, FileText,
 } from 'lucide-react';
 import { getPatients, savePatient, deletePatient, getAppointments } from '../services/storage';
-import { TREATMENTS } from '../data/treatments';
+import { useTreatments } from '../contexts/TreatmentsContext';
 import CSVImportModal from '../components/CSVImportModal';
 import InvoiceModal from '../components/InvoiceModal';
 import { format, parseISO, differenceInDays, isFuture, isPast } from 'date-fns';
@@ -43,6 +43,7 @@ function buildPatientStats(patient, allAppointments) {
 }
 
 export default function PatientsPage() {
+  const { treatments } = useTreatments();
   const [patients,     setPatients]     = useState([]);
   const [appointments, setAppointments] = useState([]);
 
@@ -332,7 +333,7 @@ export default function PatientsPage() {
                           Historial de citas ({apts.length})
                         </p>
                         {apts.map((a) => {
-                          const treatment = TREATMENTS.find((t) => t.id === a.treatmentId);
+                          const treatment = treatments.find((t) => t.id === a.treatmentId);
                           const upcoming  = isFuture(parseISO(a.date + 'T' + (a.time || '00:00')));
                           return (
                             <div

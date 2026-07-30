@@ -3,7 +3,7 @@ import {
   X, Plus, Trash2, Printer, FileText, CreditCard, Banknote, Clock,
   ChevronDown, ChevronUp, Building2, User,
 } from 'lucide-react';
-import { TREATMENTS } from '../data/treatments';
+import { useTreatments } from '../contexts/TreatmentsContext';
 import { saveInvoice, saveAppointment, getIssuerData, saveIssuerData } from '../services/storage';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -178,6 +178,7 @@ function Field({ label, value, onChange, placeholder, type = 'text' }) {
 
 // ── Componente principal ─────────────────────────────────────────────────────
 export default function InvoiceModal({ patient, appointments, onClose }) {
+  const { treatments } = useTreatments();
   const [step, setStep] = useState('select');
   const [selected, setSelected] = useState(new Set());
   const [manualItems, setManualItems] = useState([]);
@@ -238,7 +239,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
 
   const lineItems = [
     ...selectedApts.map((a) => {
-      const treatment = TREATMENTS.find((t) => t.id === a.treatmentId);
+      const treatment = treatments.find((t) => t.id === a.treatmentId);
       const billing   = a.billing;
 
       if (billing) {
@@ -367,7 +368,7 @@ export default function InvoiceModal({ patient, appointments, onClose }) {
               ) : (
                 <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
                   {available.map((a) => {
-                    const treatment = TREATMENTS.find((t) => t.id === a.treatmentId);
+                    const treatment = treatments.find((t) => t.id === a.treatmentId);
                     const isSelected = selected.has(a.id);
                     const billing    = a.billing;
                     const opt        = billing ? PAYMENT_OPTIONS.find((o) => o.key === billing.paymentType) : null;

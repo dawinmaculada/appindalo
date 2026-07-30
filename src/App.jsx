@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './services/supabase';
+import { TreatmentsProvider } from './contexts/TreatmentsContext';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
@@ -39,7 +40,7 @@ function App() {
           path="/"
           element={
             session
-              ? <Layout session={session} />
+              ? <TreatmentsProvider><Layout session={session} /></TreatmentsProvider>
               : <Navigate to="/login" replace />
           }
         >

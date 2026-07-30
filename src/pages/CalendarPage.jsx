@@ -34,7 +34,7 @@ import {
   getPatients,
   getWorkers,
 } from '../services/storage';
-import { TREATMENTS } from '../data/treatments';
+import { useTreatments } from '../contexts/TreatmentsContext';
 import PaymentModal from '../components/PaymentModal';
 
 // ── Configuración del grid horario ───────────────────────────────────────
@@ -61,7 +61,7 @@ function aptColor(apt, workers) {
     const w = workers.find((x) => x.id === apt.workerId);
     if (w?.color) return w.color;
   }
-  const t = TREATMENTS.find((x) => x.id === apt.treatmentId);
+  const t = treatments.find((x) => x.id === apt.treatmentId);
   return t?.color || '#00af38';
 }
 
@@ -74,7 +74,7 @@ function layoutDay(apts) {
   const columns = [];
   const result = sorted.map((apt) => {
     const start = timeToMinutes(apt.time);
-    const dur = TREATMENTS.find((t) => t.id === apt.treatmentId)?.duration || 60;
+    const dur = treatments.find((t) => t.id === apt.treatmentId)?.duration || 60;
     const end = start + dur;
     let col = 0;
     while (columns[col] && columns[col] > start) col++;
@@ -85,9 +85,9 @@ function layoutDay(apts) {
   result.forEach((item) => {
     const overlap = result.filter((other) => {
       const s1 = timeToMinutes(item.apt.time);
-      const d1 = TREATMENTS.find((t) => t.id === item.apt.treatmentId)?.duration || 60;
+      const d1 = treatments.find((t) => t.id === item.apt.treatmentId)?.duration || 60;
       const s2 = timeToMinutes(other.apt.time);
-      const d2 = TREATMENTS.find((t) => t.id === other.apt.treatmentId)?.duration || 60;
+      const d2 = treatments.find((t) => t.id === other.apt.treatmentId)?.duration || 60;
       return s1 < s2 + d2 && s1 + d1 > s2;
     });
     item.totalCols = Math.max(overlap.length, 1);
@@ -97,6 +97,7 @@ function layoutDay(apts) {
 
 // ─────────────────────────────────────────────────────────────────────────
 export default function CalendarPage() {
+  const { treatments } = useTreatments();
   const [view, setView]         = useState('week'); // 'day' | 'week' | 'month'
   const [current, setCurrent]   = useState(new Date());
   const [appointments, setApts] = useState([]);
@@ -182,7 +183,7 @@ export default function CalendarPage() {
 
   // ── Bloque de cita ──────────────────────────────────────────────────
   const AptBlock = ({ apt, col = 0, totalCols = 1 }) => {
-    const treatment = TREATMENTS.find((t) => t.id === apt.treatmentId);
+    const treatment = treatments.find((t) => t.id === apt.treatmentId);
     const patient   = patients.find((p) => p.id === apt.patientId);
     const worker    = workers.find((w) => w.id === apt.workerId);
     const color     = aptColor(apt, workers);
@@ -519,7 +520,7 @@ export default function CalendarPage() {
         <PaymentModal
           appointment={paymentTarget}
           patient={patients.find((p) => p.id === paymentTarget.patientId)}
-          treatment={TREATMENTS.find((t) => t.id === paymentTarget.treatmentId)}
+          treatment={treatments.find((t) => t.id === paymentTarget.treatmentId)}
           onConfirm={handlePaymentConfirm}
           onClose={() => setPaymentTarget(null)}
         />
@@ -571,7 +572,7 @@ export default function CalendarPage() {
                     className="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00af38]/30 focus:border-[#00af38] appearance-none"
                   >
                     <option value="">Seleccionar...</option>
-                    {TREATMENTS.map((t) => (
+                    {treatments.map((t) => (
                       <option key={t.id} value={t.id}>{t.icon} {t.name} ({t.duration} min)</option>
                     ))}
                   </select>
