@@ -4,7 +4,10 @@ export async function register(email, password, clinicName) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { clinic_name: clinicName } },
+    options: {
+      data: { clinic_name: clinicName },
+      emailRedirectTo: `${window.location.origin}/login`,
+    },
   });
   if (error) {
     if (error.message.includes('already registered')) return { ok: false, error: 'Este email ya está registrado' };
