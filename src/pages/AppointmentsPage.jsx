@@ -167,7 +167,7 @@ export default function AppointmentsPage() {
       const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
       const worker = workers.find((w) => w.id === savedForm.workerId);
       try {
-        await supabase.functions.invoke('send-confirmation', {
+        const { error: fnError } = await supabase.functions.invoke('send-confirmation', {
           body: {
             to: patient.email,
             patientName: patient.name,
@@ -180,10 +180,14 @@ export default function AppointmentsPage() {
             clinicName,
           },
         });
+        if (fnError) throw fnError;
         setEmailNotif({ ok: true, msg: `Email enviado a ${patient.email}` });
-      } catch {
+      } catch (err) {
+        console.error('Error enviando confirmación:', err);
         setEmailNotif({ ok: false, msg: 'No se pudo enviar el email de confirmación' });
       }
+    } else {
+      setEmailNotif({ ok: false, msg: 'El paciente no tiene email registrado' });
     }
   };
 
