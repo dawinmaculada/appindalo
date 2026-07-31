@@ -1,18 +1,20 @@
 ﻿import { useState } from 'react';
 import { X, CreditCard, Banknote, CheckCircle2 } from 'lucide-react';
 
-const PAYMENT_OPTIONS = [
-  { key: 'session', label: 'Sesión',   sublabel: '1 sesión',    amount: 48  },
-  { key: 'bono5',   label: 'Bono 5',   sublabel: '5 sesiones',  amount: 225 },
-  { key: 'bono10',  label: 'Bono 10',  sublabel: '10 sesiones', amount: 420 },
-];
-
 export default function PaymentModal({ appointment, patient, treatment, onConfirm, onClose }) {
+  const sessionPrice = treatment?.price || 0;
+
+  const PAYMENT_OPTIONS = [
+    { key: 'session', label: 'Sesión',   sublabel: '1 sesión',    amount: sessionPrice },
+    { key: 'bono5',   label: 'Bono 5',   sublabel: '5 sesiones',  amount: sessionPrice * 5 },
+    { key: 'bono10',  label: 'Bono 10',  sublabel: '10 sesiones', amount: sessionPrice * 10 },
+  ];
+
   const [paymentType,   setPaymentType]   = useState('session');
   const [paymentMethod, setPaymentMethod] = useState('efectivo');
   const [adjustment,    setAdjustment]    = useState('');
 
-  const base  = PAYMENT_OPTIONS.find((o) => o.key === paymentType)?.amount ?? 48;
+  const base  = PAYMENT_OPTIONS.find((o) => o.key === paymentType)?.amount ?? 0;
   const adj   = parseFloat(adjustment) || 0;
   const total = base + adj;
 
