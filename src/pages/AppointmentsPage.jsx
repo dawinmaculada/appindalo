@@ -138,7 +138,7 @@ export default function AppointmentsPage() {
     const currentForm = formRef.current;
     const isNew = !currentForm.id;
     let savedForm = { ...currentForm };
-    console.log('[NUVIA] handleSave – workerId:', savedForm.workerId, '| workers.length:', workers.length);
+    console.warn('[NUVIA] handleSave – workerId:', savedForm.workerId, '| workers.length:', workers.length);
 
     // Si está conectado a Google Calendar, crear/actualizar evento
     if (isSignedIn()) {
@@ -171,7 +171,7 @@ export default function AppointmentsPage() {
       const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
       const worker = workers.find((w) => w.id === savedForm.workerId);
       try {
-        console.log('[NUVIA] email – workerId:', savedForm.workerId, '| worker:', worker?.name, '| workerEmail:', worker?.email);
+        console.warn('[NUVIA] email – workerId:', savedForm.workerId, '| worker:', worker?.name, '| workerEmail:', worker?.email);
         const { error: fnError } = await supabase.functions.invoke('send-confirmation', {
           body: {
             to: patient.email,
@@ -438,7 +438,7 @@ export default function AppointmentsPage() {
                 <select
                   value={form.workerId}
                   onChange={(e) => {
-                    console.log('[NUVIA] select trabajador onChange:', e.target.value);
+                    console.warn('[NUVIA] select trabajador onChange:', e.target.value);
                     setForm((f) => ({ ...f, workerId: e.target.value }));
                   }}
                   className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] appearance-none"
