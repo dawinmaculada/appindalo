@@ -4,8 +4,8 @@ import {
   Edit3, X, Loader, AlertCircle, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { getPatients, getAppointments } from '../services/storage';
-import { sendBulkEmails } from '../services/gmail';
-import { isSignedIn } from '../services/googleCalendar';
+import { supabase } from '../services/supabase';
+import { useClinic } from '../contexts/ClinicContext';
 import { differenceInDays, isFuture, isPast, parseISO, format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -18,50 +18,50 @@ const TEMPLATES = [
     description: 'Para pacientes sin cita desde hace más de 3 meses',
     subject: '¿Cómo te encuentras, {{nombre}}?',
     body: `<p>Hola <strong>{{nombre}}</strong>,</p>
-<p>Han pasado unos meses desde tu última visita en <strong>Osteopatía Indalo</strong> y queríamos saber cómo te encuentras.</p>
+<p>Han pasado unos meses desde tu última visita en <strong>{{nombre_clinica}}</strong> y queríamos saber cómo te encuentras.</p>
 <p>Si necesitas retomar el tratamiento o tienes alguna molestia, estaremos encantados de atenderte. Puedes contactarnos o reservar tu cita directamente respondiendo a este email.</p>
 <p>¡Te esperamos!</p>
 <br>
-<p>Un saludo,<br><strong>Equipo Osteopatía Indalo</strong></p>`,
+<p>Un saludo,<br><strong>Equipo {{nombre_clinica}}</strong></p>`,
   },
   {
     id: 'bienvenida',
     label: 'Bienvenida',
     icon: '👋',
     description: 'Para pacientes nuevos',
-    subject: 'Bienvenido/a a Osteopatía Indalo, {{nombre}}',
+    subject: 'Bienvenido/a a {{nombre_clinica}}, {{nombre}}',
     body: `<p>Hola <strong>{{nombre}}</strong>,</p>
-<p>Nos alegra que hayas confiado en nosotros. En <strong>Osteopatía Indalo</strong> estamos aquí para acompañarte en tu bienestar.</p>
+<p>Nos alegra que hayas confiado en nosotros. En <strong>{{nombre_clinica}}</strong> estamos aquí para acompañarte en tu bienestar.</p>
 <p>Si tienes cualquier duda sobre tu tratamiento o quieres reservar tu próxima cita, no dudes en contactarnos.</p>
 <p>¡Bienvenido/a a la familia Indalo!</p>
 <br>
-<p>Un saludo,<br><strong>Equipo Osteopatía Indalo</strong></p>`,
+<p>Un saludo,<br><strong>Equipo {{nombre_clinica}}</strong></p>`,
   },
   {
     id: 'recordatorio',
     label: 'Recordatorio de cita',
     icon: '📅',
     description: 'Recuerda a tus pacientes su próxima cita',
-    subject: 'Recordatorio: tu cita en Osteopatía Indalo',
+    subject: 'Recordatorio: tu cita en {{nombre_clinica}}',
     body: `<p>Hola <strong>{{nombre}}</strong>,</p>
-<p>Te recordamos que tienes una cita próximamente en <strong>Osteopatía Indalo</strong>.</p>
+<p>Te recordamos que tienes una cita próximamente en <strong>{{nombre_clinica}}</strong>.</p>
 <p>Si necesitas cambiarla o cancelarla, contáctanos con la mayor antelación posible.</p>
 <p>¡Hasta pronto!</p>
 <br>
-<p>Un saludo,<br><strong>Equipo Osteopatía Indalo</strong></p>`,
+<p>Un saludo,<br><strong>Equipo {{nombre_clinica}}</strong></p>`,
   },
   {
     id: 'promocion',
     label: 'Promoción',
     icon: '🎁',
     description: 'Oferta o novedad para tus pacientes',
-    subject: 'Novedad en Osteopatía Indalo para ti, {{nombre}}',
+    subject: 'Novedad en {{nombre_clinica}} para ti, {{nombre}}',
     body: `<p>Hola <strong>{{nombre}}</strong>,</p>
-<p>Tenemos novedades en <strong>Osteopatía Indalo</strong> que creemos que te pueden interesar.</p>
+<p>Tenemos novedades en <strong>{{nombre_clinica}}</strong> que creemos que te pueden interesar.</p>
 <p><em>Edita aquí el contenido de tu oferta o novedad.</em></p>
 <p>Para más información o para reservar cita, responde a este email o llámanos.</p>
 <br>
-<p>Un saludo,<br><strong>Equipo Osteopatía Indalo</strong></p>`,
+<p>Un saludo,<br><strong>Equipo {{nombre_clinica}}</strong></p>`,
   },
   {
     id: 'personalizado',
@@ -87,7 +87,7 @@ function needsFollowup(patient, appointments) {
   return hasFromJan && differenceInDays(new Date(), parseISO(lastApt.date)) > FOLLOWUP_DAYS;
 }
 
-function applyVars(text, patient, appointments) {
+function applyVars(text, patient, appointments, clinicName = '') {
   const apts = appointments
     .filter((a) => a.patientId === patient.id && a.date && isFuture(parseISO(a.date)))
     .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -97,11 +97,13 @@ function applyVars(text, patient, appointments) {
     .replace(/\{\{nombre_completo\}\}/g, patient.name || '')
     .replace(/\{\{proxima_cita\}\}/g, next
       ? format(parseISO(next.date), "d 'de' MMMM", { locale: es }) + (next.time ? ` a las ${next.time}` : '')
-      : 'próximamente');
+      : 'próximamente')
+    .replace(/\{\{nombre_clinica\}\}/g, clinicName || 'Tu clínica');
 }
 
 // ───────────────────────────────────────────────────────────────────────
 export default function MarketingPage() {
+  const { clinicName } = useClinic();
   const [allPatients, setAllPatients]         = useState([]);
   const [allAppointments, setAllAppointments] = useState([]);
 
@@ -156,27 +158,28 @@ export default function MarketingPage() {
     setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const handleSend = useCallback(async () => {
-    if (!isSignedIn()) return;
     if (recipients.length === 0) return;
     setSending(true);
     setResult(null);
     setProgress({ current: 0, total: recipients.length, name: '' });
 
-    const res = await sendBulkEmails(
-      recipients,
-      (p) => ({
-        subject:  applyVars(subject, p, allAppointments),
-        bodyHtml: applyVars(body, p, allAppointments),
-      }),
-      (prog) => setProgress(prog)
-    );
+    const emails = recipients.map((p) => ({
+      to:      p.email,
+      subject: applyVars(subject, p, allAppointments, clinicName),
+      html:    applyVars(body,    p, allAppointments, clinicName),
+    }));
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-marketing', { body: { emails } });
+      if (error) throw error;
+      setResult({ sent: data.sent ?? 0, failed: data.failed ?? 0 });
+    } catch {
+      setResult({ sent: 0, failed: recipients.length });
+    }
 
     setSending(false);
     setProgress(null);
-    setResult(res);
-  }, [recipients, subject, body, allAppointments]);
-
-  const signed = isSignedIn();
+  }, [recipients, subject, body, allAppointments, clinicName]);
 
   return (
     <div className="space-y-5 max-w-5xl">
@@ -375,7 +378,7 @@ export default function MarketingPage() {
           {/* Botón enviar */}
           <button
             onClick={handleSend}
-            disabled={!signed || sending || recipients.length === 0 || !subject || !body}
+            disabled={sending || recipients.length === 0 || !subject || !body}
             className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors shadow-lg shadow-[#c9a227]/20 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {sending ? (
@@ -393,11 +396,6 @@ export default function MarketingPage() {
             )}
           </button>
 
-          {!signed && (
-            <p className="text-xs text-center text-gray-400">
-              Conecta Google para habilitar el envío
-            </p>
-          )}
         </div>
       </div>
 
@@ -441,7 +439,7 @@ export default function MarketingPage() {
                 <div className="bg-gray-50 px-5 py-4 border-b border-gray-200 space-y-1">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">De:</span>
-                    <span className="font-medium text-[#111827]">Osteopatía Indalo</span>
+                    <span className="font-medium text-[#111827]">{clinicName || 'Tu clínica'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">Para:</span>
@@ -450,7 +448,7 @@ export default function MarketingPage() {
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-400 w-16 text-xs">Asunto:</span>
                     <span className="font-medium text-[#111827]">
-                      {applyVars(subject, previewPatient, allAppointments)}
+                      {applyVars(subject, previewPatient, allAppointments, clinicName)}
                     </span>
                   </div>
                 </div>
@@ -459,7 +457,7 @@ export default function MarketingPage() {
                 <div
                   className="px-6 py-5 text-sm text-gray-700 leading-relaxed prose max-w-none"
                   dangerouslySetInnerHTML={{
-                    __html: applyVars(body, previewPatient, allAppointments),
+                    __html: applyVars(body, previewPatient, allAppointments, clinicName),
                   }}
                 />
               </div>
@@ -471,7 +469,7 @@ export default function MarketingPage() {
               </button>
               <button
                 onClick={() => { setShowPreview(false); handleSend(); }}
-                disabled={!signed || sending || recipients.length === 0}
+                disabled={sending || recipients.length === 0}
                 className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-[#c9a227] rounded-xl hover:bg-[#a8851e] transition-colors disabled:opacity-40"
               >
                 <Send size={14} /> Enviar ahora
