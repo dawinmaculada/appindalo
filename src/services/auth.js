@@ -18,6 +18,9 @@ export async function register(email, password, clinicName) {
       if (msg.includes('Database error') || msg.includes('saving new user')) {
         return { ok: false, error: 'Error interno al crear la clínica. Contacta con soporte.' };
       }
+      if (msg.includes('rate limit')) {
+        return { ok: false, error: 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.' };
+      }
       return { ok: false, error: msg || 'Error al crear la cuenta' };
     }
     return { ok: true, session: data.session };
