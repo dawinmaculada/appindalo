@@ -1,19 +1,29 @@
 import { supabase, clearClinicIdCache } from './supabase';
 
 export async function register(email, password, clinicName) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { clinic_name: clinicName },
-      emailRedirectTo: `${window.location.origin}/login`,
-    },
-  });
-  if (error) {
-    if (error.message.includes('already registered')) return { ok: false, error: 'Este email ya está registrado' };
-    return { ok: false, error: error.message };
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { clinic_name: clinicName },
+        emailRedirectTo: `${window.location.origin}/login`,
+      },
+    });
+    if (error) {
+      const msg = error.message || '';
+      if (msg.includes('already registered') || msg.includes('already been registered')) {
+        return { ok: false, error: 'Este email ya está registrado' };
+      }
+      if (msg.includes('Database error') || msg.includes('saving new user')) {
+        return { ok: false, error: 'Error interno al crear la clínica. Contacta con soporte.' };
+      }
+      return { ok: false, error: msg || 'Error al crear la cuenta' };
+    }
+    return { ok: true, session: data.session };
+  } catch {
+    return { ok: false, error: 'Error de conexión. Inténtalo de nuevo.' };
   }
-  return { ok: true, session: data.session };
 }
 
 export async function login(email, password) {
