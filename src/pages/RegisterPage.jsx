@@ -128,6 +128,7 @@ export default function RegisterPage() {
                     type="email"
                     value={form.email}
                     onChange={set('email')}
+                    autoComplete="off"
                     required
                     placeholder="Introduce tu email"
                     className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
@@ -144,6 +145,7 @@ export default function RegisterPage() {
                       type={showPass ? 'text' : 'password'}
                       value={form.password}
                       onChange={set('password')}
+                      autoComplete="new-password"
                       required
                       placeholder="Introduce tu contraseña"
                       className="w-full px-4 py-3 pr-11 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
@@ -164,6 +166,7 @@ export default function RegisterPage() {
                     type={showPass ? 'text' : 'password'}
                     value={form.confirm}
                     onChange={set('confirm')}
+                    autoComplete="new-password"
                     required
                     placeholder="Repite tu contraseña"
                     className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
