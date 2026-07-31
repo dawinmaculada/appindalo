@@ -129,7 +129,7 @@ export default function RegisterPage() {
                     value={form.email}
                     onChange={set('email')}
                     required
-                    placeholder="clinica@ejemplo.com"
+                    placeholder="Introduce tu email"
                     className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
                   />
                 </div>
@@ -145,7 +145,7 @@ export default function RegisterPage() {
                       value={form.password}
                       onChange={set('password')}
                       required
-                      placeholder="Mínimo 6 caracteres"
+                      placeholder="Introduce tu contraseña"
                       className="w-full px-4 py-3 pr-11 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
                     />
                     <button type="button" onClick={() => setShowPass((v) => !v)}
@@ -165,7 +165,7 @@ export default function RegisterPage() {
                     value={form.confirm}
                     onChange={set('confirm')}
                     required
-                    placeholder="Repite la contraseña"
+                    placeholder="Repite tu contraseña"
                     className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
                   />
                 </div>

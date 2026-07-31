@@ -88,7 +88,7 @@ export default function LoginPage() {
                 required
                 autoFocus
                 autoComplete="email"
-                placeholder="clinica@ejemplo.com"
+                placeholder="Introduce tu email"
                 className="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
               />
             </div>
@@ -104,7 +104,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  placeholder="••••••••"
+                  placeholder="Introduce tu contraseña"
                   className="w-full px-4 py-3 pr-11 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] transition-colors"
                 />
                 <button
