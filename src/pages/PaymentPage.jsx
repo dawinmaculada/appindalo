@@ -81,7 +81,7 @@ export default function PaymentPage() {
                   <h2 className="text-white text-2xl font-extrabold">NUVIA Clínica</h2>
                 </div>
                 <div className="text-right">
-                  <p className="text-white text-3xl font-extrabold">49,99€</p>
+                  <p className="text-white text-3xl font-extrabold">29,99€</p>
                   <p className="text-white/40 text-xs">/ mes · IVA incluido</p>
                 </div>
               </div>
