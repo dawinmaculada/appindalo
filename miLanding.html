@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NUVIA · Software de gestión para clínicas</title>
-  <meta name="description" content="NUVIA centraliza citas, pacientes, trabajadores y facturación en una sola plataforma. Diseñado para osteopatías y centros de bienestar." />
+  <title>MIRVIA · Software de gestión para clínicas</title>
+  <meta name="description" content="MIRVIA centraliza citas, pacientes, trabajadores y facturación en una sola plataforma. Diseñado para osteopatías y centros de bienestar." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -105,20 +105,35 @@
       border-bottom: 1px solid var(--border);
       transition: background .25s, border-color .25s;
     }
-    :root[data-theme="dark"] nav,
-    @media (prefers-color-scheme: dark) { nav } {
-      background: rgba(13,11,8,.88);
+    :root[data-theme="dark"] nav { background: rgba(13,11,8,.88); }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) nav { background: rgba(13,11,8,.88); }
     }
 
     .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+    }
+    .nav-logo-text {
       font-family: Georgia, serif;
       font-size: 1.45rem;
       font-weight: 700;
       letter-spacing: -.04em;
       color: var(--text);
-      text-decoration: none;
     }
-    .nav-logo em { font-style: normal; color: var(--gold); }
+    .nav-logo-text em { font-style: normal; color: var(--gold); }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+    }
+    .footer-logo-text {
+      font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700;
+      color: var(--text); letter-spacing: -.03em;
+    }
+    .footer-logo-text em { font-style: normal; color: var(--gold); }
 
     .nav-links {
       display: flex; align-items: center; gap: 2rem; list-style: none;
@@ -473,11 +488,6 @@
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
     }
-    .footer-logo {
-      font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700;
-      color: var(--text); letter-spacing: -.03em;
-    }
-    .footer-logo em { font-style: normal; color: var(--gold); }
     footer p { font-size: .8rem; color: var(--text-muted); }
     footer a { color: var(--gold); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
@@ -496,6 +506,100 @@
       transition: opacity .65s ease, transform .65s ease;
     }
     .rv.in { opacity: 1; transform: none; }
+
+    /* ── Contact ─────────────────────────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .contact-info-title {
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      color: var(--text);
+      margin-bottom: .7rem;
+    }
+    .contact-info-title em { font-style: normal; color: var(--gold); }
+    .contact-info-sub {
+      font-size: .93rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.75rem;
+    }
+    .contact-detail {
+      display: flex; align-items: center; gap: .7rem;
+      font-size: .88rem; color: var(--text-muted); margin-bottom: .75rem;
+    }
+    .contact-detail svg {
+      width: 16px; height: 16px;
+      stroke: var(--gold); fill: none;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .contact-detail a { color: var(--gold); text-decoration: none; }
+    .contact-detail a:hover { text-decoration: underline; }
+
+    .contact-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      box-shadow: var(--shadow-md);
+    }
+    .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 500px) { .cf-row { grid-template-columns: 1fr; } }
+
+    .cf-group { display: flex; flex-direction: column; gap: .45rem; margin-bottom: 1rem; }
+    .cf-label {
+      font-size: .78rem; font-weight: 600;
+      color: var(--text-muted); letter-spacing: .03em;
+    }
+    .cf-input {
+      width: 100%;
+      padding: .65rem .9rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: .9rem;
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .cf-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,162,39,.12);
+    }
+    textarea.cf-input { resize: vertical; min-height: 120px; }
+
+    .cf-btn {
+      width: 100%; padding: .82rem 1rem;
+      background: var(--gold); color: #fff;
+      border: none; border-radius: 10px;
+      font-size: .95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      margin-top: .25rem;
+    }
+    .cf-btn:hover {
+      background: var(--gold-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px var(--gold-glow);
+    }
+    .cf-btn:active { transform: translateY(0); }
+
+    .cf-success {
+      display: none;
+      text-align: center; padding: 1.5rem;
+      color: var(--text);
+    }
+    .cf-success svg {
+      width: 44px; height: 44px; stroke: var(--gold); fill: none;
+      stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+      margin: 0 auto 1rem; display: block;
+    }
+    .cf-success p { font-size: .9rem; color: var(--text-muted); margin-top: .4rem; }
 
     @media (prefers-reduced-motion: reduce) {
       .rv { transition: none; }
@@ -519,13 +623,28 @@
 
   <!-- ── NAV ──────────────────────────────────────────────────────────────── -->
   <nav>
-    <a href="#" class="nav-logo">NUVIA<em>.</em></a>
+    <a href="#" class="nav-logo">
+      <svg width="28" height="24" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nlg" x1="0" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#7C3AED"/>
+            <stop offset="35%"  stop-color="#A855F7"/>
+            <stop offset="65%"  stop-color="#EC4899"/>
+            <stop offset="100%" stop-color="#06B6D4"/>
+          </linearGradient>
+        </defs>
+        <path d="M6,44 C6,16 11,8 20,8 C25,8 28,24 30,28 C32,32 35,8 40,8 C49,8 54,28 54,44"
+              stroke="url(#nlg)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M41,0 L42.3,3.5 L45.8,4.5 L42.3,5.5 L41,9 L39.7,5.5 L36.2,4.5 L39.7,3.5 Z" fill="#7C3AED"/>
+      </svg>
+      <span class="nav-logo-text">MIRVIA<em>.</em></span>
+    </a>
 
     <ul class="nav-links">
       <li><a href="#caracteristicas">Características</a></li>
       <li><a href="#como-funciona">Cómo funciona</a></li>
       <li><a href="#precios">Precios</a></li>
-      <li><a href="mailto:dawinmaculada@gmail.com">Contacto</a></li>
+      <li><a href="#contacto">Contacto</a></li>
     </ul>
 
     <div class="nav-right">
@@ -551,7 +670,7 @@
           <em>tus pacientes.</em>
         </h1>
         <p class="hero-sub rv" style="transition-delay:.16s">
-          NUVIA centraliza citas, pacientes, trabajadores y facturación en una sola plataforma. Diseñado para osteopatías y centros de bienestar.
+          MIRVIA centraliza citas, pacientes, trabajadores y facturación en una sola plataforma. Diseñado para osteopatías y centros de bienestar.
         </p>
         <div class="hero-ctas rv" style="transition-delay:.22s">
           <a href="https://appindalo.vercel.app/register" class="btn btn-gold btn-lg">
@@ -768,21 +887,121 @@
   <div class="cta-strip rv">
     <div class="wrap">
       <h2 class="serif">¿Listo para simplificar <em>tu clínica?</em></h2>
-      <p>Pruébalo 7 días sin coste y comprueba cómo NUVIA transforma la gestión de tu centro.</p>
+      <p>Pruébalo 7 días sin coste y comprueba cómo MIRVIA transforma la gestión de tu centro.</p>
       <a href="https://appindalo.vercel.app/register" class="btn btn-gold btn-lg">
         Crear cuenta gratis →
       </a>
     </div>
   </div>
 
+  <hr class="rule" />
+
+  <!-- ── CONTACT ───────────────────────────────────────────────────────────── -->
+  <section class="section" id="contacto">
+    <div class="wrap">
+      <div class="contact-grid">
+
+        <!-- Info -->
+        <div class="rv">
+          <p class="eyebrow" style="margin-bottom:.8rem">Contacto</p>
+          <h2 class="serif contact-info-title">¿Tienes alguna <em>pregunta?</em></h2>
+          <p class="contact-info-sub">
+            Escríbenos y te respondemos en menos de 24 horas. También puedes preguntarnos sobre funcionalidades, precios o cualquier duda antes de registrarte.
+          </p>
+          <div class="contact-detail">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:dawinmaculada@gmail.com">dawinmaculada@gmail.com</a>
+          </div>
+          <div class="contact-detail">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Respuesta en menos de 24 h
+          </div>
+          <div class="contact-detail">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            España · Servicio en español
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="contact-form rv" style="transition-delay:.1s">
+          <div id="cf-form-wrap">
+            <div class="cf-row">
+              <div class="cf-group">
+                <label class="cf-label" for="cf-name">Nombre</label>
+                <input id="cf-name" class="cf-input" type="text" placeholder="Tu nombre" />
+              </div>
+              <div class="cf-group">
+                <label class="cf-label" for="cf-email">Email</label>
+                <input id="cf-email" class="cf-input" type="email" placeholder="tu@email.com" />
+              </div>
+            </div>
+            <div class="cf-group">
+              <label class="cf-label" for="cf-subject">Asunto</label>
+              <input id="cf-subject" class="cf-input" type="text" placeholder="¿En qué podemos ayudarte?" />
+            </div>
+            <div class="cf-group">
+              <label class="cf-label" for="cf-msg">Mensaje</label>
+              <textarea id="cf-msg" class="cf-input" placeholder="Cuéntanos tu consulta…"></textarea>
+            </div>
+            <button class="cf-btn" onclick="sendContact()">Enviar mensaje →</button>
+          </div>
+          <div class="cf-success" id="cf-success">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <strong>¡Mensaje enviado!</strong>
+            <p>Tu cliente de correo se ha abierto con el mensaje listo. Pulsa Enviar para completarlo.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
   <footer>
-    <span class="footer-logo">NUVIA<em>.</em></span>
-    <p>© 2026 NUVIA · Gestión de clínica</p>
+    <span class="footer-logo">
+      <svg width="22" height="19" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="flg" x1="0" y1="0" x2="60" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="#7C3AED"/>
+            <stop offset="35%"  stop-color="#A855F7"/>
+            <stop offset="65%"  stop-color="#EC4899"/>
+            <stop offset="100%" stop-color="#06B6D4"/>
+          </linearGradient>
+        </defs>
+        <path d="M6,44 C6,16 11,8 20,8 C25,8 28,24 30,28 C32,32 35,8 40,8 C49,8 54,28 54,44"
+              stroke="url(#flg)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M41,0 L42.3,3.5 L45.8,4.5 L42.3,5.5 L41,9 L39.7,5.5 L36.2,4.5 L39.7,3.5 Z" fill="#7C3AED"/>
+      </svg>
+      <span class="footer-logo-text">MIRVIA<em>.</em></span>
+    </span>
+    <p>© 2026 MIRVIA · Gestión de clínica</p>
     <p><a href="mailto:dawinmaculada@gmail.com">dawinmaculada@gmail.com</a></p>
   </footer>
 
   <script>
+    // ── Contact form ─────────────────────────────────────────────────────────
+    function sendContact() {
+      const name    = document.getElementById('cf-name').value.trim();
+      const email   = document.getElementById('cf-email').value.trim();
+      const subject = document.getElementById('cf-subject').value.trim();
+      const msg     = document.getElementById('cf-msg').value.trim();
+
+      if (!name || !email || !msg) {
+        alert('Por favor rellena al menos el nombre, email y mensaje.');
+        return;
+      }
+
+      const body = `Nombre: ${name}\nEmail: ${email}\n\n${msg}`;
+      const mailto = `mailto:dawinmaculada@gmail.com`
+        + `?subject=${encodeURIComponent(subject || 'Consulta desde la web de MIRVIA')}`
+        + `&body=${encodeURIComponent(body)}`;
+
+      window.location.href = mailto;
+
+      document.getElementById('cf-form-wrap').style.display = 'none';
+      document.getElementById('cf-success').style.display   = 'block';
+    }
+
     // ── Theme ────────────────────────────────────────────────────────────────
     const root = document.documentElement;
     const icon = document.getElementById('theme-icon');

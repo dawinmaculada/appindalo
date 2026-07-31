@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { Leaf, CheckCircle2, CreditCard, Shield, Clock, Zap, Users, Calendar, FileText, Mail } from 'lucide-react';
+import { CheckCircle2, CreditCard, Shield, Clock, Zap, Users, Calendar, FileText, Mail } from 'lucide-react';
 import { useClinic } from '../contexts/ClinicContext';
 import { logout } from '../services/auth';
+import MirviaLogo from '../components/MirviaLogo';
 
 const FEATURES = [
   { icon: Users, text: 'Gestión ilimitada de pacientes' },
@@ -28,10 +29,8 @@ export default function PaymentPage() {
       {/* Header */}
       <div className="bg-[#111827] px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#c9a227] flex items-center justify-center">
-            <Leaf size={18} className="text-white" />
-          </div>
-          <span className="text-[#c9a227] font-extrabold text-lg">NUVIA</span>
+          <MirviaLogo size={32} />
+          <span className="text-[#c9a227] font-extrabold text-lg">MIRVIA</span>
           {clinicName && <span className="text-white/40 text-sm hidden sm:block">· {clinicName}</span>}
         </div>
         <button onClick={handleLogout} className="text-white/40 hover:text-white text-sm transition-colors">
@@ -53,7 +52,7 @@ export default function PaymentPage() {
                   Tu periodo de prueba ha finalizado
                 </h1>
                 <p className="text-gray-400">
-                  Activa tu suscripción para seguir usando NUVIA en <strong>{clinicName}</strong>.
+                  Activa tu suscripción para seguir usando MIRVIA en <strong>{clinicName}</strong>.
                 </p>
               </>
             ) : (
@@ -65,7 +64,7 @@ export default function PaymentPage() {
                   Activa tu suscripción
                 </h1>
                 <p className="text-gray-400">
-                  Accede a todas las funcionalidades de NUVIA sin límites.
+                  Accede a todas las funcionalidades de MIRVIA sin límites.
                 </p>
               </>
             )}
@@ -78,7 +77,7 @@ export default function PaymentPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-[#c9a227] text-xs font-bold uppercase tracking-widest mb-1">Plan profesional</p>
-                  <h2 className="text-white text-2xl font-extrabold">NUVIA Clínica</h2>
+                  <h2 className="text-white text-2xl font-extrabold">MIRVIA Clínica</h2>
                 </div>
                 <div className="text-right">
                   <p className="text-white text-3xl font-extrabold">29,99€</p>

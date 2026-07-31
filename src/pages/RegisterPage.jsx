@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Leaf, Eye, EyeOff, Loader, AlertCircle, CheckCircle2, Building2 } from 'lucide-react';
+import { Eye, EyeOff, Loader, AlertCircle, CheckCircle2, Building2 } from 'lucide-react';
 import { register } from '../services/auth';
+import MirviaLogo from '../components/MirviaLogo';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -38,12 +39,8 @@ export default function RegisterPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#c9a227]/5" />
 
         <div className="relative z-10 text-center">
-          <div className="w-24 h-24 rounded-3xl bg-[#c9a227] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-[#c9a227]/30">
-            <Leaf size={48} className="text-white" />
-          </div>
-          <h1 className="text-4xl font-extrabold text-white mb-3">
-            <span className="text-[#c9a227]">NUVIA</span>
-          </h1>
+          <MirviaLogo size={90} className="mx-auto mb-8" />
+          <h1 className="text-4xl font-extrabold text-white mb-3">MIRVIA</h1>
           <p className="text-white/50 text-lg">Sistema de gestión de clínica</p>
 
           <div className="mt-12 space-y-4 text-left max-w-xs mx-auto">
@@ -70,10 +67,8 @@ export default function RegisterPage() {
 
           {/* Logo móvil */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-[#c9a227] flex items-center justify-center">
-              <Leaf size={20} className="text-white" />
-            </div>
-            <p className="text-[#c9a227] font-extrabold">NUVIA</p>
+            <MirviaLogo size={32} />
+            <p className="text-[#c9a227] font-extrabold">MIRVIA</p>
           </div>
 
           {success ? (
@@ -95,7 +90,7 @@ export default function RegisterPage() {
           ) : (
             <>
               <h2 className="text-2xl font-extrabold text-[#111827] mb-1">Crear cuenta</h2>
-              <p className="text-gray-400 text-sm mb-8">Registra tu clínica en NUVIA</p>
+              <p className="text-gray-400 text-sm mb-8">Registra tu clínica en MIRVIA</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Nombre clínica */}
@@ -198,7 +193,7 @@ export default function RegisterPage() {
             </>
           )}
 
-          <p className="text-center text-xs text-gray-300 mt-8">NUVIA · Gestión de clínica v2.0</p>
+          <p className="text-center text-xs text-gray-300 mt-8">MIRVIA · Gestión de clínica v2.0</p>
         </div>
       </div>
     </div>

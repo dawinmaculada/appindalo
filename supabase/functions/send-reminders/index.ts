@@ -24,7 +24,7 @@ function reminderHtml(p: {
   return `
     <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#fff">
       <div style="background:#111827;border-radius:10px 10px 0 0;padding:20px 24px">
-        <p style="color:#c9a227;font-size:12px;margin:0 0 4px;font-weight:600;letter-spacing:1px">NUVIA</p>
+        <p style="color:#c9a227;font-size:12px;margin:0 0 4px;font-weight:600;letter-spacing:1px">MIRVIA</p>
         <h1 style="color:#fff;margin:0;font-size:20px">Recordatorio de cita</h1>
       </div>
       <div style="border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;padding:24px">

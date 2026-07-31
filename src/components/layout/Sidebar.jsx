@@ -8,12 +8,12 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  Leaf,
   UserCog,
   Settings,
   Receipt,
   Megaphone,
 } from 'lucide-react';
+import MirviaLogo from '../MirviaLogo';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -58,12 +58,10 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-          <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#c9a227] flex items-center justify-center shadow-lg">
-            <Leaf size={20} className="text-white" />
-          </div>
+          <MirviaLogo size={36} className="flex-shrink-0" />
           {!collapsed && (
             <div className="overflow-hidden">
-              <p className="text-[#c9a227] font-extrabold text-base leading-tight">NUVIA</p>
+              <p className="text-[#c9a227] font-extrabold text-base leading-tight">MIRVIA</p>
               {clinicName && (
                 <p className="text-white/50 text-xs leading-tight truncate">{clinicName}</p>
               )}
@@ -125,7 +123,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
         {/* Footer */}
         {!collapsed && (
           <div className="px-4 py-3 border-t border-white/10">
-            <p className="text-xs text-white/30 text-center">v2.0.0 · NUVIA</p>
+            <p className="text-xs text-white/30 text-center">v2.0.0 · MIRVIA</p>
           </div>
         )}
 
