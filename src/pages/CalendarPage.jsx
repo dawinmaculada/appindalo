@@ -1,4 +1,6 @@
 ﻿import { useState, useRef, useEffect } from 'react';
+import { supabase } from '../services/supabase';
+import { useClinic } from '../contexts/ClinicContext';
 import {
   ChevronLeft,
   ChevronRight,
@@ -97,6 +99,7 @@ function layoutDay(apts, treatments) {
 // ─────────────────────────────────────────────────────────────────────────
 export default function CalendarPage() {
   const { treatments } = useTreatments();
+  const { clinicName } = useClinic();
   const [view, setView]         = useState('week'); // 'day' | 'week' | 'month'
   const [current, setCurrent]   = useState(new Date());
   const [appointments, setApts]     = useState([]);
@@ -194,8 +197,30 @@ export default function CalendarPage() {
         savedForm.googleEventId = gcEvent.id;
       } catch { /* sin Google no bloqueamos el guardado */ }
     }
+    const isNew = !savedForm.id;
     setApts(await saveAppointment(savedForm));
     setForm(null);
+
+    // Enviar emails de confirmación
+    const emailPatient  = patients.find((p) => p.id === savedForm.patientId);
+    const emailTreatment = treatments.find((t) => t.id === savedForm.treatmentId);
+    const emailWorker   = workers.find((w) => w.id === savedForm.workerId);
+    if (emailPatient?.email) {
+      supabase.functions.invoke('send-confirmation', {
+        body: {
+          to: emailPatient.email,
+          patientName: emailPatient.name,
+          treatmentName: emailTreatment?.name,
+          workerName: emailWorker?.name,
+          workerEmail: emailWorker?.email || null,
+          date: savedForm.date,
+          time: savedForm.time,
+          notes: savedForm.notes,
+          isEdit: !isNew,
+          clinicName,
+        },
+      }).catch(() => {});
+    }
   };
 
   const handlePaymentConfirm = async (billing) => {
