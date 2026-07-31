@@ -1,4 +1,5 @@
 ﻿import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Leaf, Eye, EyeOff, Loader, AlertCircle } from 'lucide-react';
 import { login } from '../services/auth';
 
@@ -139,7 +140,14 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-gray-300 mt-8">
+          <p className="text-center text-sm text-gray-400 mt-6">
+            ¿No tienes cuenta?{' '}
+            <Link to="/register" className="text-[#c9a227] font-semibold hover:underline">
+              Crear cuenta
+            </Link>
+          </p>
+
+          <p className="text-center text-xs text-gray-300 mt-4">
             NUVIA · Gestión de clínica v2.0
           </p>
         </div>

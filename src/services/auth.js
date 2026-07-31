@@ -1,5 +1,18 @@
 import { supabase, clearClinicIdCache } from './supabase';
 
+export async function register(email, password, clinicName) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { clinic_name: clinicName } },
+  });
+  if (error) {
+    if (error.message.includes('already registered')) return { ok: false, error: 'Este email ya está registrado' };
+    return { ok: false, error: error.message };
+  }
+  return { ok: true, session: data.session };
+}
+
 export async function login(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { ok: false, error: 'Email o contraseña incorrectos' };

@@ -5,6 +5,7 @@ import { TreatmentsProvider } from './contexts/TreatmentsContext';
 import { ClinicProvider } from './contexts/ClinicContext';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
 import AppointmentsPage from './pages/AppointmentsPage';
@@ -36,6 +37,10 @@ function App() {
         <Route
           path="/login"
           element={session ? <Navigate to="/" replace /> : <LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={session ? <Navigate to="/" replace /> : <RegisterPage />}
         />
         <Route
           path="/"
