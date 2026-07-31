@@ -167,6 +167,7 @@ export default function AppointmentsPage() {
       const treatment = treatments.find((t) => t.id === savedForm.treatmentId);
       const worker = workers.find((w) => w.id === savedForm.workerId);
       try {
+        console.log('[NUVIA] workerId:', savedForm.workerId, '| worker:', worker, '| workerEmail:', worker?.email);
         const { error: fnError } = await supabase.functions.invoke('send-confirmation', {
           body: {
             to: patient.email,
