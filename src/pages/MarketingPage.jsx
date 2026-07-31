@@ -1,7 +1,7 @@
 ﻿import { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   Mail, Users, CheckCircle2, AlertTriangle, Send, Eye,
-  Edit3, X, Loader, AlertCircle, ChevronDown, ChevronUp,
+  Edit3, X, Loader, ChevronDown, ChevronUp,
 } from 'lucide-react';
 import { getPatients, getAppointments } from '../services/storage';
 import { supabase } from '../services/supabase';
@@ -184,16 +184,6 @@ export default function MarketingPage() {
   return (
     <div className="space-y-5 max-w-5xl">
 
-      {/* Alerta si no está conectado */}
-      {!signed && (
-        <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
-          <AlertCircle size={18} className="text-amber-500 flex-shrink-0" />
-          <p className="text-sm text-amber-700">
-            Conecta tu cuenta de Google desde la cabecera para poder enviar emails.
-            La primera vez te pedirá permiso para <strong>Gmail</strong> y <strong>Calendar</strong>.
-          </p>
-        </div>
-      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
