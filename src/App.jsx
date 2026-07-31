@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './services/supabase';
 import { TreatmentsProvider } from './contexts/TreatmentsContext';
-import { ClinicProvider } from './contexts/ClinicContext';
+import { ClinicProvider, useClinic } from './contexts/ClinicContext';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import PaymentPage from './pages/PaymentPage';
 import DashboardPage from './pages/DashboardPage';
 import PatientsPage from './pages/PatientsPage';
 import AppointmentsPage from './pages/AppointmentsPage';
@@ -15,6 +16,13 @@ import WorkersPage from './pages/WorkersPage';
 import SettingsPage from './pages/SettingsPage';
 import BillingPage from './pages/BillingPage';
 import MarketingPage from './pages/MarketingPage';
+
+function SubscriptionGuard({ children }) {
+  const { isActive, subscription } = useClinic();
+  if (subscription.status === 'active') return children;
+  if (!isActive) return <Navigate to="/payment" replace />;
+  return children;
+}
 
 function App() {
   const [session, setSession] = useState(undefined); // undefined = cargando
@@ -43,10 +51,18 @@ function App() {
           element={session ? <Navigate to="/" replace /> : <RegisterPage />}
         />
         <Route
+          path="/payment"
+          element={
+            session
+              ? <ClinicProvider><PaymentPage /></ClinicProvider>
+              : <Navigate to="/login" replace />
+          }
+        />
+        <Route
           path="/"
           element={
             session
-              ? <ClinicProvider><TreatmentsProvider><Layout session={session} /></TreatmentsProvider></ClinicProvider>
+              ? <ClinicProvider><TreatmentsProvider><SubscriptionGuard><Layout session={session} /></SubscriptionGuard></TreatmentsProvider></ClinicProvider>
               : <Navigate to="/login" replace />
           }
         >

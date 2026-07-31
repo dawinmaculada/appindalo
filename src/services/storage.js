@@ -452,6 +452,21 @@ export const saveIssuerData = async (issuerData) => {
   }
 };
 
+// ── Suscripción ───────────────────────────────────────────────────────────
+
+export const getSubscriptionInfo = async () => {
+  const cid = await getClinicId();
+  const { data } = await supabase
+    .from('clinics')
+    .select('subscription_status, trial_ends_at')
+    .eq('id', cid)
+    .single();
+  return {
+    status: data?.subscription_status || 'active',
+    trialEndsAt: data?.trial_ends_at || null,
+  };
+};
+
 // ── Configuración Google Calendar ─────────────────────────────────────────
 
 export const getGoogleConfig = async () => {
