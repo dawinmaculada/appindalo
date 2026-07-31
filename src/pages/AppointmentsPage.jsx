@@ -177,6 +177,7 @@ export default function AppointmentsPage() {
             to: patient.email,
             patientName: patient.name,
             treatmentName: treatment?.name,
+            duration: treatment?.duration || 60,
             workerName: worker?.name,
             workerEmail: worker?.email || null,
             date: savedForm.date,

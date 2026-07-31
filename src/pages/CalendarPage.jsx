@@ -211,6 +211,7 @@ export default function CalendarPage() {
           to: emailPatient.email,
           patientName: emailPatient.name,
           treatmentName: emailTreatment?.name,
+          duration: emailTreatment?.duration || 60,
           workerName: emailWorker?.name,
           workerEmail: emailWorker?.email || null,
           date: savedForm.date,
