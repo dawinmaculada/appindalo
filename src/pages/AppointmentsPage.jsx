@@ -173,6 +173,7 @@ export default function AppointmentsPage() {
             patientName: patient.name,
             treatmentName: treatment?.name,
             workerName: worker?.name,
+            workerEmail: worker?.googleCalendarSync && worker?.email ? worker.email : null,
             date: savedForm.date,
             time: savedForm.time,
             notes: savedForm.notes,
