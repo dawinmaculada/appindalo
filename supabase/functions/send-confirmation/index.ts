@@ -1,5 +1,5 @@
 const RESEND_KEY = Deno.env.get('RESEND_API_KEY')!
-const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'MIRVIA Citas <onboarding@resend.dev>'
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'velsy Citas <onboarding@resend.dev>'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -45,7 +45,7 @@ function generateICS(p: {
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//MIRVIA Gestión de Clínica//ES',
+    'PRODID:-//velsy Gestión de Clínica//ES',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
@@ -256,7 +256,7 @@ Deno.serve(async (req) => {
           `Paciente: ${patientName}`,
           treatmentName ? `Tratamiento: ${treatmentName}` : '',
           notes ? `Notas: ${notes}` : '',
-          `Clínica: ${clinicName || 'MIRVIA'}`,
+          `Clínica: ${clinicName || 'velsy'}`,
         ].filter(Boolean).join('\n'),
         date,
         time,

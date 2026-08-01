@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Eye, EyeOff, Loader, AlertCircle } from 'lucide-react';
 import { login } from '../services/auth';
-import MirviaLogo from '../components/MirviaLogo';
+import VelsyLogo from '../components/VelsyLogo';
 
 export default function LoginPage() {
   const [email, setEmail]       = useState('');
@@ -30,8 +30,8 @@ export default function LoginPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#c9a227]/5" />
 
         <div className="relative z-10 text-center">
-          <MirviaLogo size={90} className="mx-auto mb-8" />
-          <h1 className="text-4xl font-extrabold text-white mb-3">MIRVIA</h1>
+          <VelsyLogo size={90} className="mx-auto mb-8" />
+          <h1 className="text-4xl font-extrabold text-white mb-3">velsy</h1>
           <p className="text-white/50 text-lg">
             Sistema de gestión de clínica
           </p>
@@ -58,8 +58,8 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8 bg-[#fafaf9]">
         <div className="w-full max-w-sm">
           <div className="flex items-center gap-3 mb-10 lg:hidden">
-            <MirviaLogo size={32} />
-            <p className="text-[#c9a227] font-extrabold leading-tight">MIRVIA</p>
+            <VelsyLogo size={32} />
+            <p className="text-[#c9a227] font-extrabold leading-tight">velsy</p>
           </div>
 
           <h2 className="text-2xl font-extrabold text-[#111827] mb-1">
@@ -141,7 +141,7 @@ export default function LoginPage() {
           </p>
 
           <p className="text-center text-xs text-gray-300 mt-4">
-            MIRVIA · Gestión de clínica v2.0
+            velsy · Gestión de clínica v2.0
           </p>
         </div>
       </div>

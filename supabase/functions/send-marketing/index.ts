@@ -1,5 +1,5 @@
 const RESEND_KEY = Deno.env.get('RESEND_API_KEY')!
-const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'MIRVIA Citas <onboarding@resend.dev>'
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'velsy Citas <onboarding@resend.dev>'
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
